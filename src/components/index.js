@@ -1,5 +1,6 @@
-import header from './header/header.vue'
-
+import header from './header/header'
+import titleBar from './titleBar/titleBar'
 export default {
-  header
+  header,
+  titleBar
 }

@@ -1,22 +1,22 @@
 <template>
-  <section class='homePage-banner'>
+  <section class='homePage-banner' @mousemove='handlerImgMove'>
     <div class="banner">
       <div class="banner-bg">
         <img class='luce' src="./images/bg_luce.png">
         <img class='base' src="./images/grafica_base.png">
       </div>
       <div class="banner-objGroup">
-        <img class="colori" src="./images/colori.png">
-        <img class="cerchio" src="./images/cerchio.png">
-        <img class="penna" src="./images/penna.png">
-        <img class="bolla" src="./images/bolla.png">
-        <img class="ciambella" src="./images/ciambella.png">
-        <img class="uccello" src="./images/uccello.png">
-        <img class="occhiali" src="./images/occhiali.png">
-        <img class="mela" src="./images/mela.png">
-        <img class="cerchio2" src="./images/cerchio2.png">
-        <img class="bomboletta" src="./images/bomboletta.png">
-        <img class="mouse" src="./images//mouse.png">
+        <img class="colori" src="./images/colori.png" :style='{transform: imgOffset.colori.transform}'>
+        <img class="cerchio" src="./images/cerchio.png" :style='{transform: imgOffset.cerchio.transform}'>
+        <img class="penna" src="./images/penna.png" :style='{transform: imgOffset.penna.transform}'>
+        <img class="bolla" src="./images/bolla.png" :style='{transform: imgOffset.bolla.transform}'>
+        <img class="ciambella" src="./images/ciambella.png" :style='{transform: imgOffset.ciambella.transform}'>
+        <img class="uccello" src="./images/uccello.png" :style='{transform: imgOffset.uccello.transform}'>
+        <img class="occhiali" src="./images/occhiali.png" :style='{transform: imgOffset.occhiali.transform}'>
+        <img class="mela" src="./images/mela.png" :style='{transform: imgOffset.mela.transform}'>
+        <img class="cerchio2" src="./images/cerchio2.png" :style='{transform: imgOffset.cerchio2.transform}'>
+        <img class="bomboletta" src="./images/bomboletta.png" :style='{transform: imgOffset.bomboletta.transform}'>
+        <img class="mouse" src="./images//mouse.png" :style='{transform: imgOffset.mouse.transform}'>
         <img class="fish" src="./images/fish2.png" :style='{transform: imgOffset.fish.transform}'>
       </div>
     </div>
@@ -25,30 +25,50 @@
 </template>
 
 <script>
+import mixin from './mixin'
 export default {
   data () {
     return {
       centerPoint: {
         x: 0,
         y: 0
-      },
-      imgOffset: {
-        fish: {
-          propX: -0.015,
-          propY: -0.01,
-          transform: 'translate3D(200px, 100px, 0)'
-        }
       }
     }
   },
+  mixins: [mixin],
   mounted () {
-    this.$data.centerPoint = this.getCenterPoint()
+    this.initializeCenterPoint()
   },
   methods: {
+    // 设置初始中心点
+    initializeCenterPoint () {
+      this.$data.centerPoint = this.getCenterPoint()
+      window.onresize = () => {
+        this.$data.centerPoint = this.getCenterPoint()
+        this.initializeImgPoint()
+      }
+    },
+    // 获取banner中心点
     getCenterPoint () {
       let x = this.$el.offsetWidth / 2
       let y = this.$el.offsetHeight / 2
       return {x, y}
+    },
+    // 调整图片位子
+    handlerImgMove (ev) {
+      let {centerPoint, imgOffset} = this.$data
+      let moveX = ev.clientX - centerPoint.x
+      let moveY = ev.clientY - centerPoint.y
+      for (let key in this.$data.imgOffset) {
+        imgOffset[key].transform = `translate3D(${moveX * imgOffset[key].propX}px, ${moveY * imgOffset[key].propY}px, 0)`
+      }
+    },
+    // 将图片位置都归为0
+    initializeImgPoint () {
+      let {imgOffset} = this.$data
+      for (let key in this.$data.imgOffset) {
+        imgOffset[key].transform = 'translate3D(0, 0px, 0)'
+      }
     }
   }
 }
@@ -87,6 +107,7 @@ export default {
   }
   img {
     position: absolute;
+    /*transition: .1s;*/
     &.luce {
       width: 100%;
       bottom: 0;

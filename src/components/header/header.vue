@@ -3,7 +3,7 @@
     <div class="header-topBar">
       <div class="container header-container">
         <div class="topBar-home">
-          <router-link to='./'>home</router-link>
+          <router-link to='/'>home</router-link>
         </div>
         <div class="topBar-side">
           <div class="topBar-entrence">
@@ -31,12 +31,12 @@
     <div class="header-menu">
       <div class="menu-container">
         <div class="menu-lt menu">
-          <router-link to='articleList/html'>html/css</router-link>
-          <router-link to='articleList/js'>Javascript</router-link>
+          <router-link to='/articleList/html'>html/css</router-link>
+          <router-link to='/articleList/js'>Javascript</router-link>
         </div>
         <div class="menu-rt menu">
-          <router-link to='articleList/node'>Node/Java</router-link>
-          <router-link to='articleList/others'>Others</router-link>
+          <router-link to='/articleList/node'>Node/Java</router-link>
+          <router-link to='/articleList/others'>Others</router-link>
         </div>
         <div class="menu-logo"></div>
       </div>
