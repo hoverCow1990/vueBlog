@@ -1,0 +1,64 @@
+i{
+  font-family:"iconfont" !important;
+  font-size:16px;
+  font-style:normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html{
+  position :relative;
+  font-size: 625%;
+  overflow-x: hidden;
+}
+
+.container {
+  width: 12.12rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media screen and (max-width: 1370px){
+  html {
+      font-size: 570%;
+  }
+}
+@media screen and (max-width: 1220px){
+  html {
+      font-size: 540%;
+  }
+}
+@media screen and (max-width: 1025px){
+  html {
+      font-size: 464%;
+  }
+}
+@media screen and (max-width: 780px){
+  html {
+      font-size: 360%;
+  }
+}
+
+@media screen and (max-width:435px){
+  html{
+   font-size:200%;
+  }
+}
+
+@media screen and (max-width:380px){
+  html{
+   font-size:182%;
+  }
+}
+
+@media screen and (max-width:320px){
+  html{
+   font-size:155%;
+  }
+}
+
+@media screen and (max-width:300px){
+  html{
+   font-size:150%;
+  }
+}
