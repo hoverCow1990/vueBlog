@@ -86,7 +86,8 @@ export default {
   }
   .chasm {
     width: 100%;
-    height: 3rem;
+    height: 2.2rem;
+    background-image: url('./images/sendBg.png')
   }
   .banner-bg {
     position: absolute;
@@ -107,7 +108,6 @@ export default {
   }
   img {
     position: absolute;
-    /*transition: .1s;*/
     &.luce {
       width: 100%;
       bottom: 0;
@@ -208,7 +208,6 @@ export default {
 }
 @media screen and (max-width: 435px){
   .homePage-banner {
-      height: 8.2rem;
       img {
         &.fish {
           top: 3.6rem;

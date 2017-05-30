@@ -1,6 +1,7 @@
 <template>
   <section id='homePage'>
     <Banner></Banner>
+    <HotObject></HotObject>
     <NewCollection></NewCollection>
     <div style='height:500px'>
 
@@ -11,6 +12,7 @@
 <script>
 import Banner from './banner/banner'
 import NewCollection from './newCollection/newCollection'
+import HotObject from './hotObject/hotObject'
 
 export default {
   name: 'homePage',
@@ -21,7 +23,8 @@ export default {
   },
   components: {
     Banner,
-    NewCollection
+    NewCollection,
+    HotObject
   }
 }
 </script>
