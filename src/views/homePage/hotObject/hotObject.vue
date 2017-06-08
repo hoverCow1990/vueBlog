@@ -5,7 +5,16 @@
     <div class="hotObject-container container">
       <div class="category-wrapper" :style='getWrapperTransform'>
         <div class="category-frame category">
-
+          <ul class='frame-list list'>
+            <li v-for='item of frameList'>
+              <div class="item-bg">
+                  <div class="item-perviewer" :style='item.bgColor'>
+                    <img :src="item.logo">
+                  </div>
+              </div>
+              <p>{{ item.label }}</p>
+            </li>
+          </ul>
         </div>
         <div class="category-tool category">
 
@@ -17,14 +26,16 @@
 
         </div>
       </div>
-      <div class="category-tab">
-        <ul class='tab-list'>
-          <li @mouseenter='handlerChangeIndex(0)'>框架</li>
-          <li @mouseenter='handlerChangeIndex(1)'>工具</li>
-          <li @mouseenter='handlerChangeIndex(2)'>书架</li>
-          <li @mouseenter='handlerChangeIndex(3)'>游戏</li>
-        </ul>
-        <div class="tab-piston" :style='getTabTransform'></div>
+      <div class="category-tab-wrapper">
+        <div class="category-tab">
+          <ul class='tab-list'>
+            <li @click='handlerChangeIndex(0)'>框架</li>
+            <li @click='handlerChangeIndex(1)'>工具</li>
+            <li @click='handlerChangeIndex(2)'>书架</li>
+            <li @click='handlerChangeIndex(3)'>游戏</li>
+          </ul>
+          <div class="tab-piston" :style='getTabTransform'></div>
+        </div>
       </div>
     </div>
   </section>
@@ -35,7 +46,36 @@
 export default {
   data () {
     return {
-      showIndex: 0
+      showIndex: 0,
+      frameList: [{
+        label: 'Vue',
+        logo: require('./images/vue.png'),
+        bgColor: {backgroundImage: '-webkit-gradient(linear, 0% 90%, 100% 0%, from(#cecece), to(#ffffff))'}
+      }, {
+        label: 'React',
+        logo: require('./images/react.png'),
+        bgColor: {backgroundImage: '-webkit-gradient(linear, 0% 90%, 100% 0%, from(#000000), to(#383838)'}
+      }, {
+        label: 'Angular',
+        logo: require('./images/angular.png'),
+        bgColor: {backgroundImage: '-webkit-gradient(linear, 0% 90%, 100% 0%, from(#cecece), to(#ffffff))'}
+      }, {
+        label: 'JQuery',
+        logo: require('./images/jquery.png'),
+        bgColor: {backgroundImage: '-webkit-gradient(linear, 0% 90%, 100% 0%, from(#073286), to(#427be2))'}
+      }, {
+        label: 'Backbone',
+        logo: require('./images/backbone.png'),
+        bgColor: {backgroundImage: '-webkit-gradient(linear, 0% 90%, 100% 0%, from(#a76208), to(#ffd86a))'}
+      }, {
+        label: 'Bootstrip',
+        logo: require('./images/bootstrap.png'),
+        bgColor: {backgroundImage: '-webkit-gradient(linear, 0% 90%, 100% 0%, from(#29133e), to(#492248))'}
+      }, {
+        label: 'Express',
+        logo: require('./images/express.png'),
+        bgColor: {backgroundImage: '-webkit-gradient(linear, 0% 90%, 100% 0%, from(#500000), to(#ec2727))'}
+      }]
     }
   },
   computed: {
@@ -86,7 +126,7 @@ export default {
   letter-spacing: 5px;
 }
 .hotObject-container {
-  overflow: hidden;
+  overflow-x: hidden;
 }
 .category-wrapper {
   display: flex;
@@ -94,27 +134,66 @@ export default {
   transition: transform .25s;
   .category {
     flex:1;
-    height: 300px;
   }
-  /*.category-frame {
-    background: #222;
+  .list {
+    @liWidth:  1.4rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding-top: .7rem;
+    li {
+      width: @liWidth;
+      cursor: pointer;
+    }
+    li:hover {
+      .item-bg {
+        box-shadow: 5px 8px 25px 2px rgba(0, 0, 0, .7);
+        transform: translate3d(1px, -8px, 0);
+      }
+    }
+    .item-bg {
+      position: relative;
+      width: @liWidth;
+      height: @liWidth;
+      border-radius: 50%;
+      background-image: repeating-linear-gradient(-45deg, #111113 0, #111113 10px, #1e1e20 10px, #1e1e20 12px);
+      box-shadow: 2px 2px 10px 1px rgba(0, 0, 0, .7);
+      transition: all .35s;
+    }
+    .item-perviewer {
+      position: absolute;
+      width: @liWidth - 0.2;
+      height:  @liWidth - 0.2;
+      top: 0.1rem;
+      left: 0.1rem;
+      border-radius: 50%;
+      background-color: #eee;
+      box-shadow: 0 0 6px 1px rgba(0,0,0,.85) inset;
+    }
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+    }
+    p {
+      padding-top: .22rem;
+      font-family: 'Comic Sans MS';
+      font-size: .2rem;
+      text-align: center;
+      letter-spacing: 1px;
+      text-shadow: 0 0 1px rgba(0,0,0,.3);
+    }
   }
-  .category-tool {
-    background: yellow;
-  }
-  .category-book {
-    background: red;
-  }
-  .category-game {
-    background: #fff;
-  }*/
+}
+.category-tab-wrapper {
+  padding-top: 1.1rem;
+  padding-bottom: .5rem;
 }
 .category-tab {
   position: relative;
   width: 300px;
   height: 40px;
-  margin-top: .2rem;
-  margin-bottom: .5rem;
   float: right;
   line-height: 40px;
   border-radius: 20px;
@@ -155,8 +234,38 @@ export default {
   }
   .category-tab {
     float: none;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 1.3rem auto 1.2rem;
+  }
+  .hotObject-container {
+    width: 100%;
+  }
+  .category-wrapper {
+    .list {
+      @liWidth:  2.72rem;
+      li {
+        width: @liWidth;
+        margin-right: .18rem;
+        &:nth-child(4) {
+          margin-right: 0rem;
+        }
+        &:nth-child(4) ~ li{
+          margin-top: .8rem;
+        }
+      }
+      .item-bg {
+        width: @liWidth;
+        height: @liWidth;
+        background-image: repeating-linear-gradient(-45deg, #111113 0, #111113 10px, #1e1e20 10px, #1e1e20 12px);
+        box-shadow: 2px 2px 10px 1px rgba(0, 0, 0, .7);
+        transition: all .35s;
+      }
+      .item-perviewer {
+        width: @liWidth - 0.38;
+        height:  @liWidth - 0.38;
+        top: 0.19rem;
+        left: 0.19rem;
+      }
+    }
   }
 }
 </style>
