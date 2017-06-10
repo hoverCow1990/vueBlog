@@ -1,9 +1,7 @@
 <template>
   <section class='homePage-newCollection'>
     <div class="newCollection-container container">
-      <div class="title-icon">
-
-      </div>
+      <div class="title-icon"></div>
       <cow-titlebar title='New Artical' info='老牛最新发布的文章' theme='light'></cow-titlebar>
       <ul class='newCollection-list'>
         <li v-for='item of articleList'>
@@ -55,14 +53,11 @@ export default {
         title: 'es6.Promise作弊小游戏'
       }]
     }
-  },
-  methods: {
-
   }
 }
 </script>
 
-<style lang='less'>
+<style lang='less' scoped>
 @import '../../../assets/css/regular.less';
 @listWidth: 2.2rem;
 @listHeight: @listWidth * @perviewerProps;

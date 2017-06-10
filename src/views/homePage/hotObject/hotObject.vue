@@ -17,13 +17,40 @@
           </ul>
         </div>
         <div class="category-tool category">
-
+          <ul class='tool-list list'>
+            <li v-for='item of toolList'>
+              <div class="item-bg">
+                  <div class="item-perviewer" :style='item.bgColor'>
+                    <img :src="item.logo">
+                  </div>
+              </div>
+              <p>{{ item.label }}</p>
+            </li>
+          </ul>
         </div>
         <div class="category-book category">
-
+          <ul class='book-list list'>
+            <li v-for='item of bookList'>
+              <div class="item-bg">
+                  <div class="item-perviewer" :style='item.bgColor'>
+                    <img :src="item.logo">
+                  </div>
+              </div>
+              <p>{{ item.label }}</p>
+            </li>
+          </ul>
         </div>
-        <div class="category-game category">
-
+        <div class="category-other category">
+          <ul class='other-list list'>
+            <li v-for='item of otherList'>
+              <div class="item-bg">
+                  <div class="item-perviewer" :style='item.bgColor'>
+                    <img :src="item.logo">
+                  </div>
+              </div>
+              <p>{{ item.label }}</p>
+            </li>
+          </ul>
         </div>
       </div>
       <div class="category-tab-wrapper">
@@ -32,7 +59,7 @@
             <li @click='handlerChangeIndex(0)'>框架</li>
             <li @click='handlerChangeIndex(1)'>工具</li>
             <li @click='handlerChangeIndex(2)'>书架</li>
-            <li @click='handlerChangeIndex(3)'>游戏</li>
+            <li @click='handlerChangeIndex(3)'>其他</li>
           </ul>
           <div class="tab-piston" :style='getTabTransform'></div>
         </div>
@@ -42,42 +69,15 @@
 </template>
 
 <script>
+import listData from './listData'
 
 export default {
   data () {
     return {
-      showIndex: 0,
-      frameList: [{
-        label: 'Vue',
-        logo: require('./images/vue.png'),
-        bgColor: {backgroundImage: '-webkit-gradient(linear, 0% 90%, 100% 0%, from(#cecece), to(#ffffff))'}
-      }, {
-        label: 'React',
-        logo: require('./images/react.png'),
-        bgColor: {backgroundImage: '-webkit-gradient(linear, 0% 90%, 100% 0%, from(#000000), to(#383838)'}
-      }, {
-        label: 'Angular',
-        logo: require('./images/angular.png'),
-        bgColor: {backgroundImage: '-webkit-gradient(linear, 0% 90%, 100% 0%, from(#cecece), to(#ffffff))'}
-      }, {
-        label: 'JQuery',
-        logo: require('./images/jquery.png'),
-        bgColor: {backgroundImage: '-webkit-gradient(linear, 0% 90%, 100% 0%, from(#073286), to(#427be2))'}
-      }, {
-        label: 'Backbone',
-        logo: require('./images/backbone.png'),
-        bgColor: {backgroundImage: '-webkit-gradient(linear, 0% 90%, 100% 0%, from(#a76208), to(#ffd86a))'}
-      }, {
-        label: 'Bootstrip',
-        logo: require('./images/bootstrap.png'),
-        bgColor: {backgroundImage: '-webkit-gradient(linear, 0% 90%, 100% 0%, from(#29133e), to(#492248))'}
-      }, {
-        label: 'Express',
-        logo: require('./images/express.png'),
-        bgColor: {backgroundImage: '-webkit-gradient(linear, 0% 90%, 100% 0%, from(#500000), to(#ec2727))'}
-      }]
+      showIndex: 0
     }
   },
+  mixins: [listData],
   computed: {
     // 获取活塞坐标
     getTabTransform () {
@@ -103,7 +103,7 @@ export default {
 }
 </script>
 
-<style lang='less'>
+<style lang='less' scoped>
 .homePage-hotObject {
   background-image: url('../banner/images/sendBg.png');
 }
@@ -178,7 +178,7 @@ export default {
     }
     p {
       padding-top: .22rem;
-      font-family: 'Comic Sans MS';
+      font-family: 'Comic Sans MS', 'Microsoft YaHei';
       font-size: .2rem;
       text-align: center;
       letter-spacing: 1px;

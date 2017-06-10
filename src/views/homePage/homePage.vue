@@ -3,6 +3,8 @@
     <Banner></Banner>
     <HotObject></HotObject>
     <NewCollection></NewCollection>
+    <Project></Project>
+    <Recommend></Recommend>
     <div style='height:500px'>
 
     </div>
@@ -13,22 +15,17 @@
 import Banner from './banner/banner'
 import NewCollection from './newCollection/newCollection'
 import HotObject from './hotObject/hotObject'
+import Project from './project/project'
+import Recommend from './recommend/recommend'
 
 export default {
   name: 'homePage',
-  data () {
-    return {
-      msg: 'Welcome to Your Vue.js App'
-    }
-  },
   components: {
     Banner,
     NewCollection,
-    HotObject
+    HotObject,
+    Project,
+    Recommend
   }
 }
 </script>
-
-<style>
-
-</style>

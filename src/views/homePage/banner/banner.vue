@@ -74,7 +74,7 @@ export default {
 }
 </script>
 
-<style lang='less'>
+<style lang='less'  scoped>
 .homePage-banner {
   position: relative;
   width: 100%;
