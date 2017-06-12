@@ -5,9 +5,6 @@
     <NewCollection></NewCollection>
     <Project></Project>
     <Recommend></Recommend>
-    <div style='height:500px'>
-
-    </div>
   </section>
 </template>
 

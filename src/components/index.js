@@ -1,6 +1,11 @@
-import header from './header/header'
-import titleBar from './titleBar/titleBar'
+import Header from './header/header'
+import TitleBar from './titleBar/titleBar'
+import Footer from './footer/footer'
+import LoginBox from './loginBox/loginBox'
+
 export default {
-  header,
-  titleBar
+  Header,
+  Footer,
+  TitleBar,
+  LoginBox
 }

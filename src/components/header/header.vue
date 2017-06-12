@@ -18,8 +18,8 @@
               <span>欢迎您, [ {{ user.name }} ]</span>
             </div>
             <div class="noLogin" v-else>
-              <span>注册</span>
-              <span>登录</span>
+              <span @click='showLoginBox("login")'>登录</span>
+              <span @click='showLoginBox("register")'>注册</span>
             </div>
           </div>
         </div>
@@ -45,6 +45,7 @@
         <button><span><i class="iconfont icon-github"></i></span></button>
       </div>
     </div>
+    <cow-login-box :isShow='isLoginBoxShow' :loginType='loginType' @hiddenLoginBox='hiddenLoginBox' @changeLoginType='changeLoginType'></cow-login-box>
   </div>
 </template>
 
@@ -54,9 +55,27 @@ export default {
   data () {
     return {
       isLogin: false,
+      isLoginBoxShow: false,
+      loginType: '',
       user: {
         name: '老实的牛'
       }
+    }
+  },
+  methods: {
+    // 显示登录盒子
+    showLoginBox (type) {
+      this.$data.loginType = type
+      this.$data.isLoginBoxShow = true
+    },
+    // 隐藏登录
+    hiddenLoginBox () {
+      this.$data.isLoginBoxShow = false
+    },
+    // 切换login的tab
+    changeLoginType (type) {
+      console.log(type)
+      this.$data.loginType = type
     }
   }
 }

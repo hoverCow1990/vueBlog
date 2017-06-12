@@ -66,8 +66,9 @@ export default {
 @media screen and (max-width: 435px) {
   .homePage-titleBar {
     h2 {
-      padding-bottom: 5px;
-      margin-bottom: 5px;
+      padding-bottom: 10px;
+      margin-bottom: 10px;
+      font-size: .8rem;
     }
   }
 }

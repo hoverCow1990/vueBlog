@@ -119,7 +119,7 @@ export default {
   p {
     width: 100%;
     font-size: 12px;
-    .textOverFlow();
+    .textOverFlow;
     &.title{
       padding-top: .13rem;
       padding-bottom: .05rem;

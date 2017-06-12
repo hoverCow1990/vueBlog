@@ -2,6 +2,7 @@
   <section class='homePage-recommend'>
     <div class="recommend-container container">
       <!-- <div class="recommend-topBar"></div> -->
+      <!-- <cow-titlebar title='About Me' info='关于老牛' theme='dark'></cow-titlebar> -->
       <ul class="recommend-menu">
         <li class="menu-category recommend">
           <div class="category-container">
@@ -10,7 +11,7 @@
               <span>more</span>
             </div>
             <div class="category-wrapper">
-              <div class="recommend-game">
+              <div class="category-perviewer">
                 <img src="./images/game.jpg">
               </div>
               <ul class="menu-list">
@@ -25,6 +26,9 @@
               <p>联系老牛</p>
             </div>
             <div class="category-wrapper">
+              <div class="category-perviewer">
+                <img src="./images/resume.jpg">
+              </div>
               <ul class="menu-list">
                 <li v-for="item of connectList" :class='item.className'>
                   <i class="iconfont" :class='item.icon'></i>
@@ -37,10 +41,18 @@
             </div>
           </div>
         </li>
-        <li class="menu-category recommend">
+        <li class="menu-category friend">
           <div class="category-container">
             <div class="title">
               <p>友情连接</p>
+            </div>
+            <div class="category-wrapper">
+              <div class="category-perviewer">
+                <img src="./images/shop.jpg">
+              </div>
+              <ul class="menu-list">
+                <li v-for="item of friendList"><a :href='item.link' target="_blanket"><p>{{ item.title }}</p></a></li>
+              </ul>
             </div>
           </div>
         </li>
@@ -81,7 +93,7 @@ export default {
         icon: 'icon-github',
         className: 'wechat'
       }, {
-        title: '新浪weibo',
+        title: '我の留言板',
         icon: 'icon-github'
       }, {
         title: 'Github',
@@ -89,6 +101,22 @@ export default {
       }, {
         title: '加入Web技术交流群',
         icon: 'icon-github'
+      }],
+      friendList: [{
+        title: '陌陌的个人博客',
+        link: '/'
+      }, {
+        title: '大年的个人博客',
+        link: '/'
+      }, {
+        title: '胡鹏的个人博客',
+        link: '/'
+      }, {
+        title: '芽儿的个人博客',
+        link: '/'
+      }, {
+        title: '慕课网',
+        link: '/'
       }]
     }
   }
@@ -107,6 +135,7 @@ export default {
     }
   }
   .recommend-topBar {
+    display: block;
     width: 100%;
     height: 1.5rem;
     background-image: url(./images/topBar.jpg);
@@ -118,7 +147,7 @@ export default {
   }
   .menu-category {
     flex: 1;
-    height: 400px;
+    height: 410px;
     background-color: #fff;
     @borderColor: #f5f5f5;
     &:first-child {
@@ -159,7 +188,7 @@ export default {
     .category-wrapper {
       padding-top: 25px;
     }
-    .recommend-game {
+    .category-perviewer {
       width: 100%;
       height: .85rem;
       padding-bottom: .2rem;
@@ -183,7 +212,8 @@ export default {
         cursor: pointer;
       }
     }
-    &.recommend {
+    &.recommend,
+    &.friend {
       .menu-list {
         p {
           position: relative;
@@ -263,6 +293,15 @@ export default {
     .recommend-menu {
       display: block;
     }
+    .recommend-topBar {
+      display: none;
+    }
+    .menu-category .title {
+      border-bottom: 1px solid #eee;
+    }
+    .menu-category  .category-wrapper {
+      padding-top: 12px;
+    }
     .menu-category.connect .wechat {
       &:hover {
         .wechat-box {
@@ -277,8 +316,9 @@ export default {
       &:first-child {
         padding-top: .2rem;
       }
-      .recommend-game {
+      .category-perviewer {
         height: auto;
+        padding-bottom: 10px;
       }
     }
   }

@@ -2,6 +2,7 @@
   <section class='homePage-project'>
     <div class="project-container container">
       <cow-titlebar title='Cow Project' info='老牛的实战项目' theme='dark'></cow-titlebar>
+            <!-- <div class="project-logo"></div> -->
       <div class="project-wrapper">
         <ul class="project-list">
           <li class="project-item" v-for='item of projectList'>
@@ -9,7 +10,8 @@
               <img :src="item.perviewer">
               <div class="perviewer-masker"></div>
             </div>
-            <p class="item-info"><span>[{{ item.tag }}]</span> {{ item.name }}</p>
+            <p class="item-title" :class='item.isOnline?"online":""'><span>[{{ item.tag }}]</span> {{ item.title }}</p>
+            <p class='item-info'>运用技能 : {{ item.info }}</p>
           </li>
         </ul>
       </div>
@@ -25,35 +27,51 @@ export default {
       projectList: [{
         perviewer: require('./images/jymPc.jpg'),
         tag: 'Angular',
-        name: '金银猫Pc端'
+        title: '金银猫Pc端',
+        info: 'Angular, Require, Jquery, Bootstrip, Less, Proxy',
+        isOnline: true
       }, {
         perviewer: require('./images/jymMb.jpg'),
         tag: 'Vue',
-        name: '金银猫Mb端'
+        title: '金银猫Mb端',
+        info: 'ES6, Vue, Vue-Router, Vux, Yd-Ui, Axios, Less, Webpack, Github',
+        isOnline: true
       }, {
         perviewer: require('./images/admin.jpg'),
         tag: 'React',
-        name: 'Github管理系统'
+        title: 'Github管理系统',
+        info: 'ES6, React, Redux, React-Router, ReactEchart, Antd, Less',
+        isOnline: false
       }, {
         perviewer: require('./images/outFood.jpg'),
         tag: 'Backbone',
-        name: '老牛外卖APP'
+        title: '老牛外卖APP',
+        info: 'Backbone, Jquery, Juicer, Jquery-weui, Less, Swiper, Gulp, Webpack, 百度地图',
+        isOnline: false
       }, {
         perviewer: require('./images/audio.jpg'),
         tag: 'JQuery',
-        name: 'QQ音乐简易版'
+        title: 'QQ音乐简易版',
+        info: 'Jquery, H5-audio, 面向对象',
+        isOnline: false
       }, {
         perviewer: require('./images/lbtt.jpg'),
         tag: 'Boots',
-        name: '萝卜特甜仿页'
+        title: '萝卜特甜仿页',
+        info: 'Bootstrip, Jquery, Less, 面向对象',
+        isOnline: false
       }, {
         perviewer: require('./images/bilibili.jpg'),
         tag: 'JQuery',
-        name: 'bilibili仿页'
+        title: 'bilibili仿页',
+        info: 'Jquery, 面向对象',
+        isOnline: false
       }, {
         perviewer: require('./images/hotArea.jpg'),
         tag: 'JQuery',
-        name: '模拟热点建站'
+        title: '模拟热点建站',
+        info: 'Jquery, 面向对象',
+        isOnline: false
       }]
     }
   }
@@ -61,8 +79,18 @@ export default {
 </script>
 
 <style lang='less' scoped>
+@import '../../../assets/css/regular.less';
+
 .project-container {
   padding-top: 1rem;
+  .project-logo {
+    width: 72px;
+    height: 72px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: .2rem;
+    background: url(./images/logo.png) no-repeat;
+  }
   .project-title {
     position: relative;
     width: 186px;
@@ -102,12 +130,20 @@ export default {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
-    padding-top: .7rem;
+    padding-top: .6rem;
   }
   .project-item {
     width: 2.95rem;
-    padding-top: .22rem;
+    margin-top: .32rem;
+    background-color: #fff;
     cursor: pointer;
+    border-radius: 3px;
+    border: 1px solid #e7e7e7;
+    transition: all .2s ease-in-out;
+    &:hover {
+      box-shadow: 2px 15px 30px rgba(0, 0, 0, .5);
+      transform: translate3d(0, -6px, 0);
+    }
   }
   .item-perviewer {
     position: relative;
@@ -115,15 +151,7 @@ export default {
     width: 100%;
     height: 2.20rem;
     padding: .06rem;
-    border-radius: 3px;
     overflow: hidden;
-    border: 1px solid #e7e7e7;
-    background-color: #fff;
-    transition: all .2s ease-in-out;
-    &:hover {
-      box-shadow: 2px 10px 30px rgba(0, 0, 0, .5);
-      transform: translate3d(0, -4px, 0);
-    }
     .perviewer-masker {
       position: absolute;
       box-sizing: border-box;
@@ -137,17 +165,45 @@ export default {
       transition: all .4s ease-in-out;
     }
   }
-  .item-info {
-    padding-top: .2rem;
-    padding-bottom: .15rem;
-    padding-left: .06rem;
+  .item-title {
+    position: relative;
+    padding-top: .02rem;
+    padding-bottom: 10px;
+    margin-left: .08rem;
+    margin-right: .08rem;
     font-size: 13px;
     letter-spacing: 1px;
     color: #666;
+    .textOverFlow;
     span {
       font-weight: bolder;
       color: #a50909;
     }
+    &.online:after {
+      position: absolute;
+      width: 58px;
+      height: 20px;
+      right: 2px;
+      top: 0;
+      content: 'online';
+      font-family: 'Comic Sans MS', 'Microsoft YaHei';
+      border-radius: 3px;
+      background-color: #111;
+      text-align: center;
+      color: #fff;
+    }
+  }
+  .item-info {
+    height: 50px;
+    padding-top: 10px;
+    margin-left: .08rem;
+    margin-right: .08rem;
+    margin-bottom: 10px;
+    border-top: 1px solid #e7e7e7;
+    font-size: 12px;
+    color: #999;
+    line-height: 22px;
+    overflow: hidden;
   }
   img {
     width: 100%;
@@ -163,10 +219,17 @@ export default {
     .item-perviewer {
       height: 4.5rem;
       background-color: #fff;
-      border: 1px solid #e7e7e7;
     }
     .homePage-titleBar {
         width: 5rem;
+    }
+    .item-info {
+      display: none;
+    }
+    .item-title {
+      &.online:after {
+        display: none;
+      }
     }
   }
 }
