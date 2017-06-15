@@ -121,7 +121,6 @@ export default {
     display: flex;
   }
   li {
-    @blue: #20a0ff;
     box-sizing: border-box;
     margin-right: 8px;
     border-radius: 2px;
@@ -132,13 +131,13 @@ export default {
     cursor: pointer;
     user-select: none;
     transition: all .1s;
-    &:not(.active):hover, {
-      color: darken(@blue, 10%);
+    &:not(.active):hover {
+      color: darken(@primary, 10%);
     }
     &.active {
       color: #fff;
-      background-color: @blue;
-      border-color: darken(@blue, 2%);
+      background-color: @primary;
+      border-color: darken(@primary, 2%);
     }
     &.main-tab {
       padding: 6px 12px;

@@ -39,9 +39,9 @@ export default {
   margin-bottom: 20px;
   background-color: #fff;
   border-radius: 6px 6px 0 0;
-  border-top: 1px solid #E0E0E0;
-  border-left: 1px solid #E0E0E0;
-  border-right: 1px solid #E0E0E0;
+  .border(top, #E0E0E0);
+  .border(left, #E0E0E0);
+  .border(right, #E0E0E0);
   &:after {
     position: absolute;
     display: block;

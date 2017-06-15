@@ -79,7 +79,6 @@ export default {
 </script>
 
 <style lang='less' scoped>
-/*@import '../../../assets/css/regular.less';*/
 
 .project-container {
   padding-top: 1rem;
@@ -138,7 +137,7 @@ export default {
     background-color: #fff;
     cursor: pointer;
     border-radius: 3px;
-    border: 1px solid #e7e7e7;
+    .border();
     transition: all .2s ease-in-out;
     &:hover {
       box-shadow: 2px 15px 30px rgba(0, 0, 0, .5);
@@ -199,7 +198,7 @@ export default {
     margin-left: .08rem;
     margin-right: .08rem;
     margin-bottom: 10px;
-    border-top: 1px solid #e7e7e7;
+    .border(top);
     font-size: 12px;
     color: #999;
     line-height: 22px;

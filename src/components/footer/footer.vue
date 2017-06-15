@@ -85,7 +85,7 @@ export default {
   }
   .menu {
     width: 48%;
-    border-right: 1px solid #3a3939;
+    .border(right, #3a3939);
     .menu-title {
       height: 21px;
       p {

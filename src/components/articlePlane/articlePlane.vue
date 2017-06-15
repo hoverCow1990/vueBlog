@@ -61,7 +61,7 @@ export default {
   height: 230px;
   padding: 8px 0 8px 8px;
   background-color: #fff;
-  border: 1px solid #E0E0E0;
+  .border(all, #E0E0E0);
   border-radius: 6px;
   &:not(:first-child){
     margin-top: 10px;
@@ -116,9 +116,9 @@ export default {
     font-size: 12px;
     line-height: 24px;
     text-align: justify;
-    color: #9C9C9C;
-    border-top: 1px solid #e6e6e6;
-    border-bottom: 1px solid #e6e6e6;
+    .border(top);
+    .border(bottom);
+    color: #999;
     .inner-btn {
       position: absolute;
       right: 0;

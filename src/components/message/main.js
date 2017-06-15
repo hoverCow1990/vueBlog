@@ -29,7 +29,6 @@ let Message = option => {
   instance.vm.isShow = true
   instance.dom = instance.vm.$el
   instances.push(instance)
-  console.log(instance.vm.isShow)
   return instance.vm
 }
 

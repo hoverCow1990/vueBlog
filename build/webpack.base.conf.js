@@ -65,7 +65,8 @@ var webpackConfig = {
       },
       {
         test: /\.less/,
-        loader: 'style!css!less'
+        loader: 'style!css!less',
+        include: [resolve('src/css/global.less')]
       }
     ]
   }

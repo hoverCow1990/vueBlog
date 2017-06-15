@@ -1,3 +1,5 @@
+@import './regular.less';
+
 i{
   font-family:"iconfont" !important;
   font-size:16px;
@@ -42,26 +44,25 @@ body {
   -ms-user-select: none;
   cursor: pointer;
   transition: all .2s;
-}
-.cow-btn.primary {
-  background-color: #20a0ff;
-  border: 1px solid #20a0ff;
-  color: #fff;
-}
-.cow-btn.primary:hover {
-  background-color: #1585d8;
-}
-
-.cow-btn.default {
-  border: 1px solid #bfcbd9;
-  color: #1f2d3d;
-}
-.cow-btn.default:hover {
-  border-color: #20a0ff;
-  color: #20a0ff;
-}
-.cow-btn+.cow-btn {
-  margin-left: 16px;
+  &.primary {
+    background-color: @primary;
+    border: 1px solid @primary;
+    color: #fff;
+    &:hover {
+      background-color: darken(@primary, 13%);
+    }
+  }
+  &.default {
+    border: 1px solid #bfcbd9;
+    color: #1f2d3d;
+    &:hover {
+      border-color: #20a0ff;
+      color: #20a0ff;
+    }
+  }
+  &+.cow-btn {
+    margin-left: 16px;
+  }
 }
 
 @media screen and (max-width: 1370px){
