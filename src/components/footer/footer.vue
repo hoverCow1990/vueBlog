@@ -7,7 +7,7 @@
             <div class="menu-title clearfix">
               <p>语言 & 工具</p>
               <div class="logo green">
-                <i class="iconfont icon-github"></i>
+                <i class="iconfont icon-houtaiyuyanguanlinew"></i>
                 <span>Lang</span>
               </div>
             </div>
@@ -21,8 +21,8 @@
             <div class="menu-title clearfix">
               <p>热门关键词</p>
               <div class="logo red">
-                <i class="iconfont icon-github"></i>
-                <span>Lang</span>
+                <i class="iconfont icon-dianpuxiangqingyedejiage"></i>
+                <span>Hots</span>
               </div>
             </div>
             <ul class="menulist">

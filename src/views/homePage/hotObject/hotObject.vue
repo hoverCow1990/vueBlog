@@ -133,7 +133,7 @@ export default {
 .category-wrapper {
   display: flex;
   width: 400%;
-  transition: transform .25s;
+  transition: transform .7s ease-in-out;
   .category {
     flex:1;
   }

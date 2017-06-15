@@ -3,7 +3,7 @@
 html,body,h1,h2,h3,h4,h5,h6,div,dl,dt,dd,ul,ol,li,p,blockquote,pre,hr,figure,table,caption,th,td,form,fieldset,legend,input,button,textarea,menu{margin:0;padding:0;}
 html{
   -webkit-text-size-adjust:100%;/* 100%ne 关闭字体大小自动调整功能 */
-  -webkit-user-select: none;/* 禁止文本被选中 */
+  /*-webkit-user-select: none;/* 禁止文本被选中 */*/
   -webkit-tap-highlight-color: transparent;/* a标签点击蓝色背景 */
 }
 html,body{

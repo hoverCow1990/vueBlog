@@ -16,7 +16,6 @@ import Project from './project/project'
 import Recommend from './recommend/recommend'
 
 export default {
-  name: 'homePage',
   components: {
     Banner,
     NewCollection,

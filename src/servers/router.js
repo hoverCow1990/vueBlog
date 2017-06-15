@@ -8,8 +8,10 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'homePage',
       component: Views.homePageView
+    }, {
+      path: '/articleList/:type',
+      component: Views.articleListView
     }
   ]
 })

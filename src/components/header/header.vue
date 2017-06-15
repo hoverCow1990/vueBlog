@@ -8,7 +8,7 @@
         <div class="topBar-side">
           <div class="topBar-entrence">
             <a href="#"><i class="iconfont icon-qq"></i></a>
-            <a href="#"><i class="iconfont icon-github"></i></a>
+            <a href="https://github.com/hoverCow1990" target='_blanket'><i class="iconfont icon-github"></i></a>
           </div>
           <div class="topBar-login">
             <div class="hasLogin" v-if='isLogin'>
@@ -23,8 +23,8 @@
             </div>
           </div>
         </div>
-        <div class="topBar-more">
-          <i class="iconfont icon-qq"></i>
+        <div class="topBar-more" @click='showMoreBox'>
+          <i class="iconfont icon-gengduo"></i>
         </div>
       </div>
     </div>
@@ -42,14 +42,17 @@
       </div>
       <div class="search">
         <input class="search-form" placeholder="面向对象" type="text">
-        <button><span><i class="iconfont icon-github"></i></span></button>
+        <button><span><i class="iconfont icon-fangdajing"></i></span></button>
       </div>
     </div>
+    <more-box :isShow='isMoreBoxShow' @showLoginBox='showLoginBox'></more-box>
     <cow-login-box :isShow='isLoginBoxShow' :loginType='loginType' @hiddenLoginBox='hiddenLoginBox' @changeLoginType='changeLoginType'></cow-login-box>
   </div>
 </template>
 
 <script>
+import MoreBox from './moreBox/moreBox'
+
 export default {
   name: 'Header',
   data () {
@@ -57,10 +60,14 @@ export default {
       isLogin: false,
       isLoginBoxShow: false,
       loginType: '',
+      isMoreBoxShow: false,
       user: {
         name: '老实的牛'
       }
     }
+  },
+  components: {
+    MoreBox
   },
   methods: {
     // 显示登录盒子
@@ -74,8 +81,11 @@ export default {
     },
     // 切换login的tab
     changeLoginType (type) {
-      console.log(type)
       this.$data.loginType = type
+    },
+    // 显示更多的盒子
+    showMoreBox () {
+      this.$data.isMoreBoxShow = !this.$data.isMoreBoxShow
     }
   }
 }
@@ -280,6 +290,12 @@ export default {
       outline: none;
       color: #333;
     }
+    i {
+      display: block;
+      font-size: .22rem;
+      color: #333;
+      transform: translateY(-1px);
+    }
   }
 }
 
@@ -289,12 +305,17 @@ export default {
   }
 }
 @media screen and (max-width: 435px){
-  .header-topBar .topBar-side {
-    display: none;
-  }
-  .header-topBar .topBar-more {
-    display: block;
-    line-height: 18px;
+  .header-topBar {
+    .topBar-side {
+      display: none;
+    }
+    .topBar-more {
+      display: block;
+      line-height: 18px;
+    }
+    .icon-gengduo {
+      line-height: 34px;
+    }
   }
   .header-menu .menu-container {
     width: 96%;

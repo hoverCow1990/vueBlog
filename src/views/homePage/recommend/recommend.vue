@@ -87,20 +87,20 @@ export default {
       }],
       connectList: [{
         title: '联系老牛的qq',
-        icon: 'icon-qq'
+        icon: 'icon-qq-copy'
       }, {
         title: '微信',
-        icon: 'icon-github',
+        icon: 'icon-weixin1',
         className: 'wechat'
       }, {
         title: '我の留言板',
-        icon: 'icon-github'
+        icon: 'icon-bi'
       }, {
         title: 'Github',
         icon: 'icon-github'
       }, {
         title: '加入Web技术交流群',
-        icon: 'icon-github'
+        icon: 'icon-code1'
       }],
       friendList: [{
         title: '陌陌的个人博客',
@@ -273,7 +273,7 @@ export default {
       }
       i {
         display: inline-block;
-        font-size: 25px;
+        font-size: 23px;
         vertical-align: middle;
         color: #404040;
       }
