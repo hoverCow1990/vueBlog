@@ -101,7 +101,7 @@ export default {
     },
     // 切换tabIndex
     handlerTabIndex (index) {
-      let {allTabLength, nowIndex, nowIndex} = this.$data
+      let {allTabLength, nowIndex} = this.$data
       if (typeof index === 'string') {
         index = index === 'pre' ? nowIndex - 1 : nowIndex + 1
       } else {

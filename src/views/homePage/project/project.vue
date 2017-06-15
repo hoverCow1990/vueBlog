@@ -79,7 +79,7 @@ export default {
 </script>
 
 <style lang='less' scoped>
-@import '../../../assets/css/regular.less';
+/*@import '../../../assets/css/regular.less';*/
 
 .project-container {
   padding-top: 1rem;

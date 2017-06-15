@@ -1,6 +1,6 @@
 <template>
   <section class='homePage-hotObject'>
-    <div class="hotObject-face" :style='faceUrl'></div>
+    <div class="hotObject-face"></div>
     <div class="hotObject-title">What u want what u find</div>
     <div class="hotObject-container container">
       <div class="category-wrapper" :style='getWrapperTransform'>
@@ -74,10 +74,7 @@ import listData from './listData'
 export default {
   data () {
     return {
-      showIndex: 0,
-      faceUrl: {
-        backgroundImage: 'url(' + require('./images/logo.png') + ')'
-      }
+      showIndex: 0
     }
   },
   mixins: [listData],
@@ -117,6 +114,7 @@ export default {
   min-height: 75px;
   margin-left: auto;
   margin-right: auto;
+  background-image: url('./images/logo.png');
   background-size: 100% 100%;
 }
 .hotObject-title {

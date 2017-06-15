@@ -58,12 +58,10 @@ export default {
 </script>
 
 <style lang='less' scoped>
-@import '../../../assets/css/regular.less';
 @listWidth: 2.2rem;
 @listHeight: @listWidth * @perviewerProps;
 
 .homePage-newCollection {
-  /*background-color: #191919;*/
   background-image: repeating-linear-gradient(-45deg, #111113 0, #111113 10px, #151515 10px, #151515 12px);
   .homePage-titleBar {
     min-width: 180px;
