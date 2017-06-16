@@ -6,8 +6,10 @@
         <span>{{ title }}</span>
       </div>
       <ul class='sideNav-list'>
-        <li v-for='item of navList'>
-          <router-link :to='item.href'>{{ item.tag }}</router-link>
+        <li v-for='(item, index) of navList'>
+          <router-link :to='item.href'>
+            <p><span class='flag' :class='index < 3 ? "hot" : ""'>{{ index + 1}}</span><span class='text'>{{ item.tag }}</span></p>
+          </router-link>
         </li>
       </ul>
     </div>
@@ -85,14 +87,35 @@ export default {
       transition: .3s ease-in-out;
       cursor: pointer;
       &:hover {
-        text-indent: 4px;
         background-color: #EAEAEA;
+        .text {
+          transform: translate3d(4px, 0, 0);
+        }
       }
     }
     a {
       display: block;
       width: 100%;
       color: #999;
+    }
+    .text {
+      display: inline-block;
+      transition: .3s ease-in-out;
+    }
+    .flag {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      margin-right: .1rem;
+      border-radius: 3px;
+      background-color: #A2A2A2;
+      text-indent: 0;
+      line-height: 20px;
+      text-align: center;
+      color: #eee;
+      &.hot {
+        background-color: darken(@primary, 2%);
+      }
     }
   }
 }

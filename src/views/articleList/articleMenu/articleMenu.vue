@@ -17,7 +17,7 @@ export default {
         title: '联和利华天猫首页3稿',
         des: '联和利华天猫首页的3稿,不过最后又应...',
         time: '2016-11-15 02:32:00',
-        href: '/',
+        href: '/article/123',
         watch: 12,
         message: 2
       }, {
@@ -69,7 +69,7 @@ export default {
 
 <style lang='less'>
 .articleList-articleMenu {
-  width: 9.42rem;
+  width: 8rem;
   float: left;
 }
 

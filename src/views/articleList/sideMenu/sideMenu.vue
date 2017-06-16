@@ -1,7 +1,7 @@
 <template>
   <div class="articleList-sideMenu">
     <cow-side-nav title='热门排行' :navList='navList1'></cow-side-nav>
-    <cow-side-nav title='热门排行' :navList='navList1'></cow-side-nav>
+    <cow-side-nav title='最新留言' :navList='navList1'></cow-side-nav>
   </div>
 </template>
 
@@ -31,7 +31,7 @@ export default {
 
 <style lang='less'>
 .articleList-sideMenu {
-  width: 2.4rem;
+  width: 3.2rem;
   height: 760px;
   float: right;
 }

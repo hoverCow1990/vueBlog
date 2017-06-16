@@ -88,25 +88,25 @@ export default {
   }
   .item-inner {
     flex: 1;
-    padding-left: .2rem;
-    padding-right: .2rem;
+    padding-left: .15rem;
+    padding-right: .15rem;
   }
   .inner-hd {
     padding-top: .1rem;
-    padding-bottom: 8px;
+    padding-bottom: 9px;
     letter-spacing: 2px;
     font-size: 12px;
-        color: #5D5D5D;
+    color: #5D5D5D;
     font-weight: bold;
     .tag {
       padding-left: 5px;
       padding-right: 5px;
       font-size: 12px;
-      color: #795548;
+      color: #9a9a9a;
     }
     .name {
-      font-size: 15px;
-      color: #5D5D5D;
+      font-size: 14px;
+      color: #795548;
     }
   }
   .inner-bd {

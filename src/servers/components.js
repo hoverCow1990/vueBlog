@@ -1,11 +1,14 @@
-import Vue from 'vue'
 import Components from '@/components'
+import Message from '@/components/message/main'
 
-export default {
-  install () {
+const components = {
+  install (Vue) {
     for (let key in Components) {
       console.log(`cow${Components[key].name}`)
       Vue.component(`cow${Components[key].name}`, Components[key])
     }
+    Vue.prototype.$message = Message
   }
 }
+
+export default components

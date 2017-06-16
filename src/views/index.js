@@ -1,6 +1,9 @@
-import homePageView from './homePage/homePage'
-import articleListView from './articleList/articleList'
+import HomePageView from './homePage/homePage'
+import ArticleListView from './articleList/articleList'
+import Article from './article/article'
+
 export default {
-  homePageView,
-  articleListView
+  HomePageView,
+  ArticleListView,
+  Article
 }
