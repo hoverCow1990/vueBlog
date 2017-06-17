@@ -32,7 +32,7 @@
       <div class="menu-container">
         <div class="menu-lt menu">
           <router-link to='/articleList/html'>html/css</router-link>
-          <router-link to='/articleList/js'>Javascript</router-link>
+          <router-link to='/articleList/Javascript_React'>Javascript</router-link>
         </div>
         <div class="menu-rt menu">
           <router-link to='/articleList/node'>Node/Java</router-link>
@@ -317,25 +317,21 @@ export default {
       line-height: 34px;
     }
   }
+  .header-menu .menu-logo {
+    display: none;
+  }
   .header-menu .menu-container {
     width: 96%;
   }
   .header-menu .menu {
-    width: 46%;
+    width: 50%;
+    text-align: center;
   }
   .header-menu a {
     line-height: 32px;
   }
   .search {
     display: none;
-  }
-}
-@media screen and (max-width: 320px){
-  .header-menu .menu-logo {
-    display: none;
-  }
-  .header-menu a {
-    width: 50%;
   }
 }
 </style>

@@ -4,7 +4,6 @@ const tokenName = 'CowAuth'
 
 const cookies = {
   install (Vue, options) {
-    console.log(options)
     const cookiesObj = {
       // 获取cookie
       get (cookieName = tokenName) {
@@ -15,18 +14,15 @@ const cookies = {
         return USI || {}
       },
       // data: 数据, isCover: 是否覆盖之前的
-      set (data, isCover) {
-        Cookies.set(tokenName, isCover ? JSON.stringify({
-          token: data.token
-        }) : Object.assign(this.get(), data))
+      set (data, name = tokenName, isCover = false) {
+        Cookies.set(name, isCover ? JSON.stringify(data) : Object.assign(this.get(), data))
       },
       //
-      remove (isJump) {
-        Cookies.remove(tokenName)
-        // if (isJump) Vue.prototype.$Navigation.setPath('/', true)
+      remove (name = tokenName) {
+        Cookies.remove(name)
       }
     }
-    Vue.prototype.cookies = cookiesObj
+    Vue.prototype.$cookies = cookiesObj
   }
 }
 

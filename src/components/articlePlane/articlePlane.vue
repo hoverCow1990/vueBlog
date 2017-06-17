@@ -2,17 +2,17 @@
   <ul class='articlePlane-list'>
     <li class="articlePlane-item" v-for='item of list'>
       <div class="item-perviewer">
-        <router-link :to='item.href'>
+        <router-link :to='getLink(item.id)'>
           <img :src="item.perviewer">
         </router-link>
       </div>
       <div class="item-inner">
         <div class="inner-hd">
-          [<span class="tag">{{item.mainTag}}</span>] <span class="name">{{ item.title }}</span>
+          [<span class="tag">{{ item.mainTag }}</span>] <span class="name">{{ item.title }}</span>
         </div>
         <div class="inner-bd">
           {{ item.des }}
-          <router-link :to='item.href'>
+          <router-link :to='getLink(item.id)'>
             <div class="cow-btn primary inner-btn">
               点击阅读
             </div>
@@ -45,6 +45,11 @@ export default {
   },
   props: {
     list: Array
+  },
+  methods: {
+    getLink (id) {
+      return '/article/' + this.$route.params.type + '/' + id
+    }
   }
 }
 </script>
