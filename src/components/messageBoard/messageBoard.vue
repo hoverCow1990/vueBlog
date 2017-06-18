@@ -45,66 +45,24 @@
           <i class="iconfont icon-ku"></i>小可爱, 来帮牛哥留两条吧...
         </p>
         <ul v-if="true">
-          <li class='message-item'>
+          <li class='message-item' v-for="item of msgList">
             <div class="item-user">
               <div class="user-feature">
-                <img src="./images/user.jpg">
+                <img :src="item.feature">
               </div>
               <div class="user-info">
-                <p class='name'>老实的牛</p>
-                <p>积分 : 218</p>
-                <p>等级：<span>Lv2</span> 牛哥的小助手</p>
+                <p class='name'>{{ item.name }}</p>
+                <p>积分 : {{ item.score }}</p>
+                <p>等级：<span>LV{{ item.lv }}</span>{{ item.alias }}</p>
               </div>
             </div>
             <div class="item-context">
               <div class="context-hd">
-                <p class='time'><i class="iconfont icon-shijian2"></i>2017-06-18</p>
-                <p class="rate">评分：<i class="iconfont icon-star"></i><i class="iconfont icon-star"></i><i class="iconfont icon-star"></i><i class="iconfont icon-star"></i><i class="iconfont icon-star"></i></p>
+                <p class='time'><i class="iconfont icon-shijian2"></i>{{ item.time | cow-parseTime }}</p>
+                <p class="rate">评分：<i class="iconfont icon-star" v-for='i of new Array(item.rate)'></i></p>
               </div>
               <div class="context-bd">
-                  屁股牛 主页不错  我要抄袭 嘻嘻嘻嘻屁股牛 主页不错  我要抄袭 嘻嘻嘻嘻屁股牛 主页不错  我要抄袭 嘻嘻嘻嘻屁股牛 主页不错  我要抄袭 嘻嘻嘻嘻
-              </div>
-            </div>
-          </li>
-          <li class='message-item'>
-            <div class="item-user">
-              <div class="user-feature">
-                <img src="./images/user.jpg">
-              </div>
-              <div class="user-info">
-                <p class='name'>老实的牛</p>
-                <p>积分 : 218</p>
-                <p>等级：<span>Lv2</span> 牛哥的小助手</p>
-              </div>
-            </div>
-            <div class="item-context">
-              <div class="context-hd">
-                <p class='time'><i class="iconfont icon-shijian2"></i>2017-06-18</p>
-                <p class="rate">评分：<i class="iconfont icon-star"></i><i class="iconfont icon-star"></i><i class="iconfont icon-star"></i><i class="iconfont icon-star"></i><i class="iconfont icon-star"></i></p>
-              </div>
-              <div class="context-bd">
-                  屁股牛 主页不错  我要抄袭 嘻嘻嘻嘻屁股牛 主页不错  我要抄袭 嘻嘻嘻嘻屁股牛 主页不错  我要抄袭 嘻嘻嘻嘻屁股牛 主页不错  我要抄袭 嘻嘻嘻嘻
-              </div>
-            </div>
-          </li>
-          <li class='message-item'>
-            <div class="item-user">
-              <div class="user-feature">
-                <img src="./images/user.jpg">
-              </div>
-              <div class="user-info">
-                <p class='name'>老实的牛</p>
-                <p>积分 : 218</p>
-                <p>等级：<span>Lv2</span> 牛哥的小助手</p>
-              </div>
-            </div>
-            <div class="item-context">
-              <div class="context-hd">
-                <p class='time'><i class="iconfont icon-shijian2"></i>2017-06-18</p>
-                <p class="rate">评分：<i class="iconfont icon-star"></i><i class="iconfont icon-star"></i><i class="iconfont icon-star"></i><i class="iconfont icon-star"></i><i class="iconfont icon-star"></i></p>
-              </div>
-              <div class="context-bd">
-                  屁股牛 主页不错  我要抄袭 嘻嘻嘻嘻屁股牛 主页不错  我要抄袭 嘻嘻嘻嘻屁股牛 主页不错  我要抄袭 嘻嘻嘻嘻屁股牛 主页不错  我要抄袭 嘻嘻嘻嘻
+                {{ item.context }}
               </div>
             </div>
           </li>
@@ -413,10 +371,8 @@ export default {
       }
     }
     .item-user {
-      @maxWidth: 180px;
-      max-width: @maxWidth;
+      width: 180px;
       p {
-        max-width: @maxWidth;
         height: 22px;
         padding-left: 2px;
         line-height: 22px;
@@ -431,6 +387,7 @@ export default {
       span {
         padding-left: 10px;
         padding-right: 10px;
+        margin-right: 5px;
         border-radius: 2px;
         background-color: @navy;
         color: #eee;
@@ -449,7 +406,6 @@ export default {
     }
     .item-context {
       flex: 1;
-      padding-left: .3rem;
       color: #555;
       .context-hd{
         display: flex;
@@ -523,11 +479,6 @@ export default {
         padding-left: 0;
         .context-hd {
           justify-content: flex-start;
-          .rate {
-            i {
-              color: @red;
-            }
-          }
         }
         .context-bd {
             padding-top: 10px;

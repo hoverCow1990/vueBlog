@@ -97,7 +97,7 @@ export default {
       color: #ccc;
       transition: .2s;
       &.active {
-        color: @red;
+        color: darken(@yellow, 8%);
       }
     }
   }
@@ -107,8 +107,8 @@ export default {
     float: left;
     font-size: 13px;
     line-height: 20px;
-    letter-spacing: 1px;
-    color: @red;
+    letter-spacing: 2px;
+    color: #555;
     font-weight: 600;
   }
 }

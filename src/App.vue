@@ -11,3 +11,10 @@ export default {
   name: 'app'
 }
 </script>
+
+<style>
+#app {
+  max-width: 100%;
+  overflow-x:hidden;
+}
+</style>
