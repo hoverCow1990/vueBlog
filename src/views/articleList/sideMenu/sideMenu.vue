@@ -10,16 +10,25 @@ export default {
   data () {
     return {
       navList1: [{
-        tag: 'Css3',
+        tag: '[node-04]Express构架web相册',
         href: '/'
       }, {
-        tag: 'Html5',
+        tag: '阿里云ecs服务器node环境安装',
         href: '/'
       }, {
-        tag: 'Canvas && Svg',
+        tag: '[node-03]Jade模板的运用',
         href: '/'
       }, {
-        tag: 'Less && Sass',
+        tag: 'Backbone构架老牛外卖',
+        href: '/'
+      }, {
+        tag: '百度地图二次封装',
+        href: '/'
+      }, {
+        tag: 'Ajax以及跨域访问',
+        href: '/'
+      }, {
+        tag: 'WebPack进阶[开发与生产模式]',
         href: '/'
       }]
     }

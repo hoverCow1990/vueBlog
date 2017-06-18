@@ -69,7 +69,7 @@ export default {
 
 <style lang='less'>
 .articleList-articleMenu {
-  width: 8.1rem;
+  width: 8.6rem;
   float: left;
 }
 

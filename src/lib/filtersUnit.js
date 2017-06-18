@@ -19,6 +19,11 @@ const filtersUnit = {
           return $1 + '-' + transToZeroTime($2) + '-' + transToZeroTime($3)
         })
     }
+  },
+  // 前位补零
+  buildZero (str, num = 3) {
+    str = typeof str === String ? str : '' + str
+    return str.padStart(num, '0')
   }
 }
 

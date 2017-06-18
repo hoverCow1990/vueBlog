@@ -8,7 +8,7 @@
       <ul class='sideNav-list'>
         <li v-for='(item, index) of navList'>
           <router-link :to='item.href'>
-            <p><span class='flag' :class='index < 3 ? "hot" : ""'>{{ index + 1}}</span><span class='text'>{{ item.tag }}</span></p>
+            <p><span class='flag' :class='index < 3 ? "hot hot-" + index: ""'>{{ index + 1}}</span><span class='text'>{{ item.tag }}</span></p>
           </router-link>
         </li>
       </ul>
@@ -113,9 +113,18 @@ export default {
       line-height: 20px;
       text-align: center;
       color: #eee;
-      &.hot {
-        background-color: darken(@primary, 2%);
+      &.hot-0 {
+        background-color: darken(@primary, 25%);/*#ff4348;*/
       }
+      &.hot-1 {
+        background-color: darken(@primary, 15%); /*#ff954d;*/
+      }
+      &.hot-2 {
+        background-color: darken(@primary, 2%); /*#ffd04d;*/
+      }
+      /*&.hot {
+        background-color: darken(@primary, 2%);
+      }*/
     }
   }
 }

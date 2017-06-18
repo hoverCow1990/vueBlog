@@ -6,6 +6,7 @@ import LoginBox from './loginBox/loginBox'
 import ArticlePlane from './articlePlane/articlePlane'
 import SideNav from './sideNav/sideNav'
 import PageTab from './pageTab/pageTab'
+import MessageBoard from './messageBoard/messageBoard'
 
 export default {
   Header,
@@ -15,5 +16,6 @@ export default {
   LoginBox,
   ArticlePlane,
   SideNav,
-  PageTab
+  PageTab,
+  MessageBoard
 }

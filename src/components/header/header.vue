@@ -57,7 +57,7 @@ export default {
   name: 'Header',
   data () {
     return {
-      isLogin: false,
+      isLogin: true,
       isLoginBoxShow: false,
       loginType: '',
       isMoreBoxShow: false,

@@ -1,10 +1,10 @@
 
 @font-face {font-family: "iconfont";
-  src: url('iconfont.eot?t=1497640732888'); /* IE9*/
-  src: url('iconfont.eot?t=1497640732888#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url('iconfont.woff?t=1497640732888') format('woff'), /* chrome, firefox */
-  url('iconfont.ttf?t=1497640732888') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
-  url('iconfont.svg?t=1497640732888#iconfont') format('svg'); /* iOS 4.1- */
+  src: url('iconfont.eot?t=1497674907931'); /* IE9*/
+  src: url('iconfont.eot?t=1497674907931#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('iconfont.woff?t=1497674907931') format('woff'), /* chrome, firefox */
+  url('iconfont.ttf?t=1497674907931') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('iconfont.svg?t=1497674907931#iconfont') format('svg'); /* iOS 4.1- */
 }
 
 .iconfont {
@@ -37,9 +37,13 @@
 
 .icon-qq-copy:before { content: "\e6b1"; }
 
+.icon-dianzan:before { content: "\e676"; }
+
 .icon-dianpuxiangqingyedejiage:before { content: "\e634"; }
 
 .icon-houtaiyuyanguanlinew:before { content: "\e78d"; }
 
 .icon-bi:before { content: "\e60d"; }
+
+.icon-dianzandian:before { content: "\e612"; }
 
