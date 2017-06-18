@@ -70,6 +70,37 @@ input {
   }
 }
 
+.cow-topLine {
+  display: flex;
+  height: 10px;
+  li {
+    height: 100%;
+  }
+  li:nth-child(1) {
+    width: 56%;
+    background-color: @navy;
+  }
+  li:nth-child(2) {
+    width: 21%;
+    background-color: @yellow;
+  }
+  li:nth-child(3) {
+    width: 16%;
+    background-color: @red;
+  }
+  li:nth-child(4) {
+    flex-grow: 1;
+    background-color: @violet;
+  }
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .2s
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+  opacity: 0
+}
+
 @media screen and (max-width: 1370px){
   html {
       font-size: 570%;

@@ -46,7 +46,7 @@
       </div>
     </div>
     <more-box :isShow='isMoreBoxShow' @showLoginBox='showLoginBox'></more-box>
-    <cow-login-box :isShow='isLoginBoxShow' :loginType='loginType' @hiddenLoginBox='hiddenLoginBox' @changeLoginType='changeLoginType'></cow-login-box>
+    <cow-login-box :isShow='isLoginBoxShow' :initloginType='initloginType' @hiddenLoginBox='hiddenLoginBox'></cow-login-box>
   </div>
 </template>
 
@@ -57,9 +57,9 @@ export default {
   name: 'Header',
   data () {
     return {
-      isLogin: true,
+      isLogin: false,
       isLoginBoxShow: false,
-      loginType: '',
+      initloginType: '',
       isMoreBoxShow: false,
       user: {
         name: '老实的牛'
@@ -78,10 +78,6 @@ export default {
     // 隐藏登录
     hiddenLoginBox () {
       this.$data.isLoginBoxShow = false
-    },
-    // 切换login的tab
-    changeLoginType (type) {
-      this.$data.loginType = type
     },
     // 显示更多的盒子
     showMoreBox () {

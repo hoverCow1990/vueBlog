@@ -76,13 +76,13 @@ export default {
       required: true
     },
     // 初始化的类型
-    loginType: {
-      type: String,
-      default: 'login'
+    initloginType: {
+      type: String
     }
   },
   data () {
     return {
+      loginType: 'login',
       isBoxActive: false,
       isWrapperActive: false,
       acceptsType: ['image/jpeg,image/jpg,image/png,image/gif'],
@@ -122,6 +122,9 @@ export default {
         this.showLogin()
       }
     }
+  },
+  created () {
+    if (this.initloginType) this.loginType = this.initloginType
   },
   methods: {
     // 显示所有
@@ -201,7 +204,7 @@ export default {
     // 跳转类型
     changeType (type) {
       if (type === this.$data.loginType) return
-      this.$emit('changeLoginType', type)
+      this.loginType = type
     },
     // 立即登录
     handlerSubmit () {

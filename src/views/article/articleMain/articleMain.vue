@@ -1,6 +1,6 @@
 <template>
   <div class="article-main">
-    <ul class="article-topLine">
+    <ul class="cow-topLine">
       <li></li><li></li><li></li><li></li>
     </ul>
     <div class="article-topBar">
@@ -164,29 +164,6 @@ export default {
   padding-bottom: .5rem;
   background-color: #fff;
   box-shadow: 0 0 15px rgba(0, 0, 0, .2);
-}
-.article-topLine {
-  display: flex;
-  height: 10px;
-  li {
-    height: 100%;
-  }
-  li:nth-child(1) {
-    width: 56%;
-    background-color: #2c3e50;
-  }
-  li:nth-child(2) {
-    width: 21%;
-    background-color: #f1e05a;
-  }
-  li:nth-child(3) {
-    width: 16%;
-    background-color: #e34c26;
-  }
-  li:nth-child(4) {
-    flex-grow: 1;
-    background-color: #563d7c;
-  }
 }
 .article-topBar {
   padding: 10px .15rem;
@@ -468,7 +445,7 @@ export default {
       color: #666;
       span {
         float: right;
-        color: @primary;
+        color: #e34c26;
         font-family: 'Comic Sans MS', 'Microsoft YaHei';
         font-weight: bold;
       }

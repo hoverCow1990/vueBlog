@@ -7,6 +7,7 @@ import ArticlePlane from './articlePlane/articlePlane'
 import SideNav from './sideNav/sideNav'
 import PageTab from './pageTab/pageTab'
 import MessageBoard from './messageBoard/messageBoard'
+import Rate from './rate/rate'
 
 export default {
   Header,
@@ -17,5 +18,6 @@ export default {
   ArticlePlane,
   SideNav,
   PageTab,
-  MessageBoard
+  MessageBoard,
+  Rate
 }

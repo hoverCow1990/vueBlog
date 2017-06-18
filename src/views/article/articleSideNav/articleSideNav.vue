@@ -1,10 +1,10 @@
 <template>
-  <div class="article-sideNav" v-if='$constent.isPc' :style='sideNavStyle'>
+  <div class="article-sideNav" v-if='$constent.isPc' :style='sideNavStyle' :class='isShrink?"shrink":""'>
     <div class="sideNav-topLine"></div>
     <div class="sideNav-context">
       <div class="sideNav-box" v-for='(list, listIndex) of sideNavAttr'>
         <div class="box-title" @click='handlerScrollTop(list.top)'>
-          {{ list.title }}
+          <i class="iconfont icon-gengduo"></i>{{ list.title }}
         </div>
         <ul class="box-para clearFix">
           <li v-for='(item, itemIndex) of list.childrens' @click='handlerScrollTop(item.top)' :class='nowLightIndex===listIndex+""+itemIndex?"active":""'> {{ item.title }}</li>
@@ -23,7 +23,8 @@ export default {
       scrollNeedTime: 300, // 点击li后花费.3s秒滚动至目标高度
       scrollTimer: null,  // 储存计时器
       nowLightIndex: '',  // 目前高亮的Index 由 perIndex + '' +selfIndex 获取
-      sideNavStyle: {}  // 获取sideNav的left值
+      sideNavStyle: {},  // 获取sideNav的left值
+      isShrink: false // 最底部时进行收缩
     }
   },
   props: {
@@ -110,8 +111,13 @@ export default {
       topLevel = Array.from(topLevel).reverse()
       return () => {
         scrollTop = body.scrollTop
-        if (scrollTop < firstLevel | scrollTop > lastLevel) { // 回到顶部时清除首个高亮
+        if (scrollTop < firstLevel) {   // 回到顶部时清除首个高亮
           this.$data.nowLightIndex = '0'
+          return
+        }
+        if (scrollTop > lastLevel) {
+          this.$data.nowLightIndex = '0'
+          this.$data.isShrink = true
           return
         }
         let lightItem = topLevel.find(item => scrollTop > item.top)
@@ -119,6 +125,7 @@ export default {
         let nowLightIndex = lightItem.perIndex + '' + lightItem.selfIndex
         if (nowLightIndex === this.$data.nowLightIndex) return
         this.$data.nowLightIndex = nowLightIndex
+        this.$data.isShrink = false
       }
     }
   }
@@ -135,24 +142,39 @@ export default {
   background-color: #fff;
   box-shadow: 0 5px 15px rgba(0, 0, 0, .2);
   z-index: 888;
+  transition: all .5s ease-in-out;
+  overflow: hidden;
+  &.shrink {
+    min-height: 190px;
+    max-height: 190px;
+  }
   .sideNav-topLine {
     height: 10px;
-    background-color: #2c3e50;
+    background-color: @navy;
   }
 }
 .sideNav-context {
-  padding: 5px 12px 0;
+  padding-top: 5px
 }
 .sideNav-box {
   font-size: 15px;
   overflow: hidden;
   .box-title {
-    padding-top: 8px;
-    padding-bottom: 8px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-left: 12px;
+    margin-right: 12px;
     font-weight: bolder;
     color: #3c3c3c;
     cursor: pointer;
     .border(bottom);
+    i {
+      display: inline-block;
+      padding-right: 5px;
+      font-size: 13px;
+      color: @red;
+      vertical-align: middle;
+    }
   }
   .box-para {
     padding-top: 6px;
@@ -165,18 +187,19 @@ export default {
     width: 50%;
     height: 26px;
     float: left;
-    padding-right: 5px;
+    padding-right: 12px;
+    padding-left: 12px;
     line-height: 26px;
-    border-radius: 2px;
+    border-radius: 13px;
     text-indent: 2px;
     cursor: pointer;
     .textOverFlow();
-    /*transition: all .1s;*/
+    transition: .1s;
     &:not(.active):hover {
-      color: darken(@primary, 10%);
+      color: darken(@red, 10%);
     }
     &.active {
-      background-color: #0079d3;
+      background-color: @navy;
       color: #eee;
     }
   }
