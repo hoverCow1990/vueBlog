@@ -27,7 +27,7 @@
         <i class="iconfont icon-biaoqing1" @click='showExpressionBox'></i>
         <transition name="fade">
           <ul class="expression-box" v-if='isExpressionBoxShow' @click='handlerExpVal'>
-            <li v-for='(item, index) of new Array(63)' :class='"e-" + index'></li>
+            <li class="cow-exp" v-for='(item, index) of new Array(63)' :class='"e-" + index'></li>
           </ul>
         </transition>
       </div>
@@ -94,6 +94,9 @@ export default {
   },
   created () {
   },
+  mounted () {
+    this.replaceExpression()
+  },
   methods: {
     // 处理msg value值
     handleMsgVal (ev) {
@@ -139,6 +142,18 @@ export default {
       this.$data.message += `[[${val}]]`
       this.$refs.textarea.value += `[[${val}]]`
       this.isExpressionBoxShow = false
+    },
+    // 转换[[..]]为表情
+    replaceExpression () {
+      let _liDom = this.$el.querySelectorAll('.context-bd')
+      Array.from(_liDom).forEach(item => {
+        if (/\[\[.+\]\]/g.test(item.innerHTML)) {
+          item.innerHTML = item.innerHTML.replace(/\[\[(.+?)\]\]/g, ($0, $1) => {
+            let _index = this.$data.expList.findIndex(str => str === $1)
+            return `<span class="cow-exp e-${_index}"></span>`
+          })
+        }
+      })
     },
     // 获取更多评论
     handlerRequestMsg (index) {
@@ -302,15 +317,6 @@ export default {
       }
     }
     .expression-box {
-      .loopLi(@count) when (@count < 64) {
-        @a: @count - floor(@count / 7) * 7;
-        @x: -31px * @a;
-        @y: -30px * floor(@count / 7);
-        &.e-@{count} {
-          background-position: @x @y;
-        }
-        .loopLi((@count + 1));
-      }
       position: absolute;
       width: 218px;
       height: 270px;
@@ -320,15 +326,6 @@ export default {
       background-color: #fff;
       border-radius: 2px;
       .border();
-      li {
-        width: 31px;
-        height: 30px;
-        float: left;
-        background-image: url(./images/exp.png);
-        background-repeat: no-repeat;
-        .loopLi(0);
-        cursor: pointer;
-      }
     }
   }
   .msgBoard-message {
@@ -434,7 +431,7 @@ export default {
       .context-bd{
         padding: .2rem .1rem 0;
         font-size: 13px;
-        line-height: 22px;
+        line-height: 30px;
       }
     }
   }

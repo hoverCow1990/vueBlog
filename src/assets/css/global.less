@@ -101,6 +101,31 @@ input {
   opacity: 0
 }
 
+
+.loopLi(@count) when (@count < 64) {
+  @a: @count - floor(@count / 7) * 7;
+  @x: -31px * @a;
+  @y: -30px * floor(@count / 7);
+  &.e-@{count} {
+    background-position: @x @y;
+  }
+  .loopLi((@count + 1));
+}
+.cow-exp {
+  width: 31px;
+  height: 30px;
+  background-image: url(../images/exp.png);
+  background-repeat: no-repeat;
+  .loopLi(0);
+}
+li.cow-exp {
+  float: left;
+  cursor: pointer;
+}
+span.cow-exp {
+  display: inline-block;
+  vertical-align: bottom;
+}
 @media screen and (max-width: 1370px){
   html {
       font-size: 570%;

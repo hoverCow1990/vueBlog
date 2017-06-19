@@ -20,7 +20,7 @@ export default {
         alias: '老牛的宠幸',
         time: 1497805110213,
         rate: 5,
-        context: '这两天写了个捕鱼达人oyeah~~'
+        context: '这两天写了个捕鱼达人[[自信]]oyeah~~'
       }, {
         feature: 'http://www.web-jackiee.com/uploads/test/vueBlog/user-2.jpg',
         name: '2货大年',
@@ -38,7 +38,7 @@ export default {
         alias: '老牛的奴隶',
         time: 1497805000213,
         rate: 1,
-        context: '外链歌果然不靠谱今天把播放器中的歌都存我自己空间了= =吃了好多内存心疼心疼~~'
+        context: '[[笑哭]][[笑哭]]外链歌果然不靠谱今天把播放器中的歌都存我自己空间了= =吃了好多内存心疼心疼~~'
       }]
     }
   }
