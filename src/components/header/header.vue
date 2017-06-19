@@ -324,7 +324,8 @@ export default {
     text-align: center;
   }
   .header-menu a {
-    line-height: 32px;
+    font-size: 10px;
+    line-height: 34px;
   }
   .search {
     display: none;

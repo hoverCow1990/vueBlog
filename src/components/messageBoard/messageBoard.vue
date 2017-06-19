@@ -166,9 +166,6 @@ export default {
     background-repeat: no-repeat;
     background-size: 100% 100%;
     transition: .2s;
-    /*&:hover {
-      opacity: .8;
-    }*/
   }
   .msgBoard-user {
     @minSize: 50px;
@@ -454,7 +451,7 @@ export default {
     .msgBoard-user {
       padding-left: 8px;
       transform: translateY(0);
-      user-perviewer {
+      .user-perviewer {
         p {
           line-height: 46px;
         }
@@ -479,6 +476,10 @@ export default {
         padding-left: 0;
         .context-hd {
           justify-content: flex-start;
+          .time i {
+            padding-right: 0;
+            transform: translateY(-2px);
+          }
         }
         .context-bd {
             padding-top: 10px;

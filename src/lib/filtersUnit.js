@@ -12,7 +12,7 @@ const filtersUnit = {
       return time.toLocaleString()
         .replace(/(\d{4})\/(\d{1,2})\/(\d{1,2}).+(\d{1,2}):(\d{1,2}):(\d{1,2})/g, ($0, $1, $2, $3, $4, $5, $6) => {
           return $1 + '-' + transToZeroTime($2) + '-' + transToZeroTime($3) + ' ' + transToZeroTime($4) + ':' + transToZeroTime($5) + ':' + transToZeroTime($6)
-        })
+        }).replace('GMT+8', '')
     } else {
       return time.toLocaleDateString()
         .replace(/(\d{4})\/(\d{1,2})\/(\d{1,2})/g, ($0, $1, $2, $3) => {

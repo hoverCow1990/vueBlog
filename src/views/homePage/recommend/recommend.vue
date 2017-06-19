@@ -1,8 +1,8 @@
 <template>
   <section class='homePage-recommend'>
     <div class="recommend-container container">
-      <!-- <div class="recommend-topBar"></div> -->
-      <!-- <cow-titlebar title='About Me' info='关于老牛' theme='dark'></cow-titlebar> -->
+      <!-- <div class="recommend-topBar"></div>
+      <cow-titlebar title='About Me' info='关于老牛' theme='dark'></cow-titlebar> -->
       <ul class="recommend-menu">
         <li class="menu-category recommend">
           <div class="category-container">
@@ -30,7 +30,7 @@
                 <img src="./images/resume.jpg">
               </div>
               <ul class="menu-list">
-                <li v-for="item of connectList" :class='item.className'>
+                <li v-for="item of connectList" :class='item.className' @click='item.event'>
                   <i class="iconfont" :class='item.icon'></i>
                   <span>{{ item.title }}</span>
                   <div class="wechat-box" v-if='item.className==="wechat"'>
@@ -91,13 +91,17 @@ export default {
       }, {
         title: '微信',
         icon: 'icon-weixin1',
-        className: 'wechat'
+        className: 'wechat',
+        event: () => {}
       }, {
         title: '我の留言板',
         icon: 'icon-bi'
       }, {
         title: 'Github',
-        icon: 'icon-github'
+        icon: 'icon-github',
+        event: () => {
+          window.open('https://github.com/hoverCow1990')
+        }
       }, {
         title: '加入Web技术交流群',
         icon: 'icon-code1'
@@ -211,6 +215,9 @@ export default {
         padding-bottom: 11px;
         cursor: pointer;
       }
+      a {
+        color: #666;
+      }
     }
     &.recommend,
     &.friend {
@@ -274,6 +281,7 @@ export default {
       i {
         display: inline-block;
         font-size: 23px;
+        min-width: 28px;
         vertical-align: middle;
         color: #404040;
       }
@@ -288,6 +296,9 @@ export default {
   }
 }
 @media screen and (max-width: 435px) {
+  .homePage-recommend {
+    padding-top: 40px;
+  }
   .recommend-container {
     width: 100%;
     .recommend-menu {

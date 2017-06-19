@@ -57,7 +57,7 @@ export default {
 }
 </script>
 
-<style lang='less' scoped>
+<style lang='less'>
 @listWidth: 2.2rem;
 @listHeight: @listWidth * @perviewerProps;
 

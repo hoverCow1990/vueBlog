@@ -1,7 +1,7 @@
 <template>
   <div class="rateBox">
     <ul class="rateBox-star">
-      <li v-for='(item, index) of rateList'  @mouseenter='handlerSelectIndex(index)'>
+      <li v-for='(item, index) of rateList'  @mouseenter='handlerSelectIndex(index)' @touchstart='handlerSelectIndex(index)'>
         <i class="iconfont icon-star" :class='index <=  selectIndex ? "active":""'></i>
       </li>
     </ul>

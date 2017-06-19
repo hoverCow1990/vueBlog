@@ -4,7 +4,7 @@ export default {
       frameList: [{
         label: 'React',
         logo: require('./images/react.png'),
-        bgColor: {backgroundImage: '-webkit-gradient(linear, 0% 90%, 100% 0%, from(#000000), to(#383838)'}
+        bgColor: {backgroundImage: '-webkit-gradient(linear, 0% 90%, 100% 0%, from(#000000), to(#383838))'}
       }, {
         label: 'Vue',
         logo: require('./images/vue.png'),
@@ -45,7 +45,7 @@ export default {
       }, {
         label: 'Chrome',
         logo: require('./images/chrome.png'),
-        bgColor: {backgroundImage: '-webkit-gradient(linear, 0% 90%, 100% 0%, from(#000000), to(#383838)'}
+        bgColor: {backgroundImage: '-webkit-gradient(linear, 0% 90%, 100% 0%, from(#000000), to(#383838))'}
       }, {
         label: 'Dede',
         logo: require('./images/dede.png'),
@@ -57,7 +57,7 @@ export default {
       }, {
         label: 'Others',
         logo: require('./images/others.png'),
-        bgColor: {backgroundImage: '-webkit-gradient(linear, 0% 90%, 100% 0%, from(#000000), to(#383838)'}
+        bgColor: {backgroundImage: '-webkit-gradient(linear, 0% 90%, 100% 0%, from(#000000), to(#383838))'}
       }],
       bookList: [{
         label: '高级程序设计',
@@ -75,7 +75,7 @@ export default {
       otherList: [{
         label: 'Game',
         logo: require('./images/game.png'),
-        bgColor: {backgroundImage: '-webkit-gradient(linear, 0% 90%, 100% 0%, from(#000000), to(#383838)'}
+        bgColor: {backgroundImage: '-webkit-gradient(linear, 0% 90%, 100% 0%, from(#000000), to(#383838))'}
       }, {
         label: 'Canvas',
         logo: require('./images/canvas.png')
@@ -86,7 +86,7 @@ export default {
       }, {
         label: 'PlugIn',
         logo: require('./images/plugin.png'),
-        bgColor: {backgroundImage: '-webkit-gradient(linear, 0% 90%, 100% 0%, from(#000000), to(#383838)'}
+        bgColor: {backgroundImage: '-webkit-gradient(linear, 0% 90%, 100% 0%, from(#000000), to(#383838))'}
       }, {
         label: 'Template',
         logo: require('./images/template.png'),

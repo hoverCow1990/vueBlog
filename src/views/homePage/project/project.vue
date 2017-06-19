@@ -78,7 +78,7 @@ export default {
 }
 </script>
 
-<style lang='less' scoped>
+<style lang='less'>
 
 .project-container {
   padding-top: 1rem;
@@ -132,6 +132,7 @@ export default {
     padding-top: .6rem;
   }
   .project-item {
+    box-sizing: border-box;
     width: 2.95rem;
     margin-top: .32rem;
     background-color: #fff;
@@ -176,7 +177,7 @@ export default {
     .textOverFlow;
     span {
       font-weight: bolder;
-      color: #a50909;
+      color: @navy;
     }
     &.online:after {
       position: absolute;
@@ -211,16 +212,32 @@ export default {
 }
 @media screen and (max-width: 435px) {
   .project-container {
-    width: 96%;
+    width: 100%;
     .project-item {
-      width: 6.05rem;
+      width: 49%;
+      border-radius: 0;
+      &:nth-child(even){
+        border-left: 0;
+      }
     }
     .item-perviewer {
       height: 4.5rem;
       background-color: #fff;
     }
+    .item-title {
+      padding-top: 8px;
+      padding-bottom: 10px;
+      font-size: 11px;
+      text-indent: 4px;
+      color: #777;
+      span {
+        font-size: 10px;
+        font-weight: 100;
+        color: #222;
+      }
+    }
     .homePage-titleBar {
-        width: 5rem;
+      width: 5rem;
     }
     .item-info {
       display: none;
