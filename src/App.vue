@@ -12,7 +12,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang='less'>
 #app {
   max-width: 100%;
   overflow-x:hidden;
