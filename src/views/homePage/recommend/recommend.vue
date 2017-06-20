@@ -1,8 +1,8 @@
 <template>
   <section class='homePage-recommend'>
     <div class="recommend-container container">
-      <!-- <div class="recommend-topBar"></div>
-      <cow-titlebar title='About Me' info='关于老牛' theme='dark'></cow-titlebar> -->
+      <!-- <div class="recommend-topBar"></div>-->
+      <!-- <cow-titlebar title='About Me' info='关于老牛' theme='dark'></cow-titlebar> -->
       <ul class="recommend-menu">
         <li class="menu-category recommend">
           <div class="category-container">
@@ -87,7 +87,8 @@ export default {
       }],
       connectList: [{
         title: '联系老牛的qq',
-        icon: 'icon-qq-copy'
+        icon: 'icon-qq-copy',
+        event: () => {}
       }, {
         title: '微信',
         icon: 'icon-weixin1',
@@ -95,7 +96,8 @@ export default {
         event: () => {}
       }, {
         title: '我の留言板',
-        icon: 'icon-bi'
+        icon: 'icon-bi',
+        event: () => {}
       }, {
         title: 'Github',
         icon: 'icon-github',
@@ -104,7 +106,8 @@ export default {
         }
       }, {
         title: '加入Web技术交流群',
-        icon: 'icon-code1'
+        icon: 'icon-code1',
+        event: () => {}
       }],
       friendList: [{
         title: '陌陌的个人博客',

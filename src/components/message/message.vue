@@ -1,7 +1,7 @@
 <template>
   <transition name="slide-down">
     <div class="message-box" v-show="isShow">
-      <i class="iconfont icon-qq"></i>
+      <i class="iconfont" :class="msgType"></i>
       <span>{{ message }}</span>
     </div>
   </transition>
@@ -21,7 +21,19 @@
         timer: null
       }
     },
-    computed: {},
+    computed: {
+      // 根据type反应不同的图标
+      msgType () {
+        switch (this.$data.type) {
+          case 'err':
+            return 'icon-cuowu'
+          case 'success':
+            return 'icon-zhengque'
+          case 'warn':
+            return 'icon-zliconwarning01'
+        }
+      }
+    },
     watch: {
       closed (newVal) {
         if (newVal) {
@@ -93,6 +105,16 @@
     display: block;
     float: left;
     padding-right: 4px;
+    font-size: 15px;
+  }
+  .icon-cuowu {
+    color: #ff3432;
+  }
+  .icon-zhengque {
+    color: #14b113;
+  }
+  .icon-zliconwarning01 {
+    color: #ffa822;
   }
   span {
     display: block;
