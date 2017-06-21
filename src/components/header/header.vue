@@ -7,12 +7,22 @@
         </div>
         <div class="topBar-side">
           <div class="topBar-entrence">
-            <a href="#"><i class="iconfont icon-huiyuan2"></i></a>
+            <router-link to="/message">
+              <i class="iconfont icon-huiyuan2"></i>
+              <div class="pop">会员中心</div>
+            </router-link>
             <router-link to="/message">
               <i class="iconfont icon-maobi"></i>
+              <div class="pop">留言板</div>
             </router-link>
-            <a href="https://github.com/hoverCow1990" target='_blanket'><i class="iconfont icon-github"></i></a>
-            <a href="#"><i class="iconfont icon-huiyuan"></i></a>
+            <a href="https://github.com/hoverCow1990" target='_blanket'>
+              <i class="iconfont icon-github"></i>
+              <div class="pop">Github</div>
+            </a>
+            <a href="#">
+              <i class="iconfont icon-huiyuan"></i>
+              <div class="pop">游戏大厅</div>
+            </a>
           </div>
           <div class="topBar-login">
             <div class="hasLogin" v-if='isLogin'>
@@ -49,7 +59,7 @@
         <button><span><i class="iconfont icon-fangdajing"></i></span></button>
       </div>
     </div>
-    <more-box :isShow='isMoreBoxShow' @showLoginBox='showLoginBox'></more-box>
+    <more-box :isShow='isMoreBoxShow' @showLoginBox='showLoginBox' @hiddenMoreBox='hiddenMoreBox'></more-box>
     <cow-login-box :isShow='isLoginBoxShow' :initloginType='initloginType' @hiddenLoginBox='hiddenLoginBox'></cow-login-box>
   </div>
 </template>
@@ -76,6 +86,7 @@ export default {
   methods: {
     // 显示登录盒子
     showLoginBox (type) {
+      console.log(1)
       this.$data.loginType = type
       this.$data.isLoginBoxShow = true
     },
@@ -86,6 +97,10 @@ export default {
     // 显示更多的盒子
     showMoreBox () {
       this.$data.isMoreBoxShow = !this.$data.isMoreBoxShow
+    },
+    // 隐藏更多盒子
+    hiddenMoreBox () {
+      this.$data.isMoreBoxShow = false
     }
   }
 }
@@ -179,6 +194,7 @@ export default {
     align-items: center;
     line-height: @topBarHeight;
     a {
+      position: relative;
       color: #eee;
       &:nth-child(1):hover i{
         color: #52c3fb;
@@ -191,6 +207,32 @@ export default {
       }
       &:nth-child(4):hover i{
         color: #e2bb23;
+      }
+      @height: 50px;
+      &:hover {
+        div {
+          height: @height;
+          opacity: 1;
+        }
+      }
+      div {
+        position: absolute;
+        width: 76px;
+        height: 0;
+        top: 0.45rem;
+        left: -20px;
+        border-radius: 0 0 3px 3px;
+        background-image: repeating-linear-gradient(-45deg, #111113 0, #111113 10px, #1e1e20 10px, #1e1e20 12px);
+        font-size: 12px;
+        line-height: @height;
+        font-weight: 600;
+        text-align: center;
+        letter-spacing: 1px;
+        color: #eee;
+        z-index: 999;
+        opacity: 0.6;
+        overflow: hidden;
+        transition: height .5s, opacity .5s;
       }
     }
     i {

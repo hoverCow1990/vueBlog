@@ -21,36 +21,42 @@
         <div class="category-tool category">
           <ul class='tool-list list'>
             <li v-for='item of toolList'>
-              <div class="item-bg">
-                  <div class="item-perviewer" :class='item.bgColor'>
-                    <img :src="item.logo">
-                  </div>
-              </div>
-              <p>{{ item.label }}</p>
+              <router-link :to='item.link'>
+                <div class="item-bg">
+                    <div class="item-perviewer" :class='item.bgColor'>
+                      <img :src="item.logo">
+                    </div>
+                </div>
+                <p>{{ item.label }}</p>
+              </router-link>
             </li>
           </ul>
         </div>
         <div class="category-book category">
           <ul class='book-list list'>
             <li v-for='item of bookList'>
-              <div class="item-bg">
-                  <div class="item-perviewer" :class='item.bgColor'>
-                    <img :src="item.logo">
-                  </div>
-              </div>
-              <p>{{ item.label }}</p>
+              <router-link :to='item.link'>
+                <div class="item-bg">
+                    <div class="item-perviewer" :class='item.bgColor'>
+                      <img :src="item.logo">
+                    </div>
+                </div>
+                <p>{{ item.label }}</p>
+              </router-link>
             </li>
           </ul>
         </div>
         <div class="category-other category">
           <ul class='other-list list'>
             <li v-for='item of otherList'>
-              <div class="item-bg">
-                  <div class="item-perviewer" :class='item.bgColor'>
-                    <img :src="item.logo">
-                  </div>
-              </div>
-              <p>{{ item.label }}</p>
+              <router-link :to='item.link'>
+                <div class="item-bg">
+                    <div class="item-perviewer" :class='item.bgColor'>
+                      <img :src="item.logo">
+                    </div>
+                </div>
+                <p>{{ item.label }}</p>
+              </router-link>
             </li>
           </ul>
         </div>

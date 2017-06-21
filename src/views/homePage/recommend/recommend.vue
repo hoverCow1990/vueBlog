@@ -15,7 +15,11 @@
                 <img src="./images/game.jpg">
               </div>
               <ul class="menu-list">
-                <li v-for="item of recommendList"><p>{{ item.title }}</p></li>
+                <li v-for="item of recommendList">
+                  <router-link :to="item.link">
+                    <p>{{ item.title }}</p>
+                  </router-link>
+                </li>
               </ul>
             </div>
           </div>
@@ -68,22 +72,22 @@ export default {
     return {
       recommendList: [{
         title: '[node-04]Express构架web相册',
-        link: '/'
+        link: '/article/12'
       }, {
         title: '百度地图二次封装',
-        link: '/'
+        link: '/article/12'
       }, {
         title: '3D 螺旋体翻转',
-        link: '/'
+        link: '/article/12'
       }, {
         title: 'GitHub实用命令',
-        link: '/'
+        link: '/article/12'
       }, {
         title: '寰宇利人易拉宝设计',
-        link: '/'
+        link: '/article/12'
       }, {
         title: '常用工具类的网站',
-        link: '/'
+        link: '/article/12'
       }],
       connectList: [{
         title: '联系老牛的qq',
@@ -300,7 +304,7 @@ export default {
 }
 @media screen and (max-width: 435px) {
   .homePage-recommend {
-    padding-top: 40px;
+    padding-top: 20px;
   }
   .recommend-container {
     width: 100%;

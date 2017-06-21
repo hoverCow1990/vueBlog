@@ -191,17 +191,17 @@ export default {
     }
     &.red {
       height: 1.6rem;
-      min-height: 88px;
+      min-height: 60px;
       background-image: url('./images/red.jpg');
     }
     &.red2 {
       height: 1.6rem;
-      min-height: 88px;
+      min-height: 60px;
       background-image: url('./images/red2.jpg');
     }
     &.blue {
       height: 1.6rem;
-      min-height: 88px;
+      min-height: 60px;
       background-image: url('./images/blue.jpg');
     }
   }
@@ -461,7 +461,7 @@ export default {
 }
 @media screen and (max-width: 435px) {
   .msgBoard {
-    padding-top: 30px;
+    margin-top: 30px;
     .msgBoard-title {
       height: 35px;
       .topBar-title {

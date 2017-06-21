@@ -2,11 +2,11 @@
   <div class="header-moreBox" :class='isShow?"active":""'>
     <div class="container">
       <ul class='moreBox-menu'>
-        <li @click='showLoginBox'>注册 / 登录</li>
-        <li>联系qq</li>
-        <li>留言板</li>
-        <li>游戏中心</li>
-        <li>老版本首页</li>
+        <li><i class="iconfont icon-huiyuan2"></i><router-link to="/message">会员中心</router-link></li>
+        <li @click='showLoginBox'><i class="iconfont icon-dianpuxiangqingyedejiage"></i>注册 / 登录</li>
+        <li><i class="iconfont icon-maobi"></i><router-link to="/message">留言板</router-link></li>
+        <li><i class="iconfont icon-huiyuan"></i><router-link to="/message">游戏大厅</router-link></li>
+        <li><i class="iconfont icon-dianzandian"></i><router-link to="/message">老版本首页</router-link></li>
       </ul>
       <div class="moreBox-search">
         <input type="text" name="" value="" placeholder="输入搜索内容..">
@@ -24,6 +24,11 @@ export default {
     isShow: {
       type: Boolean,
       required: true
+    }
+  },
+  watch: {
+    $route () {
+      this.$emit('hiddenMoreBox')
     }
   },
   methods: {
@@ -60,6 +65,12 @@ export default {
     font-size: 14px;
     letter-spacing: 2px;
     color: #DADADA;
+    i {
+      padding-right: 7px;
+    }
+    a {
+      color: #DADADA;
+    }
   }
   .moreBox-search {
     width: 70%;

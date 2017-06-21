@@ -6,16 +6,15 @@
       <div class="project-wrapper">
         <ul class="project-list">
           <li class="project-item" v-for='item of projectList'>
-            <div class="item-perviewer">
-              <img :src="item.perviewer">
-              <div class="perviewer-masker"></div>
-            </div>
-            <p class="item-title" :class='item.isOnline?"online":""'>&nbsp; [ {{ item.title }} ]</p>
-            <p class='item-info'>运用技能 : {{ item.info }}</p>
-            <!-- <div class="ftLine"></div> -->
-            <div class="ftBtn">
-              { {{ item.tag }} }
-            </div>
+            <router-link :to="item.link">
+              <div class="item-perviewer">
+                <img :src="item.perviewer">
+                <div class="perviewer-masker"></div>
+              </div>
+              <p class="item-title" :class='item.isOnline?"online":""'>&nbsp; [ {{ item.title }} ]</p>
+              <p class='item-info'>运用技能 : {{ item.info }}</p>
+              <div class="ftBtn">{ {{ item.tag }} }</div>
+            </router-link>
           </li>
         </ul>
       </div>
@@ -33,49 +32,57 @@ export default {
         tag: 'Angular',
         title: '金银猫Pc端',
         info: 'Angular, Require, Jquery, Bootstrip, Less, Proxy',
-        isOnline: true
+        isOnline: true,
+        link: '/article/12'
       }, {
         perviewer: require('./images/jymMb.jpg'),
         tag: 'Vue',
         title: '金银猫Mb端',
         info: 'ES6, Vue, Vue-Router, Vux, Yd-Ui, Axios, Less, Webpack, Github',
-        isOnline: true
+        isOnline: true,
+        link: '/article/12'
       }, {
         perviewer: require('./images/admin.jpg'),
         tag: 'React',
         title: 'Github管理系统',
         info: 'ES6, React, Redux, React-Router, ReactEchart, Antd, Less',
-        isOnline: false
+        isOnline: false,
+        link: '/article/12'
       }, {
         perviewer: require('./images/outFood.jpg'),
         tag: 'Backbone',
         title: '老牛外卖APP',
         info: 'Backbone, Jquery, Juicer, Jquery-weui, Less, Swiper, Gulp, Webpack, 百度地图',
-        isOnline: false
+        isOnline: false,
+        link: '/article/12'
       }, {
         perviewer: require('./images/audio.jpg'),
         tag: 'JQuery',
         title: 'QQ音乐简易版',
         info: 'Jquery, H5-audio, 面向对象',
-        isOnline: false
+        isOnline: false,
+        link: '/article/12'
       }, {
         perviewer: require('./images/bilibili.jpg'),
         tag: 'JQuery',
         title: 'bilibili仿页',
         info: 'Jquery, 面向对象',
-        isOnline: false
+        isOnline: false,
+        link: '/article/12'
       }, {
         perviewer: require('./images/fishMan.jpg'),
         tag: 'JQuery',
         title: '捕鱼达人',
         info: 'Jquery, 面向对象',
-        isOnline: false
+        isOnline: false,
+        link: '/article/12'
       }, {
         perviewer: require('./images/lbtt.jpg'),
         tag: 'Bootstrip',
         title: '萝卜特甜仿页',
         info: 'Bootstrip, Jquery, Less, 面向对象',
-        isOnline: false
+        isOnline: false,
+        link: '/article/12'
       }]
     }
   }
@@ -241,12 +248,14 @@ export default {
     .project-item {
       width: 49%;
       border-radius: 0;
+      .border(bottom);
       &:nth-child(even){
         border-left: 0;
       }
       .ftBtn {
-        padding-top: 8px;
-        padding-bottom: 8px;
+        display: none;
+        /*padding-top: 8px;
+        padding-bottom: 8px;*/
       }
     }
     .item-perviewer {
@@ -255,10 +264,11 @@ export default {
       background-color: #fff;
     }
     .item-title {
-      padding-top: 8px;
-      padding-bottom: 10px;
+      /*padding-top: 8px;
+      padding-bottom: 10px;*/
+      margin-left: 0;
       font-size: 11px;
-      text-indent: 4px;
+      /*text-indent: 4px;*/
       color: #777;
       span {
         font-size: 10px;

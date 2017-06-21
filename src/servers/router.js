@@ -17,6 +17,9 @@ export default new Router({
       path: '/article/:type/:id',
       component: Views.Article
     }, {
+      path: '/article/:id',
+      component: Views.Article
+    }, {
       path: '/message',
       component: Views.Message
     }],

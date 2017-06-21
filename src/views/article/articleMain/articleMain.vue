@@ -80,12 +80,20 @@ export default {
   computed: {
     // 跟还有路由匹配
     articleType () {
-      let articleTypeList = this.$route.params.type.split('_').map(item => {
-        return {
-          tag: item,
-          href: '/articleList/' + item
-        }
-      })
+      let articleTypeList = this.$route.params.type
+      if (void 0 !== articleTypeList) {
+        articleTypeList = articleTypeList.split('_').map(item => {
+          return {
+            tag: item,
+            href: '/articleList/' + item
+          }
+        })
+      } else {
+        return [{
+          tag: 'searach',
+          href: '/articleList/searach'
+        }]
+      }
       return articleTypeList
     }
   },
@@ -528,6 +536,11 @@ export default {
     }
     a {
       padding-left: 5px;
+      color: @primary;
+      transition: color .2s;
+      &:hover {
+        color: darken(@primary, 10%);
+      }
     }
   }
 }
