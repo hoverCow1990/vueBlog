@@ -1,8 +1,8 @@
 <template>
   <section class='homePage-recommend'>
     <div class="recommend-container container">
-      <!-- <div class="recommend-topBar"></div>
-      <cow-titlebar title='About Me' info='关于老牛' theme='dark'></cow-titlebar> -->
+      <!-- <div class="recommend-topBar"></div>-->
+      <!-- <cow-titlebar title='About Me' info='关于老牛' theme='dark'></cow-titlebar> -->
       <ul class="recommend-menu">
         <li class="menu-category recommend">
           <div class="category-container">

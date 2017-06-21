@@ -7,11 +7,13 @@
         <div class="category-frame category">
           <ul class='frame-list list'>
             <li v-for='item of frameList'>
-              <div class="item-bg">
-                  <div class="item-perviewer" :style='item.bgColor'>
-                    <img :src="item.logo">
-                  </div>
-              </div>
+              <router-link :to='item.link'>
+                <div class="item-bg">
+                    <div class="item-perviewer" :class='item.bgColor'>
+                      <img :src="item.logo">
+                    </div>
+                </div>
+              </router-link>
               <p>{{ item.label }}</p>
             </li>
           </ul>
@@ -20,7 +22,7 @@
           <ul class='tool-list list'>
             <li v-for='item of toolList'>
               <div class="item-bg">
-                  <div class="item-perviewer" :style='item.bgColor'>
+                  <div class="item-perviewer" :class='item.bgColor'>
                     <img :src="item.logo">
                   </div>
               </div>
@@ -32,7 +34,7 @@
           <ul class='book-list list'>
             <li v-for='item of bookList'>
               <div class="item-bg">
-                  <div class="item-perviewer" :style='item.bgColor'>
+                  <div class="item-perviewer" :class='item.bgColor'>
                     <img :src="item.logo">
                   </div>
               </div>
@@ -44,7 +46,7 @@
           <ul class='other-list list'>
             <li v-for='item of otherList'>
               <div class="item-bg">
-                  <div class="item-perviewer" :style='item.bgColor'>
+                  <div class="item-perviewer" :class='item.bgColor'>
                     <img :src="item.logo">
                   </div>
               </div>
@@ -168,6 +170,30 @@ export default {
         border-radius: 50%;
         background-color: #eee;
         box-shadow: 0 0 6px 1px rgba(0,0,0,.85) inset;
+        &.black {
+          background-image: -webkit-gradient(linear, 0% 90%, 100% 0%, from(#000000), to(#383838));
+        }
+        &.white {
+          background-color: #fff;
+        }
+        &.grey {
+          background-image: -webkit-gradient(linear, 0% 90%, 100% 0%, from(#cecece), to(#ffffff));
+        }
+        &.blue {
+          background-image: -webkit-gradient(linear, 0% 90%, 100% 0%, from(#073286), to(#427be2));
+        }
+        &.yellow {
+          background-image: -webkit-gradient(linear, 0% 90%, 100% 0%, from(#a76208), to(#ffd86a));
+        }
+        &.violet {
+          background-image: -webkit-gradient(linear, 0% 90%, 100% 0%, from(#29133e), to(#492248));
+        }
+        &.red {
+          background-image: -webkit-gradient(linear, 0% 90%, 100% 0%, from(#500000), to(#ec2727));
+        }
+        &.green {
+          background-image: -webkit-gradient(linear, 0% 90%, 100% 0%, from(#256f3f), to(#38a05d));
+        }
       }
       img {
         display: block;

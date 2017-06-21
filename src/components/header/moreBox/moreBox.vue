@@ -5,6 +5,7 @@
         <li @click='showLoginBox'>注册 / 登录</li>
         <li>联系qq</li>
         <li>留言板</li>
+        <li>游戏中心</li>
         <li>老版本首页</li>
       </ul>
       <div class="moreBox-search">

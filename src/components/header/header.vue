@@ -7,13 +7,15 @@
         </div>
         <div class="topBar-side">
           <div class="topBar-entrence">
-            <a href="#"><i class="iconfont icon-qq"></i></a>
+            <a href="#"><i class="iconfont icon-huiyuan2"></i></a>
+            <a href="#"><i class="iconfont icon-maobi"></i></a>
             <a href="https://github.com/hoverCow1990" target='_blanket'><i class="iconfont icon-github"></i></a>
+            <a href="#"><i class="iconfont icon-huiyuan"></i></a>
           </div>
           <div class="topBar-login">
             <div class="hasLogin" v-if='isLogin'>
               <div class="user-perview">
-                <img src="./images/logo.jpg">
+                <img src="./images/user.jpg">
               </div>
               <span>欢迎您, [ {{ user.name }} ]</span>
             </div>
@@ -143,7 +145,7 @@ export default {
       width: 26px;
       height: 26px;
       border-radius: 50%;
-      margin-right: .2rem;
+      margin-right: .17rem;
       overflow: hidden;
     }
     img {
@@ -180,16 +182,28 @@ export default {
         color: #52c3fb;
       }
       &:nth-child(2):hover i{
-        color: #ffdb50;
+        color: #f56565;
+      }
+      &:nth-child(3):hover i{
+        color: #c76bff;
+      }
+      &:nth-child(4):hover i{
+        color: #e2bb23;
       }
     }
     i {
       display: block;
       padding-right: .2rem;
-      color: #eee;
+      color: #afafaf;
       font-size: 23px;
       transition: color .3s;
       cursor: pointer;
+      &.icon-github {
+        font-size: 22px;
+      }
+      &.icon-maobi {
+        transform: translateY(1px);
+      }
     }
   }
   .topBar-more {

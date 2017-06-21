@@ -1,8 +1,8 @@
 <template>
   <section class='homePage-project'>
     <div class="project-container container">
+      <div class="project-logo"></div>
       <cow-titlebar title='Cow Project' info='老牛的实战项目' theme='dark'></cow-titlebar>
-            <!-- <div class="project-logo"></div> -->
       <div class="project-wrapper">
         <ul class="project-list">
           <li class="project-item" v-for='item of projectList'>
@@ -10,8 +10,12 @@
               <img :src="item.perviewer">
               <div class="perviewer-masker"></div>
             </div>
-            <p class="item-title" :class='item.isOnline?"online":""'><span>[{{ item.tag }}]</span> {{ item.title }}</p>
+            <p class="item-title" :class='item.isOnline?"online":""'>&nbsp; [ {{ item.title }} ]</p>
             <p class='item-info'>运用技能 : {{ item.info }}</p>
+            <!-- <div class="ftLine"></div> -->
+            <div class="ftBtn">
+              { {{ item.tag }} }
+            </div>
           </li>
         </ul>
       </div>
@@ -55,22 +59,22 @@ export default {
         info: 'Jquery, H5-audio, 面向对象',
         isOnline: false
       }, {
-        perviewer: require('./images/lbtt.jpg'),
-        tag: 'Boots',
-        title: '萝卜特甜仿页',
-        info: 'Bootstrip, Jquery, Less, 面向对象',
-        isOnline: false
-      }, {
         perviewer: require('./images/bilibili.jpg'),
         tag: 'JQuery',
         title: 'bilibili仿页',
         info: 'Jquery, 面向对象',
         isOnline: false
       }, {
-        perviewer: require('./images/hotArea.jpg'),
+        perviewer: require('./images/fishMan.jpg'),
         tag: 'JQuery',
-        title: '模拟热点建站',
+        title: '捕鱼达人',
         info: 'Jquery, 面向对象',
+        isOnline: false
+      }, {
+        perviewer: require('./images/lbtt.jpg'),
+        tag: 'Bootstrip',
+        title: '萝卜特甜仿页',
+        info: 'Bootstrip, Jquery, Less, 面向对象',
         isOnline: false
       }]
     }
@@ -79,16 +83,23 @@ export default {
 </script>
 
 <style lang='less'>
-
 .project-container {
   padding-top: 1rem;
   .project-logo {
-    width: 72px;
-    height: 72px;
+    width: 1rem;
+    height: 1rem;
+    min-width: 70px;
+    min-height: 70px;
     margin-left: auto;
     margin-right: auto;
-    padding-bottom: .2rem;
-    background: url(./images/logo.png) no-repeat;
+    padding-bottom: .1rem;
+    background: url(./images/logo5.png) no-repeat;
+    background-size: 100%;
+    transition: .6s;
+    &:hover {
+      background: url(./images/logo2.png) no-repeat;
+      background-size: 100%;
+    }
   }
   .project-title {
     position: relative;
@@ -129,7 +140,7 @@ export default {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
-    padding-top: .6rem;
+    padding-top: .3rem;
   }
   .project-item {
     box-sizing: border-box;
@@ -138,11 +149,25 @@ export default {
     background-color: #fff;
     cursor: pointer;
     border-radius: 3px;
-    .border();
+    .border(top);
+    .border(left);
+    .border(right);
     transition: all .2s ease-in-out;
+    overflow: hidden;
     &:hover {
       box-shadow: 2px 15px 30px rgba(0, 0, 0, .5);
       transform: translate3d(0, -6px, 0);
+    }
+    .ftBtn {
+      width: 100%;
+      margin: 0 auto;
+      color: #eee;
+      background: @navy;
+      padding-top: .10rem;
+      padding-bottom: .10rem;
+      font-size: .14rem;
+      text-align: center;
+      letter-spacing: 1px;
     }
   }
   .item-perviewer {
@@ -150,7 +175,7 @@ export default {
     box-sizing: border-box;
     width: 100%;
     height: 2.20rem;
-    padding: .06rem;
+    padding: .08rem;
     overflow: hidden;
     .perviewer-masker {
       position: absolute;
@@ -219,9 +244,14 @@ export default {
       &:nth-child(even){
         border-left: 0;
       }
+      .ftBtn {
+        padding-top: 8px;
+        padding-bottom: 8px;
+      }
     }
     .item-perviewer {
       height: 4.5rem;
+      padding: 6px;
       background-color: #fff;
     }
     .item-title {

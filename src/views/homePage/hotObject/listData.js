@@ -4,100 +4,127 @@ export default {
       frameList: [{
         label: 'React',
         logo: require('./images/react.png'),
-        bgColor: {backgroundImage: '-webkit-gradient(linear, 0% 90%, 100% 0%, from(#000000), to(#383838))'}
+        link: '/articleList/Javascript_React',
+        bgColor: 'black'
       }, {
         label: 'Vue',
         logo: require('./images/vue.png'),
-        bgColor: {backgroundImage: '-webkit-gradient(linear, 0% 90%, 100% 0%, from(#cecece), to(#ffffff))'}
+        link: '/articleList/Javascript_Vue',
+        bgColor: 'grey'
       }, {
         label: 'Angular',
         logo: require('./images/angular.png'),
-        bgColor: {backgroundImage: '-webkit-gradient(linear, 0% 90%, 100% 0%, from(#000000), to(#383838))'}
+        link: '/articleList/Javascript_Angular',
+        bgColor: 'black'
       }, {
         label: 'JQuery',
         logo: require('./images/jquery.png'),
-        bgColor: {backgroundImage: '-webkit-gradient(linear, 0% 90%, 100% 0%, from(#073286), to(#427be2))'}
+        link: '/articleList/Javascript_JQuery',
+        bgColor: 'blue'
       }, {
         label: 'Backbone',
         logo: require('./images/backbone.png'),
-        bgColor: {backgroundImage: '-webkit-gradient(linear, 0% 90%, 100% 0%, from(#a76208), to(#ffd86a))'}
+        link: '/articleList/Javascript_Backbone',
+        bgColor: 'yellow'
       }, {
         label: 'Bootstrip',
         logo: require('./images/bootstrap.png'),
-        bgColor: {backgroundImage: '-webkit-gradient(linear, 0% 90%, 100% 0%, from(#29133e), to(#492248))'}
+        link: '/articleList/Javascript_Bootstrip',
+        bgColor: 'violet'
       }, {
         label: 'Express',
         logo: require('./images/express.png'),
-        bgColor: {backgroundImage: '-webkit-gradient(linear, 0% 90%, 100% 0%, from(#500000), to(#ec2727))'}
+        link: '/articleList/Javascript_Express',
+        bgColor: 'red'
       }],
       toolList: [{
         label: 'Webpack',
         logo: require('./images/webpack.png'),
-        bgColor: {backgroundImage: '-webkit-gradient(linear, 0% 90%, 100% 0%, from(#cecece), to(#ffffff))'}
+        link: '/articleList/Tool_Webpack',
+        bgColor: 'grey'
       }, {
         label: 'Gulp',
         logo: require('./images/gulp.png'),
-        bgColor: {backgroundImage: '-webkit-gradient(linear, 0% 90%, 100% 0%, from(#500000), to(#ec2727))'}
+        link: '/articleList/Tool_Gulp',
+        bgColor: 'red'
       }, {
         label: 'Github',
         logo: require('./images/github.jpg'),
-        bgColor: {backgroundImage: '-webkit-gradient(linear, 0% 90%, 100% 0%, from(#cecece), to(#ffffff))'}
+        link: '/articleList/Tool_Github',
+        bgColor: 'white'
       }, {
         label: 'Chrome',
         logo: require('./images/chrome.png'),
-        bgColor: {backgroundImage: '-webkit-gradient(linear, 0% 90%, 100% 0%, from(#000000), to(#383838))'}
+        link: '/articleList/Tool_Chrome',
+        bgColor: 'black'
       }, {
         label: 'Dede',
         logo: require('./images/dede.png'),
-        bgColor: {backgroundImage: '-webkit-gradient(linear, 0% 90%, 100% 0%, from(#256f3f), to(#38a05d))'}
+        link: '/articleList/Tool_Dede',
+        bgColor: 'green'
       }, {
         label: 'Editor',
         logo: require('./images/editor.png'),
-        bgColor: {backgroundImage: '-webkit-gradient(linear, 0% 90%, 100% 0%, from(#29133e), to(#492248))'}
+        link: '/articleList/Tool_Editor',
+        bgColor: 'violet'
       }, {
         label: 'Others',
         logo: require('./images/others.png'),
-        bgColor: {backgroundImage: '-webkit-gradient(linear, 0% 90%, 100% 0%, from(#000000), to(#383838))'}
+        link: '/articleList/Tool_Others',
+        bgColor: 'black'
       }],
       bookList: [{
         label: '高级程序设计',
+        link: '/articleList/Book_Gjcxsj',
         logo: require('./images/gjcxsj.jpg')
       }, {
         label: '设计模式',
+        link: '/articleList/Book_Sjms',
         logo: require('./images/sjms.jpg')
       }, {
         label: 'Es6入门',
+        link: '/articleList/Book_Es6rm',
         logo: require('./images/es6.jpg')
       }, {
         label: '函数式编程',
+        link: '/articleList/Book_Hssbc',
         logo: require('./images/hssbc.jpg')
       }],
       otherList: [{
         label: 'Game',
+        link: '/articleList/Others_Game',
         logo: require('./images/game.png'),
-        bgColor: {backgroundImage: '-webkit-gradient(linear, 0% 90%, 100% 0%, from(#000000), to(#383838))'}
+        bgColor: 'black'
       }, {
         label: 'Canvas',
-        logo: require('./images/canvas.png')
+        link: '/articleList/Others_Canvas',
+        logo: require('./images/canvas.png'),
+        bgColor: 'white'
       }, {
         label: 'Design',
+        link: '/articleList/Others_Design',
         logo: require('./images/design.png'),
-        bgColor: {backgroundImage: '-webkit-gradient(linear, 0% 90%, 100% 0%, from(#256f3f), to(#38a05d))'}
+        bgColor: 'green'
       }, {
         label: 'PlugIn',
+        link: '/articleList/Others_PlugIn',
         logo: require('./images/plugin.png'),
-        bgColor: {backgroundImage: '-webkit-gradient(linear, 0% 90%, 100% 0%, from(#000000), to(#383838))'}
+        bgColor: 'black'
       }, {
         label: 'Template',
+        link: '/articleList/Others_Template',
         logo: require('./images/template.png'),
-        bgColor: {backgroundImage: '-webkit-gradient(linear, 0% 90%, 100% 0%, from(#a76208), to(#ffd86a))'}
+        bgColor: 'yellow'
       }, {
         label: 'Collection',
-        logo: require('./images/collection.png')
+        link: '/articleList/User_Collection',
+        logo: require('./images/collection.png'),
+        bgColor: 'white'
       }, {
         label: 'Message',
+        link: '/message',
         logo: require('./images/message.png'),
-        bgColor: {backgroundImage: '-webkit-gradient(linear, 0% 90%, 100% 0%, from(#500000), to(#ec2727))'}
+        bgColor: 'red'
       }]
     }
   }
