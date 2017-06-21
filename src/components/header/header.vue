@@ -8,7 +8,9 @@
         <div class="topBar-side">
           <div class="topBar-entrence">
             <a href="#"><i class="iconfont icon-huiyuan2"></i></a>
-            <a href="#"><i class="iconfont icon-maobi"></i></a>
+            <router-link to="/message">
+              <i class="iconfont icon-maobi"></i>
+            </router-link>
             <a href="https://github.com/hoverCow1990" target='_blanket'><i class="iconfont icon-github"></i></a>
             <a href="#"><i class="iconfont icon-huiyuan"></i></a>
           </div>

@@ -1,6 +1,6 @@
 <template>
   <div class="msgBoard">
-    <div class="msgBoard-perviewer">
+    <div class="msgBoard-perviewer" :class='type'>
       <div class="msgBoard-user">
         <div class="user-perviewer">
           <img src="./images/user.jpg" v-if="isLogin">
@@ -79,7 +79,13 @@ import mixin from './mixin'
 
 export default {
   name: 'MessageBoard',
-  props: {},
+  props: {
+    // 顶部banner的车辆颜色
+    type: {
+      type: String,
+      default: 'yellow'
+    }
+  },
   mixins: [mixin],
   data () {
     return {
@@ -91,8 +97,6 @@ export default {
       allListLength: 2,
       singleListLength: 8
     }
-  },
-  created () {
   },
   mounted () {
     this.replaceExpression()
@@ -169,18 +173,37 @@ export default {
 
 <style lang='less'>
 .msgBoard {
-  padding-top: .5rem;
+  margin-top: .5rem;
+  padding-bottom: .2rem;
+  background-color: #fff;
   .msgBoard-perviewer {
     display: flex;
     position: relative;
-    height: 1rem;
-    min-height: 55px;
     align-items: center;
     border-radius: 2px;
-    background-image: url('./images/1.jpg');
     background-repeat: no-repeat;
     background-size: 100% 100%;
     transition: .2s;
+    &.yellow {
+      height: 1rem;
+      min-height: 55px;
+      background-image: url('./images/yellow.jpg');
+    }
+    &.red {
+      height: 1.6rem;
+      min-height: 88px;
+      background-image: url('./images/red.jpg');
+    }
+    &.red2 {
+      height: 1.6rem;
+      min-height: 88px;
+      background-image: url('./images/red2.jpg');
+    }
+    &.blue {
+      height: 1.6rem;
+      min-height: 88px;
+      background-image: url('./images/blue.jpg');
+    }
   }
   .msgBoard-user {
     @minSize: 50px;

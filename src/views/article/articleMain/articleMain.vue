@@ -59,7 +59,7 @@
       </div>
     </div>
     <div class="article-box">
-      <cow-message-board></cow-message-board>
+      <cow-message-board type='yellow'></cow-message-board>
     </div>
   </div>
 </template>
