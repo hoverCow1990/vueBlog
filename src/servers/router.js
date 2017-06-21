@@ -5,6 +5,7 @@ import Views from '@/views/index'
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',
@@ -15,5 +16,11 @@ export default new Router({
     }, {
       path: '/article/:type/:id',
       component: Views.Article
-    }]
+    }],
+  scrollBehavior (to, from, savedPosition) {
+    return {
+      x: 0,
+      y: 0
+    }
+  }
 })

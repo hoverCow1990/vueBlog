@@ -93,15 +93,12 @@ input {
     background-color: @violet;
   }
 }
-
 .fade-enter-active, .fade-leave-active {
   transition: opacity .2s
 }
-.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+.fade-enter, .fade-leave-to {
   opacity: 0
 }
-
-
 .loopLi(@count) when (@count < 64) {
   @a: @count - floor(@count / 7) * 7;
   @x: -31px * @a;
