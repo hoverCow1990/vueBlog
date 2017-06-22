@@ -14,7 +14,8 @@ module.exports = function (webpackConfig) {
     plugins: [{
       name: 'style-parser',
       fn: function (source) {
-        return '@import "' + resolve('/src/assets/css/regular.less') + '";\n' + source
+        console.log('@import "' + path.relative(this.resourcePath, resolve('/src/assets/css/regular.less')).replace(/..\\/, '') + '";\n')
+        return '@import "' + path.relative(this.resourcePath, resolve('/src/assets/css/regular.less')).replace(/..\\/, '') + '";\n' + source
       }
     }, {
       name: 'build-done-callback',
@@ -30,7 +31,6 @@ module.exports = function (webpackConfig) {
           fs.writeFile(filename, content)
         })
       }
-    }]
-  })
+    }]  })
   return vuxLoaderConfig
 }

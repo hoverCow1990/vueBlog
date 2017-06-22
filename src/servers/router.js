@@ -14,10 +14,7 @@ export default new Router({
       path: '/articleList/:type',
       component: Views.ArticleListView
     }, {
-      path: '/article/:type/:id',
-      component: Views.Article
-    }, {
-      path: '/article/:id',
+      path: '/article(/.+)?/:id',
       component: Views.Article
     }, {
       path: '/message',

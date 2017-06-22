@@ -80,9 +80,9 @@ export default {
   computed: {
     // 跟还有路由匹配
     articleType () {
-      let articleTypeList = this.$route.params.type
+      let articleTypeList = this.$route.params[0]
       if (void 0 !== articleTypeList) {
-        articleTypeList = articleTypeList.split('_').map(item => {
+        articleTypeList = articleTypeList.substr(1).split('_').map(item => {
           return {
             tag: item,
             href: '/articleList/' + item
