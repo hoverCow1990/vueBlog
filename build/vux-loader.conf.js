@@ -14,7 +14,6 @@ module.exports = function (webpackConfig) {
     plugins: [{
       name: 'style-parser',
       fn: function (source) {
-        console.log('@import "' + path.relative(this.resourcePath, resolve('/src/assets/css/regular.less')).replace(/..\\/, '') + '";\n')
         return '@import "' + path.relative(this.resourcePath, resolve('/src/assets/css/regular.less')).replace(/..\\/, '') + '";\n' + source
       }
     }, {

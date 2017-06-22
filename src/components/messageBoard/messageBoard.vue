@@ -180,7 +180,7 @@ export default {
     display: flex;
     position: relative;
     align-items: center;
-    border-radius: 2px;
+    border-radius: 2px 2px 0 0;
     background-repeat: no-repeat;
     background-size: 100% 100%;
     transition: .2s;
