@@ -25,15 +25,21 @@
           </div>
         </div>
       </div>
+      <div class="degree-line">
+        <span v-for="(item, index) of new Array(6)" :class="index + 1 === userData.lv?'active':''">Lv{{ index + 1}}</span>
+      </div>
+      <div class="lv-line">
+        <span></span>
+      </div>
       <div class="admin-bd">
         <div class="admin-perviewer">
           <div class="admin-title account">
-            <p><i class="iconfont icon-game"></i>Account Center</p>
+            <p>Account Center</p>
             <span><i class="iconfont icon-bi"></i>修改信息</span>
           </div>
           <ul class="perviewer-list">
             <li>
-              <p class='label'>称号</p>
+              <p class='label'>级别</p>
               <p class='val'>{{ userData.alias }}</p>
             </li>
             <li class="score">
@@ -136,10 +142,29 @@
             </div>
           </li>
         </ul>
+        <div class="admin-notice">
+          <div class="notice-content">
+            <div class="notice-perviewer">
+              <div class="perviewer-content">
+                <i class="iconfont icon-dengji1"></i>
+                <p class="label">{{ showLable }}</p>
+                <p class="explain">{{ showExplain }}</p>
+              </div>
+            </div>
+            <div class="notice-degree">
+              <ul class="degree-guide">
+                <li v-for="list of degreeGuide" v-once>
+                  <div class="scroll">+{{ list.add }}</div>
+                  <p><span v-for="item of list.list" @mouseenter="showDegreeGuide(item)">{{ item.label }}</span></p>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
         <!-- <div class="admin-title degree">
           <p><i class="iconfont icon-dengji1"></i>Level</p>
-        </div>
-        <div class="bd-degree">
+        </div> -->
+        <!-- <div class="bd-degree">
           <p class="degree-explain"><span>奖励说明 : </span>{{ showExplain }}</p>
           <ul class="degree-guide">
             <li v-for="list of degreeGuide" v-once>
@@ -180,21 +205,23 @@ export default {
         hasSigned: false,
         name: '老实的牛',
         score: '1215',
-        lv: 6,
+        lv: 1,
         qq: '547007933',
         git: 'https://github.com/hoverCow1990',
         blog: 'http://www.web-jackiee.com/',
         alias: '老牛的宠幸',
         talent: ['html', 'css', 'javascript', 'vue', 'bootstrip', 'jquery', 'webpack', 'gulp', 'react']
       },
-      showExplain: '签到后即获取10分奖励'
+      showExplain: '在会员中心内进行签到任务可随机获得5-10分不等',
+      showLable: '每日签到'
     }
   },
   mixins: [mixin],
   methods: {
     // 切换展示的指示文案
-    showDegreeGuide (info) {
-      this.$data.showExplain = info
+    showDegreeGuide (item) {
+      this.$data.showExplain = item.info
+      this.$data.showLable = item.label
     }
   }
 }
@@ -330,6 +357,61 @@ export default {
       padding-right: 6px;
     }
   }
+  .degree-line {
+    display: flex;
+    width: 100%;
+    height: 16px;
+    overflow: hidden;
+    span {
+      height: 100%;
+      font-size: 12px;
+      color: #fff;
+      line-height: 16px;
+      text-align: center;
+      &:nth-child(1) {
+        flex: 2;
+        background-color: #dedede;
+      }
+      &:nth-child(2) {
+        flex: 3;
+        background-color: #d0cece;
+      }
+      &:nth-child(3) {
+        flex: 4;
+        background-color: #bdbdbd;
+      }
+      &:nth-child(4) {
+        flex: 6;
+        background-color: #9c9c9c;
+      }
+      &:nth-child(5) {
+        flex: 8;
+        background-color: #828282;
+      }
+      &:nth-child(6) {
+        flex: 10;
+        background-color: #6b6b6b;
+      }
+      &.active {
+        background-color: #871dfb;
+      }
+    }
+  }
+  .lv-line {
+    position: relative;
+    height: 4px;
+    background-color: #e0e0e0;
+    font-size: 4px;
+    span {
+      position: absolute;
+      width: 67%;
+      height: 100%;
+      left: 0;
+      top: 0;
+      background-color: @darkenRed;
+      transition: .2s;
+    }
+  }
   .admin-bd {
     padding-left: .2rem;
     padding-right: .2rem;
@@ -350,11 +432,8 @@ export default {
       font-size: .26rem;
       font-family: Arial;
       color: #333;
-      i {
-        padding-right: 10px;
-        font-size: 26px;
-        color: @darkenRed;
-      }
+      font-weight: 600;
+      text-shadow: 0 0 1px rgba(0, 0, 0, .1);
     }
     span {
       padding-top: .12rem;
@@ -382,7 +461,7 @@ export default {
     .score {
       .val {
         font-weight: 600;
-        color: @red;
+        color: #222;
       }
     }
     .label {
@@ -398,7 +477,7 @@ export default {
     }
     .val {
       flex: 1;
-      color: #5a5a5a;
+      color: #888;
     }
     a {
       color: @primary;
@@ -428,7 +507,7 @@ export default {
       padding: 6px;
       margin-right: .2rem;
       border-radius: 2px;
-      .border();
+      border: 1px solid #e7e7e7;
       cursor: pointer;
     }
     .project-viewport {
@@ -495,6 +574,7 @@ export default {
     overflow: hidden;
   }
   .menu-category {
+    box-sizing: border-box;
     flex: 1;
     height: 320px;
     .border();
@@ -616,20 +696,54 @@ export default {
       }
     }
   }
-  .bd-degree {
-    .degree-explain {
-      padding-top: 5px;
-      padding-bottom: 5px;
-      margin-top: 5px;
-      border-radius: 2px 0 0 2px;
-      font-size: 13px;
-      color: #555;
+  .admin-notice {
+    margin-top: .3rem;
+    padding: .1rem .16rem;
+    border-radius: 3px;
+    .border();
+  }
+  .notice-content {
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+  .notice-perviewer {
+    display: flex;
+    width: 3.5rem;
+    height: 2.4rem;
+    margin-right: .4rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    background: url(images/bg2.jpg);
+    .perviewer-content {
+      font-size: 0;
+      text-align: center;
+      letter-spacing: 1px;
     }
-    .degree-guide {
-      padding-top: .12rem;
-      padding-bottom: .12rem;
+    i {
+      display: inline-block;
+      width: 100%;
+      vertical-align: top;
+      font-size: .6rem;
+      color: #fff;
+    }
+    .label {
+      width: 100%;
+      padding-top: 6px;
+      font-size: .26rem;
+      color: #eee;
+    }
+    .explain {
+      width: 100%;
+      padding-top: 8px;
       font-size: 13px;
-      border-bottom: 1px dashed #e6e6e6;
+      color: #fff;
+    }
+  }
+  .notice-degree {
+    .degree-guide {
+      font-size: 13px;
       @size: 26px;
       li {
         height: @size;
@@ -642,9 +756,8 @@ export default {
         height: @size;
         float: left;
         border-radius: 3px;
-        .border();
-        /*background-color: @navy;
-        color: #eee;*/
+        background-color: @navy;
+        color: #eee;
         text-align: center;
         line-height: @size;
       }
@@ -718,48 +831,6 @@ export default {
         color: #ffbf2a;
       }
     }*/
-    .degree-line {
-      display: flex;
-      width: 100%;
-      height: 16px;
-      margin-top: .3rem;
-      border-radius: 8px;
-      overflow: hidden;
-      span {
-        height: 100%;
-        font-size: 12px;
-        color: #fff;
-        line-height: 16px;
-        text-align: center;
-        &:nth-child(1) {
-          flex: 2;
-          background-color: #dedede;
-        }
-        &:nth-child(2) {
-          flex: 3;
-          background-color: #d0cece;
-        }
-        &:nth-child(3) {
-          flex: 4;
-          background-color: #bdbdbd;
-        }
-        &:nth-child(4) {
-          flex: 7;
-          background-color: #9c9c9c;
-        }
-        &:nth-child(5) {
-          flex: 11;
-          background-color: #828282;
-        }
-        &:nth-child(6) {
-          flex: 16;
-          background-color: #6b6b6b;
-        }
-        &.active {
-          background-color: @darkenRed;
-        }
-      }
-    }
   }
 }
 @media screen and (max-width: 435px){
@@ -803,6 +874,40 @@ export default {
         width: 5.1rem;
         height: 4.14rem;
       }
+    }
+    .admin-menu {
+      width: 100%;
+      flex-wrap: wrap;
+      .menu-category {
+        height: auto;
+        min-width: 100%;
+        margin-top: 10px;
+        .category-container {
+          width: 94%;
+        }
+        .category-wrapper {
+          padding-top: 16px;
+        }
+      }
+    }
+    .notice-perviewer {
+      height: 5rem;
+      margin-right: 0;
+      margin-bottom: 10px;
+      padding-left: 6px;
+      padding-right: 6px;
+      i {
+        font-size: 30px;
+      }
+      .label {
+        font-size: 20px;
+      }
+    }
+    .notice-content {
+      flex-wrap: wrap;
+    }
+    .notice-perviewer {
+      width: 100%;
     }
   }
 }

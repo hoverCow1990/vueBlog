@@ -19,8 +19,14 @@ export default {
   .pageTab {
     padding-left: 10px;
   }
+  .msgBoard-form {
+    box-sizing: border-box;
+    padding-right: .2rem;
+  }
 }
 @media screen and (max-width: 435px){
-
+  .messagePage-container {
+    width: 100%;
+  }
 }
 </style>
