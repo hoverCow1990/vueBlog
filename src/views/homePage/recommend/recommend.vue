@@ -7,7 +7,7 @@
         <li class="menu-category recommend">
           <div class="category-container">
             <div class="title">
-              <p>老牛推荐</p>
+              <p><i class="iconfont icon-gengduo"></i>老牛推荐</p>
               <span>more</span>
             </div>
             <div class="category-wrapper">
@@ -27,7 +27,7 @@
         <li class="menu-category connect">
           <div class="category-container">
             <div class="title">
-              <p>联系老牛</p>
+              <p><i class="iconfont icon-gengduo"></i>联系老牛</p>
             </div>
             <div class="category-wrapper">
               <div class="category-perviewer">
@@ -48,7 +48,7 @@
         <li class="menu-category friend">
           <div class="category-container">
             <div class="title">
-              <p>友情连接</p>
+              <p><i class="iconfont icon-gengduo"></i>友情连接</p>
             </div>
             <div class="category-wrapper">
               <div class="category-perviewer">
@@ -195,6 +195,10 @@ export default {
         cursor: pointer;
         .hoverFont;
       }
+      i {
+        padding-right: 6px;
+        font-size: 15px;
+      }
     }
     .category-wrapper {
       padding-top: 25px;
@@ -285,7 +289,7 @@ export default {
           transform: rotate(45deg);
         }
       }
-      i {
+      .menu-list i {
         display: inline-block;
         font-size: 23px;
         min-width: 28px;

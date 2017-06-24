@@ -2,163 +2,272 @@
   <section id='adminPage'>
     <cow-header-filler></cow-header-filler>
     <div class="container adminPage-container">
-      <div class="admin-hd">
-        <div class="admin-feature">
-          <div class="feature">
-            <div class="feature-perviewer">
+      <div class="admin-topBar">
+        <div class="topBar-container">
+          <div class="user">
+            <div class="user-logo">
               <img src="./images/user.jpg">
             </div>
-            <ul class="feature-info">
-              <li class="name">老实的牛<i class="iconfont icon-huiyuan2"></i></li>
-              <li class="degree">
-                <span class="label">等级: </span>
-                <div class="tag"><span>Lv</span><span>6</span></div>
-              </li>
-              <li class="alias"><span class="label">积分: </span>1575</li>
-              <li class="alias"><span class="label">称号: </span>牛哥的大老婆</li>
-            </ul>
+            <div class="user-summary">
+              <div class="summary-hd">
+                <p class="name">老<span>实的牛</span></p>
+                <div class="tag">
+                  <span>Lv</span>
+                  <span>6</span>
+                </div>
+              </div>
+              <p class="introduce">超级喜欢Javascript, 最近爱上用Vue开发的快感,嘿嘿</p>
+            </div>
+          </div>
+          <div class="sign" :class='userData.hasSigned?"":"active"'>
+            <p><i class="iconfont icon-huiyuan2"></i>签到</p>
+            <p>{{ new Date() | cow-parseTime(false) }}</p>
           </div>
         </div>
-        <div class="admin-info">
-          <div class="bd-degree">
+      </div>
+      <div class="admin-bd">
+        <div class="admin-perviewer">
+          <div class="admin-title account">
+            <p><i class="iconfont icon-game"></i>Account Center</p>
+            <span><i class="iconfont icon-bi"></i>修改信息</span>
+          </div>
+          <ul class="perviewer-list">
+            <li>
+              <p class='label'>称号</p>
+              <p class='val'>{{ userData.alias }}</p>
+            </li>
+            <li class="score">
+              <p class='label'>会员积分</p>
+              <p class='val'>{{ userData.score }}</p>
+            </li>
+            <li>
+              <p class='label'>博客主页</p>
+              <p class='val'><a :href="userData.blog">{{ userData.blog }}</a></p>
+            </li>
+            <li>
+              <p class='label'>Github</p>
+              <p class='val'><a :href="userData.git">{{ userData.git }}</a></p>
+            </li>
+            <li>
+              <p class='label'>qq账号</p>
+              <p class='val'>{{ userData.qq }}</p>
+            </li>
+            <li class="talent">
+              <p class='label'>掌握技能</p>
+              <p class='val'><span v-for='item of userData.talent'>{{ item }}</span></p>
+            </li>
+          </ul>
+        </div>
+        <div class="admin-project">
+          <ul class="project-list">
+            <li>
+              <div class="project-viewport">
+                <img src="./images/1.jpg">
+                <div class="mask">
+                  <p>bilibili仿站</p>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="project-viewport">
+                <img src="./images/2.jpg">
+                <div class="mask">
+                  <p>react项目</p>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="project-viewport">
+                <img src="./images/3.jpg">
+                <div class="mask">
+                  <p>css3组图</p>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="project-upload">
+                <p><i class="iconfont icon-xiazai"></i>上传你的作品</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <ul class="admin-menu">
+          <li class="menu-category collection">
+            <div class="category-container">
+              <div class="title">
+                <p><i class="iconfont icon-gengduo"></i>收藏文章</p><span>more</span>
+              </div>
+              <div class="category-wrapper">
+                <ul class="menu-list">
+                  <li v-for='item of collectionList'>
+                    <router-link :to="item.link">{{ item.name }}</router-link>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </li>
+          <li class="menu-category love">
+            <div class="category-container">
+              <div class="title">
+                <p><i class="iconfont icon-gengduo"></i>点赞文章</p><span>more</span>
+              </div>
+              <div class="category-wrapper">
+                <ul class="menu-list">
+                  <li v-for='item of loveList'>
+                    <router-link :to="item.link">{{ item.name }}</router-link>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </li>
+          <li class="menu-category game">
+            <div class="category-container">
+              <div class="title">
+                <p><i class="iconfont icon-gengduo"></i>竞技生涯</p><span>more</span>
+              </div>
+              <div class="category-wrapper">
+                <ul class="menu-list">
+                  <li v-for="item of gameList">
+                    <router-link :to="item.link">{{ item.name }}</router-link>
+                    <p class="score"><span>{{ item.rank }}</span>名</p>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </li>
+        </ul>
+        <!-- <div class="admin-title degree">
+          <p><i class="iconfont icon-dengji1"></i>Level</p>
+        </div>
+        <div class="bd-degree">
+          <p class="degree-explain"><span>奖励说明 : </span>{{ showExplain }}</p>
+          <ul class="degree-guide">
+            <li v-for="list of degreeGuide" v-once>
+              <div class="scroll">+{{ list.add }}</div>
+              <p><span v-for="item of list.list" @mouseenter="showDegreeGuide(item.info)">{{ item.label }}</span></p>
+            </li>
+          </ul>
+          <div class="degree-cal">
+            <p class="rank">会员排行 : <span>01</span></p>
+            <p class="all">当前得分 : <span>1283</span></p>
+            <p class="next">升级所需 : <span>32</span></p>
+          </div> -->
+         <!--  <div class="degree-pointer">
+            <div class="pointer">
+              <i class="inconFont icon-zuobiao1"></i>
+            </div>
+          </div> -->
+          <!-- <div class="degree-line">
             <span>Lv1</span>
             <span class="active">Lv2</span>
             <span>Lv3</span>
             <span>Lv4</span>
             <span>Lv5</span>
             <span>Lv6</span>
-          </div>
+          </div> -->
         </div>
-        <!-- <div class="admin-info">
-          <div class="info-box article">
-            <div class="box-container">
-              <div class="info-score">
-                <p>文章积分: <span>1000</span></p>
-              </div>
-              <p class="count">阅读篇数： <span>26</span></p>
-              <div class="new">
-                <p class="label">最近阅读：</p>
-                <a href="#">联和利华天猫首页3稿</a>
-                <a href="#">纯hover流推广页面</a>
-                <a href="#">明星翻转盒子</a>
-                <a href="#">3D 翻转式轮播体</a>
-                <a href="#">React与Redux实现后台管理系统</a>
-                <a href="#">百度地图二次封装  </a>
-              </div>
-            </div>
-          </div>
-          <div class="info-box game">
-            <div class="box-container">
-              <div class="info-score">
-                <p>游戏积分: <span>270</span></p>
-              </div>
-              <p class="count">游戏次数：<span>12</span></p>
-              <div class="new">
-                <p class="label">最近游戏：</p>
-                <a href="#">捕鱼达人</a>
-                <a href="#">推箱子</a>
-                <a href="#">大家一起来找茬</a>
-              </div>
-              <div class="btn">游戏大厅</div>
-            </div>
-          </div>
-          <div class="info-box other">
-            <div class="box-container">
-              <div class="info-score">
-                <p>其余积分: <span>215</span></p>
-              </div>
-              <p class="count">评论次数：<span>6</span></p>
-              <div class="new">
-                <p class="label">最近评论：</p>
-                <a href="#">嘿嘿嘿你真吊</a>
-                <a href="#">见到 小牛牛</a>
-                <a href="#">大家一起来找茬</a>
-              </div>
-              <div class="btn">留言中心</div>
-            </div>
-          </div>
-        </div> -->
-      </div>
-      <div class="admin-bd">
-        <!-- <div class="bd-degree">
-          <span>Lv1</span>
-          <span class="active">Lv2</span>
-          <span>Lv3</span>
-          <span>Lv4</span>
-          <span>Lv5</span>
-          <span>Lv6</span>
-        </div> -->
       </div>
     </div>
   </section>
 </template>
 
 <script>
+import mixin from './mixin'
 export default {
-
+  data () {
+    return {
+      userData: {
+        hasSigned: false,
+        name: '老实的牛',
+        score: '1215',
+        lv: 6,
+        qq: '547007933',
+        git: 'https://github.com/hoverCow1990',
+        blog: 'http://www.web-jackiee.com/',
+        alias: '老牛的宠幸',
+        talent: ['html', 'css', 'javascript', 'vue', 'bootstrip', 'jquery', 'webpack', 'gulp', 'react']
+      },
+      showExplain: '签到后即获取10分奖励'
+    }
+  },
+  mixins: [mixin],
+  methods: {
+    // 切换展示的指示文案
+    showDegreeGuide (info) {
+      this.$data.showExplain = info
+    }
+  }
 }
 </script>
 
 <style lang='less'>
 .adminPage-container {
+  @darkenRed: #da1f0a;
   margin-top: .5rem;
-  padding: .2rem .2rem .8rem;
+  padding-bottom: .8rem;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
   background-color: #fff;
-  .admin-hd {
+  .admin-topBar {
+    position: relative;
     display: flex;
-    .admin-feature {
-      width: 130px;
-      float: left;
+    width: 100%;
+    height: 160px;
+    align-items: center;
+    min-height: 55px;
+    background-image: url('./images/blue.jpg');
+    .topBar-container {
+      padding-left: .2rem;
+      padding-right: .2rem;
     }
-    .feature-perviewer {
-      width: 85px;
-      height: 85px;
-      margin-bottom: .08rem;
-      border-radius: 2px;
-      border: 3px solid #222;
+    .user {
+      display: flex;
+    }
+    .user-logo {
+      width: .85rem;
+      height: .85rem;
+      min-width: 76px;
+      min-height: 76px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, .6);
       overflow: hidden;
     }
-    .feature {
-      img {
-        display: block;
-        width: 100%;
-        height: 100%;
-      }
-      li {
-        display: flex;
-        padding-bottom: .06rem;
-        padding-top: .06rem;
-        font-size: 13px;
-        align-items: center;
-        color: #888;
-      }
+    .user-summary {
+      flex: 1;
+      padding-left: .16rem;
+    }
+    .summary-hd {
+      display: flex;
+      align-items: center;
+      padding-top: .1rem;
       .name {
-        font-size: 16px;
-        letter-spacing: 1px;
-        margin-bottom: .07rem;
-        border-bottom: 1px dashed #d5d5d5;
-        color: #222;
-      }
-      .label {
-        padding-right: 10px;
-      }
-      i {
-        padding-left: 4px;
-        font-size: 19px;
-        color: #8c20ff;
+        font-size: 22px;
+        color: #eee;
+        line-height: 27px;
+        letter-spacing: 2px;
+        span {
+          padding-right: 7px;
+          padding-left: 3px;
+          margin-left: 2px;
+          border-radius: 0 3px 2px 0;
+          border-top: 1px solid rgba(255, 255,255, .2);
+          border-right: 1px solid rgba(255, 255,255, .2);
+          font-size: 16px;
+        }
       }
       .tag {
         display: flex;
         width: 52px;
         height: 18px;
         float: left;
+        margin-left: 8px;
         font-size: 13px;
         line-height: 18px;
         border-radius: 2px;
         text-align: center;
         color: #eee;
         overflow: hidden;
+        transform: translateY(1px);
+        box-shadow: 0 0 2px rgba(0, 0, 0,.25);
         span:first-child {
           width: 32px;
           background-color: #222;
@@ -169,21 +278,458 @@ export default {
         }
       }
     }
-    .admin-info {
-      flex: 1;
-      padding-left: .7rem;
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
     }
-    .bd-degree {
+    .introduce {
+      padding-top: 15px;
+      font-size: 12px;
+      color: #eee;
+    }
+  }
+  .sign {
+    position: absolute;
+    width: 98px;
+    height: 47px;
+    right: .2rem;
+    top: .2rem;
+    border-radius: 4px;
+    overflow: hidden;
+    opacity: .5;
+    cursor: not-allowed;
+    p:first-child {
+      height: 28px;
+      background-color: rgba(255, 255, 255, .2);
+      line-height: 29px;
+      font-size: 14px;
+      color: #eee;
+      letter-spacing: 1px;
+      text-indent: 20px;
+      transition: .2s;
+    }
+    p:last-child {
+      height: 19px;
+      background-color: rgba(255, 255, 255, .1);
+      line-height: 18px;
+      font-size: 12px;
+      text-indent: 16px;
+      color: #eee;
+    }
+    &.active {
+      opacity: 1;
+      cursor: pointer;
+      &:hover {
+        p:first-child {
+          background-color: darken(@primary, 10%);
+        }
+      }
+    }
+    i {
+      padding-right: 6px;
+    }
+  }
+  .admin-bd {
+    padding-left: .2rem;
+    padding-right: .2rem;
+  }
+  .admin-title {
+    display: flex;
+    padding-top: .2rem;
+    padding-bottom: 6px;
+    justify-content: space-between;
+    overflow: hidden;
+    &.account {
+      border-bottom: 1px dashed #e6e6e6;
+    }
+    &.project {
+      align-items: center;
+    }
+    p {
+      font-size: .26rem;
+      font-family: Arial;
+      color: #333;
+      i {
+        padding-right: 10px;
+        font-size: 26px;
+        color: @darkenRed;
+      }
+    }
+    span {
+      padding-top: .12rem;
+      font-size: 13px;
+      color: #666;
+      transition: color .2s;
+      cursor: pointer;
+      &:hover {
+        color: darken(@primary, 10%);
+      }
+      i {
+        padding-right: 3px;
+      }
+    }
+  }
+  .perviewer-list {
+    padding-top: .12rem;
+    border-bottom: 1px dashed #e6e6e6;
+    li {
+      display: flex;
+      padding-top: 8px;
+      padding-bottom: 8px;
+      font-size: 13px;
+    }
+    .score {
+      .val {
+        font-weight: 600;
+        color: @red;
+      }
+    }
+    .label {
+      position: relative;
+      width: 80px;
+      float: left;
+      color: #888;
+      &:after {
+        position: absolute;
+        content: ':';
+        right: 16px;
+      }
+    }
+    .val {
+      flex: 1;
+      color: #5a5a5a;
+    }
+    a {
+      color: @primary;
+    }
+    .talent {
+      .val {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        transform: translateY(-10px);
+      }
+      span {
+        margin-top: 10px;
+        padding: 2px 8px 3px;
+        margin-right: 10px;
+        border-radius: 3px;
+        background-color: @navy;
+        color: #eee;
+      }
+    }
+  }
+  .project-list {
+    display: flex;
+    padding-top: .2rem;
+    padding-bottom: .2rem;
+    li {
+      padding: 6px;
+      margin-right: .2rem;
+      border-radius: 2px;
+      .border();
+      cursor: pointer;
+    }
+    .project-viewport {
+      position: relative;
+      width: 2.55rem;
+      height: 2.07rem;
+      overflow: hidden;
+      &:hover {
+        .mask {
+          opacity: 1;
+        }
+      }
+    }
+    .project-upload {
+      display: flex;
+      position: relative;
+      width: 2.55rem;
+      height: 2.07rem;
+      align-items: center;
+      font-size: 14px;
+      color: #888;
+      text-align: center;
+      border: 1px dashed #e6e6e6;
+      p {
+        width: 100%;
+      }
+      i {
+        padding-right: 2px;
+      }
+    }
+    img {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+    }
+    .mask {
+      position: absolute;
+      display: flex;
+      box-sizing: border-box;
+      width: 100%;
+      height: 100%;
+      padding: .2rem;
+      top: 0;
+      left: 0;
+      align-items: center;
+      z-index: 2;
+      background-color: rgba(0, 0, 0, .6);
+      color: #eee;
+      opacity: 0;
+      transition: opacity .3s;
+      p {
+        width: 100%;
+        font-size: 18px;
+        letter-spacing: 1px;
+        text-align: center;
+      }
+    }
+  }
+  .admin-menu {
+    display: flex;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .menu-category {
+    flex: 1;
+    height: 320px;
+    .border();
+    @borderColor: #f5f5f5;
+    &:first-child {
+      border-right: 1px solid @borderColor;
+    }
+    &:last-child {
+      border-left: 1px solid @borderColor;
+    }
+    .category-container {
+      width: 90%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .title {
+      position: relative;
+      height: 20px;
+      padding-top: .15rem;
+      padding-bottom: .15rem;
+      border-bottom: 2px solid #eee;
+      line-height: 20px;
+      p {
+        float: left;
+        font-size: 14px;
+        letter-spacing: 1px;
+        font-weight: 600;
+        color: #333;
+      }
+      i{
+        padding-right: 4px;
+        font-size: 15px;
+        font-weight: 100;
+        color: #333;
+      }
+      span {
+        display: block;
+        height: 100%;
+        float: right;
+        font-size: 12px;
+        color: #777;
+        transform: translateY(2px);
+        cursor: pointer;
+      }
+    }
+    .category-wrapper {
+      padding-top: 25px;
+    }
+    .category-perviewer {
+      width: 100%;
+      height: .85rem;
+      padding-bottom: .2rem;
+      cursor: pointer;
+      img {
+        display: block;
+        width: 100%;
+        border-radius: 3px;
+        transition: opacity .3s;
+        &:hover {
+          opacity: .8;
+        }
+      }
+    }
+    .menu-list {
+      font-size: 13px;
+      color: #777;
+      li {
+        padding-bottom: 12px;
+        overflow: hidden;
+        cursor: pointer;
+      }
+      a {
+        display: inline-block;
+        color: #777;
+        transition: color .1s;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+      .score {
+        float: right;
+        font-size: 14px;
+        span {
+          padding-right: 5px;
+          font-weight: 600;
+          color: darken(#ffd470, 30%);
+          font-family: "Consolas", "Bitstream Vera Sans Mono", "Courier New", Courier, monospace;
+        }
+      }
+    }
+    &.collection {
+      .title {
+        border-color: #ff3c3c;
+      }
+      .menu-list {
+        a:hover {
+          color: #ff3c3c;
+        }
+      }
+    }
+    &.love {
+      .title {
+        border-color: #0087ec;
+      }
+      .menu-list {
+        a:hover {
+          color: #0087ec;
+        }
+      }
+    }
+    &.game {
+      .title {
+        border-color: #ffd470;
+      }
+      .menu-list {
+        a:hover {
+          color: #ffd470;
+        }
+      }
+    }
+  }
+  .bd-degree {
+    .degree-explain {
+      padding-top: 5px;
+      padding-bottom: 5px;
+      margin-top: 5px;
+      border-radius: 2px 0 0 2px;
+      font-size: 13px;
+      color: #555;
+    }
+    .degree-guide {
+      padding-top: .12rem;
+      padding-bottom: .12rem;
+      font-size: 13px;
+      border-bottom: 1px dashed #e6e6e6;
+      @size: 26px;
+      li {
+        height: @size;
+        padding-top: 8px;
+        padding-bottom: 8px;
+      }
+      .scroll {
+        box-sizing: border-box;
+        width: 35px;
+        height: @size;
+        float: left;
+        border-radius: 3px;
+        .border();
+        /*background-color: @navy;
+        color: #eee;*/
+        text-align: center;
+        line-height: @size;
+      }
+      p {
+        float: left;
+        padding-left: 12px;
+        line-height: @size;
+        color: #777;
+      }
+      span {
+        padding-right: 12px;
+        .border(right);
+        cursor: default;
+        &:hover {
+          color: @primary;
+        }
+        &:not(:first-child) {
+          padding-left: 12px;
+        }
+      }
+    }
+    .degree-cal {
+      padding-top: 14px;
+      font-size: 14px;
+      overflow: hidden;
+      color: #666;
+      p {
+        padding-top: 6px;
+        float: left;
+        padding-right: .2rem;
+        &.rank span{
+          color: @darkenRed;
+        }
+        &.all span{
+          color: #888; /*darken(#ffbf2a, 5%);*/
+        }
+        &.next {
+          span {
+            color: #888;
+          }
+        }
+      }
+      span {
+        font-size: 22px;
+/*        font-weight: 600;*/
+      }
+    }
+/*    .degree-pointer {
+      position: relative;
+      padding-top: .3rem;
+      height: 80px;
+      .pointer {
+        position: absolute;
+        width: 30px;
+        height: 32px;
+        left: 10%;
+        &:after {
+          position: absolute;
+          content: '';
+          width: 0;
+          height: 60px;
+          top: 35px;
+          left: 14px;
+          border-left: 1px dashed #c7c7c7;
+        }
+      }
+      i {
+        display: inline-block;
+        font-size: 30px;
+        vertical-align: top;
+        color: #ffbf2a;
+      }
+    }*/
+    .degree-line {
       display: flex;
       width: 100%;
-      height: .16rem;
-      border-radius: .08rem;
+      height: 16px;
+      margin-top: .3rem;
+      border-radius: 8px;
       overflow: hidden;
       span {
         height: 100%;
         font-size: 12px;
         color: #fff;
-        line-height: .16rem;
+        line-height: 16px;
         text-align: center;
         &:nth-child(1) {
           flex: 2;
@@ -210,85 +756,54 @@ export default {
           background-color: #6b6b6b;
         }
         &.active {
-          background-color: #8c20ff;
+          background-color: @darkenRed;
         }
       }
     }
-    /*.info-box  {
-      flex: 1;
-      padding-top: .1rem;
-      &:nth-child(1) .box-container,
-      &:nth-child(2) .box-container{
-        .border(right);
-      }
-    }
-    .box-container {
-      position: relative;
-      width: 94%;
-      height: 250px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    .info-score {
-      font-size: 14px;
-      color: #555;
-      span {
-        padding-left: 5px;
-        font-size: .26rem;
-        font-family:'Comic Sans MS', 'Arial', 'Georgia', "Times New Roman", 'Times', 'Microsoft YaHei',serif;
-        color: @navy;
-      }
-    }
-    .count {
-      padding-top: .12rem;
-      font-size: 13px;
-      color: #666;
-      span {
-        font-weight: bold;
-        color: @navy;
-      }
-    }
-    .new {
-      padding-top: .15rem;
-      font-size: 13px;
-      color: #666;
-      p {
-        padding-bottom: 5px;
-      }
-      a {
-        display: inline-block;
-        padding-top: 8px;
-        padding-right: 10px;
-        color: @primary;
-        &:hover {
-          color: darken(@primary, 15%);
-        }
-      }
-    }
-    .btn {
-      position: absolute;
-      width: 86px;
-      height: 35px;
-      right: 30px;
-      bottom: 30px;
-      text-align: center;
-      line-height: 35px;
-      border-radius: 3px;
-      font-size: 15px;
-      color: #fff;
-      cursor: pointer;
-      background-color: @navy;
-      transition: background-color .2s;
-      &:hover {
-        background-color: darken(@navy, 5%);
-      }
-    }*/
-  }
-  .admin-bd {
-    padding-top: .6rem;
   }
 }
 @media screen and (max-width: 435px){
-
+  .adminPage-container {
+    width: 100%;
+    .admin-topBar{
+      .topBar-container {
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+      .user-summary {
+        padding-left: 10px;
+      }
+      .introduce {
+        padding-top: 10px;
+      }
+    }
+    .sign.active {
+      right: 0;
+      top:0;
+      border-radius: 0 0 0 4px;
+    }
+    .admin-bd {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+    .admin-title {
+      padding-top: 12px;
+      padding-bottom: 10px;
+      p {
+        font-size: 20px;
+      }
+      span {
+        padding-top: .35rem;
+      }
+    }
+    .project-list {
+      overflow-x: scroll;
+      .project-viewport,
+      .project-upload{
+        width: 5.1rem;
+        height: 4.14rem;
+      }
+    }
+  }
 }
 </style>
