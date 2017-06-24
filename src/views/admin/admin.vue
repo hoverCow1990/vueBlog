@@ -13,10 +13,10 @@
                 <p class="name">老<span>实的牛</span></p>
                 <div class="tag">
                   <span>Lv</span>
-                  <span>6</span>
+                  <span>{{ userData.lv }}</span>
                 </div>
               </div>
-              <p class="introduce">超级喜欢Javascript, 最近爱上用Vue开发的快感,嘿嘿</p>
+              <p class="introduce">{{ userData.introduce }}</p>
             </div>
           </div>
           <div class="sign" :class='userData.hasSigned?"":"active"'>
@@ -38,13 +38,17 @@
             <span><i class="iconfont icon-bi"></i>修改信息</span>
           </div>
           <ul class="perviewer-list">
-            <li>
+            <li class="text">
               <p class='label'>级别</p>
               <p class='val'>{{ userData.alias }}</p>
             </li>
-            <li class="score">
+            <li class="text">
               <p class='label'>会员积分</p>
               <p class='val'>{{ userData.score }}</p>
+            </li>
+            <li class="text">
+              <p class='label'>下次升级</p>
+              <p class='val'>265</p>
             </li>
             <li>
               <p class='label'>博客主页</p>
@@ -54,7 +58,7 @@
               <p class='label'>Github</p>
               <p class='val'><a :href="userData.git">{{ userData.git }}</a></p>
             </li>
-            <li>
+            <li class="text">
               <p class='label'>qq账号</p>
               <p class='val'>{{ userData.qq }}</p>
             </li>
@@ -91,7 +95,7 @@
               </div>
             </li>
             <li>
-              <div class="project-upload">
+              <div class="project-upload" @click="showUploadBox">
                 <p><i class="iconfont icon-xiazai"></i>上传你的作品</p>
               </div>
             </li>
@@ -161,38 +165,11 @@
             </div>
           </div>
         </div>
-        <!-- <div class="admin-title degree">
-          <p><i class="iconfont icon-dengji1"></i>Level</p>
-        </div> -->
-        <!-- <div class="bd-degree">
-          <p class="degree-explain"><span>奖励说明 : </span>{{ showExplain }}</p>
-          <ul class="degree-guide">
-            <li v-for="list of degreeGuide" v-once>
-              <div class="scroll">+{{ list.add }}</div>
-              <p><span v-for="item of list.list" @mouseenter="showDegreeGuide(item.info)">{{ item.label }}</span></p>
-            </li>
-          </ul>
-          <div class="degree-cal">
-            <p class="rank">会员排行 : <span>01</span></p>
-            <p class="all">当前得分 : <span>1283</span></p>
-            <p class="next">升级所需 : <span>32</span></p>
-          </div> -->
-         <!--  <div class="degree-pointer">
-            <div class="pointer">
-              <i class="inconFont icon-zuobiao1"></i>
-            </div>
-          </div> -->
-          <!-- <div class="degree-line">
-            <span>Lv1</span>
-            <span class="active">Lv2</span>
-            <span>Lv3</span>
-            <span>Lv4</span>
-            <span>Lv5</span>
-            <span>Lv6</span>
-          </div> -->
         </div>
       </div>
     </div>
+    <cow-user-infoBox :isShow='isInfoBoxShow' @hiddenInfoBoxShow='hiddenInfoBoxShow'></cow-user-infoBox>
+    <cow-upload-box :isShow='isUploadShow' @hiddenUploadBox='hiddenUploadBox'></cow-upload-box>
   </section>
 </template>
 
@@ -205,23 +182,58 @@ export default {
         hasSigned: false,
         name: '老实的牛',
         score: '1215',
-        lv: 1,
-        qq: '547007933',
+        lv: 2,
+        qq: '',
         git: 'https://github.com/hoverCow1990',
         blog: 'http://www.web-jackiee.com/',
-        alias: '老牛的宠幸',
+        alias: '牛哥的宠幸',
+        introduce: '超级喜欢Javascript, 最近爱上用Vue开发的快感,嘿嘿',
         talent: ['html', 'css', 'javascript', 'vue', 'bootstrip', 'jquery', 'webpack', 'gulp', 'react']
       },
       showExplain: '在会员中心内进行签到任务可随机获得5-10分不等',
-      showLable: '每日签到'
+      showLable: '每日签到',
+      isUploadShow: false,
+      isInfoBoxShow: false
     }
   },
   mixins: [mixin],
+  created () {
+    this.requestUserData()
+  },
   methods: {
+    // 请求用户数据
+    requestUserData () {
+      this.testDateComplete()
+    },
     // 切换展示的指示文案
     showDegreeGuide (item) {
       this.$data.showExplain = item.info
       this.$data.showLable = item.label
+    },
+    // 显示上传作品的盒子
+    showUploadBox () {
+      this.$data.isUploadShow = true
+    },
+    // 隐藏上传作品的盒子
+    hiddenUploadBox () {
+      this.$data.isUploadShow = false
+    },
+    // 显示修改资料
+    showInfoBoxShow () {
+      this.$data.isInfoBoxShow = true
+    },
+    // 隐藏修改资料
+    hiddenInfoBoxShow () {
+      this.$data.isInfoBoxShow = false
+    },
+    // 监测资料完整性
+    testDateComplete () {
+      let {qq, talent, introduce} = this.$data.userData
+      if (!qq | !introduce | !talent.length) {
+        setTimeout(() => {
+          this.showInfoBoxShow()
+        })
+      }
     }
   }
 }
@@ -230,6 +242,7 @@ export default {
 <style lang='less'>
 .adminPage-container {
   @darkenRed: #da1f0a;
+  @darkenVoilet: #871dfb;
   margin-top: .5rem;
   padding-bottom: .8rem;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
@@ -393,7 +406,7 @@ export default {
         background-color: #6b6b6b;
       }
       &.active {
-        background-color: #871dfb;
+        background-color: @darkenRed;
       }
     }
   }
@@ -458,7 +471,7 @@ export default {
       padding-bottom: 8px;
       font-size: 13px;
     }
-    .score {
+    .text {
       .val {
         font-weight: 600;
         color: #222;
@@ -779,58 +792,6 @@ export default {
         }
       }
     }
-    .degree-cal {
-      padding-top: 14px;
-      font-size: 14px;
-      overflow: hidden;
-      color: #666;
-      p {
-        padding-top: 6px;
-        float: left;
-        padding-right: .2rem;
-        &.rank span{
-          color: @darkenRed;
-        }
-        &.all span{
-          color: #888; /*darken(#ffbf2a, 5%);*/
-        }
-        &.next {
-          span {
-            color: #888;
-          }
-        }
-      }
-      span {
-        font-size: 22px;
-/*        font-weight: 600;*/
-      }
-    }
-/*    .degree-pointer {
-      position: relative;
-      padding-top: .3rem;
-      height: 80px;
-      .pointer {
-        position: absolute;
-        width: 30px;
-        height: 32px;
-        left: 10%;
-        &:after {
-          position: absolute;
-          content: '';
-          width: 0;
-          height: 60px;
-          top: 35px;
-          left: 14px;
-          border-left: 1px dashed #c7c7c7;
-        }
-      }
-      i {
-        display: inline-block;
-        font-size: 30px;
-        vertical-align: top;
-        color: #ffbf2a;
-      }
-    }*/
   }
 }
 @media screen and (max-width: 435px){

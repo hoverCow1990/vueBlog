@@ -3,6 +3,8 @@ import HeaderFiller from './headerFiller/headerFiller'
 import TitleBar from './titleBar/titleBar'
 import Footer from './footer/footer'
 import LoginBox from './loginBox/loginBox'
+import UploadBox from './uploadBox/uploadBox'
+import UserInfoBox from './userInfoBox/userInfoBox'
 import ArticlePlane from './articlePlane/articlePlane'
 import SideNav from './sideNav/sideNav'
 import PageTab from './pageTab/pageTab'
@@ -15,6 +17,8 @@ export default {
   Footer,
   TitleBar,
   LoginBox,
+  UploadBox,
+  UserInfoBox,
   ArticlePlane,
   SideNav,
   PageTab,
