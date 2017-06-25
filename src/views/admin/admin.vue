@@ -25,31 +25,37 @@
           </div>
         </div>
       </div>
-      <div class="degree-line">
-        <span v-for="(item, index) of new Array(6)" :class="index + 1 === userData.lv?'active':''">Lv{{ index + 1}}</span>
-      </div>
-      <div class="lv-line">
-        <span></span>
+      <div class="admin-degreeLine">
+        <div class="degree-line">
+          <span v-for="(item, index) of new Array(6)" :class="index + 1 === userData.lv?'active':''">Lv{{ index + 1}}</span>
+        </div>
+        <div class="lv-line">
+          <span></span>
+        </div>
       </div>
       <div class="admin-bd">
-        <div class="admin-perviewer">
+        <div class="admin-breif">
           <div class="admin-title account">
             <p>Account Center</p>
-            <span><i class="iconfont icon-bi"></i>修改信息</span>
+            <span @click="showInfoBoxShow"><i class="iconfont icon-bi"></i>修改信息</span>
           </div>
-          <ul class="perviewer-list">
+          <ul class="breif-list">
+            <li class="text">
+              <p class='label'>昵称</p>
+              <p class='val'>{{ userData.name }}</p>
+            </li>
             <li class="text">
               <p class='label'>级别</p>
               <p class='val'>{{ userData.alias }}</p>
             </li>
-            <li class="text">
+         <!--    <li class="text">
               <p class='label'>会员积分</p>
               <p class='val'>{{ userData.score }}</p>
             </li>
             <li class="text">
               <p class='label'>会员排名</p>
               <p class='val'>03</p>
-            </li>
+            </li> -->
             <li class="text">
               <p class='label'>qq账号</p>
               <p class='val'>{{ userData.qq }}</p>
@@ -130,28 +136,25 @@
             </div>
           </li>
         </ul>
-        <div class="admin-notice linePort">
-          <div class="notice-content">
-            <div class="notice-perviewer">
-              <div class="perviewer-content">
+        <div class="admin-content scoreline">
+          <div class="content-container">
+            <div class="container-viewport">
+              <div class="viewport-content">
                 <i class="iconfont icon-shandian-copy"></i>
                 <p class="label">当前等级</p>
                 <p class="explain">这里展示你当前等级的展示线性图</p>
               </div>
             </div>
-            <div class="notice-degree">
-              <div class="notice-score clearfix">
+            <div class="container-article">
+              <div class="article-hd clearfix">
                 <div class="score-box">
                   当前积分 : <span>{{ userData.score }}</span>
                 </div>
                 <div class="score-box">
                   会员排名 : <span>03</span>
                 </div>
-                <div class="score-box">
-                  下次升级 : <span>217</span>
-                </div>
               </div>
-              <ul class="degree-linePort">
+              <ul class="scoreline-linePort">
                 <li class="red">
                   <div class="info-box">
                     <label><i class="iconfont icon-star"></i>等级总进度 :</label>
@@ -177,17 +180,17 @@
             </div>
           </div>
         </div>
-        <div class="admin-notice guide">
-          <div class="notice-content">
-            <div class="notice-perviewer">
-              <div class="perviewer-content">
+        <div class="admin-content guide">
+          <div class="content-container">
+            <div class="container-viewport">
+              <div class="viewport-content">
                 <i class="iconfont icon-dengji1"></i>
                 <p class="label">{{ showLable }}</p>
                 <p class="explain">{{ showExplain }}</p>
               </div>
             </div>
-            <div class="notice-degree">
-              <ul class="degree-guide">
+            <div class="container-article">
+              <ul class="guide-guidPort">
                 <li v-for="list of degreeGuide" v-once>
                   <div class="scroll">+{{ list.add }}</div>
                   <p><span v-for="item of list.list" @mouseenter="showDegreeGuide(item)">{{ item.label }}</span></p>
@@ -250,6 +253,7 @@ export default {
     },
     // 显示修改资料
     showInfoBoxShow () {
+      console.log(1)
       this.$data.isInfoBoxShow = true
     },
     // 隐藏修改资料
@@ -400,59 +404,62 @@ export default {
       padding-right: 6px;
     }
   }
-  .degree-line {
-    display: flex;
-    width: 100%;
-    height: 16px;
-    overflow: hidden;
-    span {
-      height: 100%;
-      font-size: 12px;
-      color: #fff;
-      line-height: 16px;
-      text-align: center;
-      &:nth-child(1) {
-        flex: 2;
-        background-color: #dedede;
-      }
-      &:nth-child(2) {
-        flex: 3;
-        background-color: #d0cece;
-      }
-      &:nth-child(3) {
-        flex: 4;
-        background-color: #bdbdbd;
-      }
-      &:nth-child(4) {
-        flex: 6;
-        background-color: #9c9c9c;
-      }
-      &:nth-child(5) {
-        flex: 8;
-        background-color: #828282;
-      }
-      &:nth-child(6) {
-        flex: 10;
-        background-color: #6b6b6b;
-      }
-      &.active {
-        background-color: @darkenRed;
+  .admin-degreeLine {
+    height: 20px;
+    .degree-line {
+      display: flex;
+      width: 100%;
+      height: 16px;
+      overflow: hidden;
+      span {
+        height: 100%;
+        font-size: 12px;
+        color: #fff;
+        line-height: 16px;
+        text-align: center;
+        &:nth-child(1) {
+          flex: 2;
+          background-color: #dedede;
+        }
+        &:nth-child(2) {
+          flex: 3;
+          background-color: #d0cece;
+        }
+        &:nth-child(3) {
+          flex: 4;
+          background-color: #bdbdbd;
+        }
+        &:nth-child(4) {
+          flex: 6;
+          background-color: #9c9c9c;
+        }
+        &:nth-child(5) {
+          flex: 8;
+          background-color: #828282;
+        }
+        &:nth-child(6) {
+          flex: 10;
+          background-color: #6b6b6b;
+        }
+        &.active {
+          background-color: @darkenRed;
+        }
       }
     }
-  }
-  .lv-line {
-    position: relative;
-    height: 4px;
-    background-color: #e0e0e0;
-    font-size: 4px;
-    span {
-      position: absolute;
-      width: 67%;
-      height: 100%;
-      left: 0;
-      top: 0;
-      background-color: @darkenRed;
-      transition: .2s;
+    .lv-line {
+      position: relative;
+      height: 4px;
+      background-color: #e0e0e0;
+      font-size: 4px;
+      span {
+        position: absolute;
+        width: 67%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        background-color: @darkenRed;
+        transition: .2s;
+      }
     }
   }
   .admin-bd {
@@ -474,12 +481,12 @@ export default {
     p {
       font-size: .26rem;
       font-family: Arial;
-      color: #333;
+      color: #222;
       font-weight: 600;
-      text-shadow: 0 0 1px rgba(0, 0, 0, .1);
+      text-shadow: 0 0 1px rgba(0, 0, 0, .2);
     }
     span {
-      padding-top: .12rem;
+      padding-top: .1rem;
       font-size: 13px;
       color: #666;
       transition: color .2s;
@@ -492,26 +499,20 @@ export default {
       }
     }
   }
-  .perviewer-list {
+  .breif-list {
     padding-top: .12rem;
     border-bottom: 1px dashed #e6e6e6;
     li {
       display: flex;
       padding-top: 8px;
       padding-bottom: 8px;
-      font-size: 13px;
-    }
-    .text {
-      .val {
-        font-weight: 600;
-        color: #505050;
-      }
+      font-size: 14px;
     }
     .label {
       position: relative;
       width: 80px;
       float: left;
-      color: #888;
+      color: #777;
       &:after {
         position: absolute;
         content: ':';
@@ -520,7 +521,7 @@ export default {
     }
     .val {
       flex: 1;
-      color: #888;
+      color: #777;
     }
     a {
       color: @primary;
@@ -537,101 +538,36 @@ export default {
         padding: 2px 8px 3px;
         margin-right: 10px;
         border-radius: 3px;
+        font-size: 12px;
         background-color: @navy;
         color: #eee;
       }
     }
   }
-  .project-list {
-    display: flex;
-    padding-top: .2rem;
-    padding-bottom: .2rem;
-    justify-content: flex-start;
-    li {
-      padding: 6px;
-      margin-right: .2rem;
-      border-radius: 2px;
-      border: 1px solid #e7e7e7;
-      cursor: pointer;
-    }
-    .project-viewport {
-      position: relative;
-      width: 2.55rem;
-      height: 2.07rem;
-      overflow: hidden;
-      &:hover {
-        .mask {
-          opacity: 1;
-        }
-      }
-    }
-    .project-upload {
-      display: flex;
-      position: relative;
-      width: 2.55rem;
-      height: 2.07rem;
-      align-items: center;
-      font-size: 14px;
-      color: #888;
-      text-align: center;
-      border: 1px dashed #e6e6e6;
-      p {
-        width: 100%;
-      }
-      i {
-        padding-right: 2px;
-      }
-    }
-    img {
-      position: absolute;
-      display: block;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-    }
-    .mask {
-      position: absolute;
-      display: flex;
-      box-sizing: border-box;
-      width: 100%;
-      height: 100%;
-      padding: .2rem;
-      top: 0;
-      left: 0;
-      align-items: center;
-      z-index: 2;
-      background-color: rgba(0, 0, 0, .6);
-      color: #eee;
-      opacity: 0;
-      transition: opacity .3s;
-      p {
-        width: 100%;
-        font-size: 18px;
-        letter-spacing: 1px;
-        text-align: center;
-      }
-    }
-  }
   .admin-menu {
     display: flex;
-    border-radius: 3px;
+    border-top: 1px dashed #e6e6e6;
     overflow: hidden;
   }
   .menu-category {
     box-sizing: border-box;
     flex: 1;
     height: 320px;
-    .border();
+    border-bottom: 1px dashed #e6e6e6;
     @borderColor: #f5f5f5;
     &:first-child {
+      padding-right:.15rem;
       border-right: 1px solid @borderColor;
     }
+    &:nth-child(2) {
+      padding-left:.15rem;
+      padding-right:.15rem;
+    }
     &:last-child {
+      padding-left:.15rem;
       border-left: 1px solid @borderColor;
     }
     .category-container {
-      width: 90%;
       margin-left: auto;
       margin-right: auto;
     }
@@ -741,34 +677,87 @@ export default {
       }
     }
   }
-  .admin-notice {
-    margin-top: .3rem;
-    padding: .1rem .16rem;
-    border-radius: 3px;
-    .border();
-    &.guide {
-      .notice-content {
-        align-items: center;
-      }
-      .notice-perviewer{
-        background: url(images/bg2.jpg);
+  .project-list {
+    display: flex;
+    padding-top: .2rem;
+    padding-bottom: .2rem;
+    justify-content: flex-start;
+    li {
+      padding: 4px;
+      margin-right: .2rem;
+      border-radius: 2px;
+      border: 1px solid #e7e7e7;
+      cursor: pointer;
+    }
+    .project-viewport {
+      position: relative;
+      width: 1.53rem;
+      height: 1.24rem;
+      overflow: hidden;
+      &:hover {
+        .mask {
+          opacity: 1;
+        }
       }
     }
-    &.linePort {
-      .notice-content {
-        align-items: flex-start;
+    .project-upload {
+      display: flex;
+      position: relative;
+      width: 1.53rem;
+      height: 1.24rem;
+      align-items: center;
+      font-size: 14px;
+      color: #888;
+      text-align: center;
+      border: 1px dashed #e6e6e6;
+      p {
+        width: 100%;
       }
-      .notice-perviewer{
-         background: url(images/bg.jpg);
-       }
+      i {
+        padding-right: 2px;
+      }
+    }
+    img {
+      position: absolute;
+      display: block;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+    }
+    .mask {
+      position: absolute;
+      display: flex;
+      box-sizing: border-box;
+      width: 100%;
+      height: 100%;
+      padding: .2rem;
+      top: 0;
+      left: 0;
+      align-items: center;
+      z-index: 2;
+      background-color: rgba(0, 0, 0, .8);
+      color: #eee;
+      opacity: 0;
+      transition: opacity .25s;
+      p {
+        width: 100%;
+        font-size: 16px;
+        letter-spacing: 1px;
+        text-align: center;
+      }
     }
   }
-  .notice-content {
+  .admin-content {
+    padding: .1rem 0;
+    border-radius: 3px;
+    border-bottom: 1px solid #e7e7e7;
+  }
+  .content-container {
     display: flex;
     overflow: hidden;
   }
-
-  .notice-perviewer {
+  .container-viewport {
     display: flex;
     width: 3.5rem;
     height: 2.4rem;
@@ -776,7 +765,7 @@ export default {
     align-items: center;
     justify-content: center;
     border-radius: 4px;
-    .perviewer-content {
+    .viewport-content {
       font-size: 0;
       text-align: center;
       letter-spacing: 1px;
@@ -801,26 +790,18 @@ export default {
       color: #fff;
     }
   }
-  .notice-degree {
+  .container-article {
     flex: 1;
-    color: #666;
-    .notice-score {
-      padding-top: .12rem;
-      padding-bottom: .1rem;
-      font-size: 13px;
-      border-bottom: 1px dashed #e6e6e6;
-      span {
-        padding-left: 5px;
-        font-size: 15px;
-        color: @navy;
-        font-weight: 600;
-      }
+    color: #828181;
+  }
+  .guide {
+    .content-container {
+      align-items: center;
     }
-    .score-box {
-      padding-right: .2rem;
-      float: left;
+    .container-viewport{
+      background-image: url(images/bg2.jpg);
     }
-    .degree-guide {
+    .guide-guidPort {
       font-size: 13px;
       @size: 26px;
       li {
@@ -857,9 +838,32 @@ export default {
         }
       }
     }
-    .degree-linePort {
+  }
+  .scoreline {
+    .content-container {
+      align-items: flex-start;
+    }
+    .container-viewport{
+      background-image: url(images/bg.jpg);
+    }
+    .article-hd {
+      padding-bottom: 10px;
+      font-size: 13px;
+      border-bottom: 1px dashed #e6e6e6;
+      span {
+        padding-left: 5px;
+        font-size: 17px;
+        color: @darkenRed;
+        font-weight: 600;
+      }
+      .score-box {
+        padding-right: .2rem;
+        float: left;
+      }
+    }
+    .scoreline-linePort {
       width: 80%;
-      padding-top: .1rem;
+      padding-top: 10px;
       font-size: 14px;
       i {
         padding-right: 6px;
@@ -868,8 +872,6 @@ export default {
       }
       p {
         padding-left: 10px;
-        font-size: 15px;
-        color: #666;
         font-weight: bold;
       }
       span {
@@ -878,9 +880,7 @@ export default {
       }
       .info-box {
         display: flex;
-        height: .36rem;
-        min-height: 33px;
-        min-height: 30px;
+        height: 36px;
         align-items: center;
       }
       .line {
@@ -893,25 +893,16 @@ export default {
       }
       li {
         &.red {
-          /*p {
-            color: #fd5151;
-          }*/
           span {
             background-color: #ff6d6d;
           }
         }
         &.blue {
-          /*p {
-            color: #20a0ff;
-          }*/
           span {
             background-color: #5ebbff;
           }
         }
         &.yellow {
-          /*p {
-            color: #ffb15e;
-          }*/
           span {
             background-color: #ffde6b;
           }
@@ -951,7 +942,12 @@ export default {
         font-size: 20px;
       }
       span {
-        padding-top: .35rem;
+        padding-top: .15rem;
+      }
+    }
+    .breif-list {
+      li {
+        font-size: 13px;
       }
     }
     .project-list {
@@ -984,24 +980,53 @@ export default {
       display: block;
       width: 100%;
       flex-wrap: wrap;
+      border-top: 0;
       .menu-category {
         height: auto;
         min-width: 100%;
         margin-top: 10px;
         .category-container {
-          width: 94%;
+          width: 100%;
         }
         .category-wrapper {
           padding-top: 16px;
+          overflow: hidden;
+        }
+        &:first-child {
+          padding-right: 0;
+          border-right: 0;
+          li {
+            width: 100%;
+          }
+        }
+        &:nth-child(2) {
+          padding-right: 0;
+          padding-left: 0;
+          li {
+            width: 100%;
+          }
+        }
+        &:last-child {
+          padding-left: 0;
+          border-left: 0;
+          li {
+            width: 100%;
+          }
         }
       }
     }
-    .notice-perviewer {
+    .content-container {
+      flex-wrap: wrap;
+      padding-bottom: 16px;
+    }
+    .container-viewport {
+      width: 100%;
       height: 5rem;
       margin-right: 0;
       margin-bottom: 10px;
       padding-left: 6px;
       padding-right: 6px;
+      background-size: cover;
       i {
         font-size: 30px;
       }
@@ -1009,17 +1034,8 @@ export default {
         font-size: 20px;
       }
     }
-    .notice-content {
-      flex-wrap: wrap;
-    }
-    .notice-degree .degree-linePort{
-      width: 88%;
-    }
-    .admin-notice {
-      padding: 8px 6px;
-    }
-    .notice-perviewer {
-      width: 100%;
+    .scoreline .article-hd span {
+      padding-left: 0;
     }
   }
 }
