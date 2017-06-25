@@ -8,7 +8,7 @@ const IsPC = () => {
 const constent = {
   install (Vue, options) {
     console.log('------------------$constent------------------')
-    Vue.prototype.$constent = {
+    Vue.prototype.$Constent = {
       isPc: IsPC()
     }
   }

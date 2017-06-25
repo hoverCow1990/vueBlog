@@ -26,7 +26,7 @@ export default {
 }
 @media screen and (max-width: 435px){
   .messagePage-container {
-    width: 100%;
+    min-width: 100%;
   }
 }
 </style>

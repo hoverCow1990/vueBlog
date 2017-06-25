@@ -461,12 +461,18 @@ export default {
 }
 @media screen and (max-width: 435px) {
   .msgBoard {
-    margin-top: 30px;
+    margin-top: 26px;
     .msgBoard-title {
       height: 35px;
       .topBar-title {
         line-height: 35px;
       }
+    }
+    .msgBoard-perviewer {
+      border-radius: 0;
+    }
+    .msgBoard-btns {
+      padding-right: 12px;
     }
     .msgBoard-user {
       padding-left: 8px;

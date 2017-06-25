@@ -1,6 +1,19 @@
 export default {
   data () {
     return {
+      projectLits: [{
+        name: 'bilibili仿站',
+        id: '123',
+        src: require('./images/1.jpg')
+      }, {
+        name: 'react项目',
+        id: '123',
+        src: require('./images/2.jpg')
+      }, {
+        name: 'css组图',
+        id: '2',
+        src: require('./images/3.jpg')
+      }],
       gameList: [{
         name: '捕鱼达人',
         link: '/game/bydr',

@@ -58,7 +58,7 @@
         </div>
       </div>
     </div>
-    <div class="article-box">
+    <div class="article-box article-message">
       <cow-message-board type='yellow'></cow-message-board>
     </div>
   </div>
@@ -104,7 +104,7 @@ export default {
       inserted (el, binding, vnode) {
         let _self = vnode.context
         let cb = _self.getArticleListAttr
-        if (!_self.$constent.isPc) return
+        if (!_self.$Constent.isPc) return
         _self.preloadRequest(cb)
       }
     }
@@ -639,6 +639,10 @@ export default {
         }
       }
     }
+  }
+  .article-box.article-message {
+    padding-left: 0;
+    padding-right: 0;
   }
 }
 </style>

@@ -26,6 +26,10 @@ input{
   outline: none;
   border: none;
 }
+input[type="text"],
+input[type="tele"]{
+  -webkit-appearance: none;
+}
 li{
   list-style: none;
 }

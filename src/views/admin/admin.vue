@@ -47,8 +47,12 @@
               <p class='val'>{{ userData.score }}</p>
             </li>
             <li class="text">
-              <p class='label'>下次升级</p>
-              <p class='val'>265</p>
+              <p class='label'>会员排名</p>
+              <p class='val'>03</p>
+            </li>
+            <li class="text">
+              <p class='label'>qq账号</p>
+              <p class='val'>{{ userData.qq }}</p>
             </li>
             <li>
               <p class='label'>博客主页</p>
@@ -58,10 +62,6 @@
               <p class='label'>Github</p>
               <p class='val'><a :href="userData.git">{{ userData.git }}</a></p>
             </li>
-            <li class="text">
-              <p class='label'>qq账号</p>
-              <p class='val'>{{ userData.qq }}</p>
-            </li>
             <li class="talent">
               <p class='label'>掌握技能</p>
               <p class='val'><span v-for='item of userData.talent'>{{ item }}</span></p>
@@ -69,32 +69,16 @@
           </ul>
         </div>
         <div class="admin-project">
-          <ul class="project-list">
-            <li>
+          <ul class="project-list" :class="'flex-' + projectLits.length">
+            <li v-for="item of projectLits">
               <div class="project-viewport">
-                <img src="./images/1.jpg">
+                <img :src="item.src">
                 <div class="mask">
-                  <p>bilibili仿站</p>
+                  <p>{{ item.name }}</p>
                 </div>
               </div>
             </li>
-            <li>
-              <div class="project-viewport">
-                <img src="./images/2.jpg">
-                <div class="mask">
-                  <p>react项目</p>
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="project-viewport">
-                <img src="./images/3.jpg">
-                <div class="mask">
-                  <p>css3组图</p>
-                </div>
-              </div>
-            </li>
-            <li>
+            <li v-if="projectLits.length < 4 && $Constent.isPc">
               <div class="project-upload" @click="showUploadBox">
                 <p><i class="iconfont icon-xiazai"></i>上传你的作品</p>
               </div>
@@ -146,7 +130,54 @@
             </div>
           </li>
         </ul>
-        <div class="admin-notice">
+        <div class="admin-notice linePort">
+          <div class="notice-content">
+            <div class="notice-perviewer">
+              <div class="perviewer-content">
+                <i class="iconfont icon-shandian-copy"></i>
+                <p class="label">当前等级</p>
+                <p class="explain">这里展示你当前等级的展示线性图</p>
+              </div>
+            </div>
+            <div class="notice-degree">
+              <div class="notice-score clearfix">
+                <div class="score-box">
+                  当前积分 : <span>{{ userData.score }}</span>
+                </div>
+                <div class="score-box">
+                  会员排名 : <span>03</span>
+                </div>
+                <div class="score-box">
+                  下次升级 : <span>217</span>
+                </div>
+              </div>
+              <ul class="degree-linePort">
+                <li class="red">
+                  <div class="info-box">
+                    <label><i class="iconfont icon-star"></i>等级总进度 :</label>
+                    <p class="num all">6%</p>
+                  </div>
+                  <div class="line"><span style="width:6%"></span></div>
+                </li>
+                <li class="blue">
+                  <div class="info-box">
+                    <label><i class="iconfont icon-star"></i>当前等级进度 :</label>
+                    <p class="num all">65%</p>
+                  </div>
+                  <div class="line"><span style="width:65%"></span></div>
+                </li>
+                <li class="yellow">
+                  <div class="info-box">
+                    <label><i class="iconfont icon-star"></i>排名榜 :</label>
+                    <p class="num all">16%</p>
+                  </div>
+                  <div class="line"><span style="width:16%"></span></div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="admin-notice guide">
           <div class="notice-content">
             <div class="notice-perviewer">
               <div class="perviewer-content">
@@ -165,7 +196,6 @@
             </div>
           </div>
         </div>
-        </div>
       </div>
     </div>
     <cow-user-infoBox :isShow='isInfoBoxShow' @hiddenInfoBoxShow='hiddenInfoBoxShow'></cow-user-infoBox>
@@ -183,7 +213,7 @@ export default {
         name: '老实的牛',
         score: '1215',
         lv: 2,
-        qq: '',
+        qq: '547007933',
         git: 'https://github.com/hoverCow1990',
         blog: 'http://www.web-jackiee.com/',
         alias: '牛哥的宠幸',
@@ -474,7 +504,7 @@ export default {
     .text {
       .val {
         font-weight: 600;
-        color: #222;
+        color: #505050;
       }
     }
     .label {
@@ -516,6 +546,7 @@ export default {
     display: flex;
     padding-top: .2rem;
     padding-bottom: .2rem;
+    justify-content: flex-start;
     li {
       padding: 6px;
       margin-right: .2rem;
@@ -553,6 +584,7 @@ export default {
     }
     img {
       position: absolute;
+      display: block;
       width: 100%;
       height: 100%;
       top: 0;
@@ -714,12 +746,28 @@ export default {
     padding: .1rem .16rem;
     border-radius: 3px;
     .border();
+    &.guide {
+      .notice-content {
+        align-items: center;
+      }
+      .notice-perviewer{
+        background: url(images/bg2.jpg);
+      }
+    }
+    &.linePort {
+      .notice-content {
+        align-items: flex-start;
+      }
+      .notice-perviewer{
+         background: url(images/bg.jpg);
+       }
+    }
   }
   .notice-content {
     display: flex;
-    align-items: center;
     overflow: hidden;
   }
+
   .notice-perviewer {
     display: flex;
     width: 3.5rem;
@@ -728,7 +776,6 @@ export default {
     align-items: center;
     justify-content: center;
     border-radius: 4px;
-    background: url(images/bg2.jpg);
     .perviewer-content {
       font-size: 0;
       text-align: center;
@@ -755,6 +802,24 @@ export default {
     }
   }
   .notice-degree {
+    flex: 1;
+    color: #666;
+    .notice-score {
+      padding-top: .12rem;
+      padding-bottom: .1rem;
+      font-size: 13px;
+      border-bottom: 1px dashed #e6e6e6;
+      span {
+        padding-left: 5px;
+        font-size: 15px;
+        color: @navy;
+        font-weight: 600;
+      }
+    }
+    .score-box {
+      padding-right: .2rem;
+      float: left;
+    }
     .degree-guide {
       font-size: 13px;
       @size: 26px;
@@ -792,11 +857,72 @@ export default {
         }
       }
     }
+    .degree-linePort {
+      width: 80%;
+      padding-top: .1rem;
+      font-size: 14px;
+      i {
+        padding-right: 6px;
+        font-size: 13px;
+        color: #a9a9a9;
+      }
+      p {
+        padding-left: 10px;
+        font-size: 15px;
+        color: #666;
+        font-weight: bold;
+      }
+      span {
+        display: block;
+        height: 100%;
+      }
+      .info-box {
+        display: flex;
+        height: .36rem;
+        min-height: 33px;
+        min-height: 30px;
+        align-items: center;
+      }
+      .line {
+        width: 100%;
+        height: 10px;
+        margin-bottom: .12rem;
+        background-color: #eee;
+        border-radius: 5px;
+        overflow: hidden;
+      }
+      li {
+        &.red {
+          /*p {
+            color: #fd5151;
+          }*/
+          span {
+            background-color: #ff6d6d;
+          }
+        }
+        &.blue {
+          /*p {
+            color: #20a0ff;
+          }*/
+          span {
+            background-color: #5ebbff;
+          }
+        }
+        &.yellow {
+          /*p {
+            color: #ffb15e;
+          }*/
+          span {
+            background-color: #ffde6b;
+          }
+        }
+      }
+    }
   }
 }
 @media screen and (max-width: 435px){
   .adminPage-container {
-    width: 100%;
+    min-width: 100%;
     .admin-topBar{
       .topBar-container {
         padding-left: 10px;
@@ -829,7 +955,25 @@ export default {
       }
     }
     .project-list {
-      overflow-x: scroll;
+      flex-wrap: wrap;
+      &.flex-1 {
+        justify-content: flex-start;
+      }
+      &.flex-2 {
+        justify-content: space-around;
+      }
+      &.flex-3 {
+        padding-left: .25rem;
+        padding-right: .25rem;
+        justify-content: space-between;
+      }
+      &.flex-4 {
+        justify-content: space-around;
+      }
+      li {
+        margin-top: 10px;
+        margin-right: 0;
+      }
       .project-viewport,
       .project-upload{
         width: 5.1rem;
@@ -837,6 +981,7 @@ export default {
       }
     }
     .admin-menu {
+      display: block;
       width: 100%;
       flex-wrap: wrap;
       .menu-category {
@@ -866,6 +1011,12 @@ export default {
     }
     .notice-content {
       flex-wrap: wrap;
+    }
+    .notice-degree .degree-linePort{
+      width: 88%;
+    }
+    .admin-notice {
+      padding: 8px 6px;
     }
     .notice-perviewer {
       width: 100%;

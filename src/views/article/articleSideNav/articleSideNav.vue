@@ -1,5 +1,5 @@
 <template>
-  <div class="article-sideNav" v-if='$constent.isPc' :style='sideNavStyle' :class='isShrink?"shrink":""'>
+  <div class="article-sideNav" v-if='$Constent.isPc' :style='sideNavStyle' :class='isShrink?"shrink":""'>
     <div class="sideNav-topLine"></div>
     <div class="sideNav-context">
       <div class="sideNav-box" v-for='(list, listIndex) of sideNavAttr'>
