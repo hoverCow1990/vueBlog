@@ -70,42 +70,6 @@
             </li>
           </ul>
         </div>
-        <div class="admin-content scoreline">
-          <div class="content-container">
-            <div class="container-viewport">
-              <div class="viewport-content">
-                <i class="iconfont icon-shandian-copy"></i>
-                <p class="label">TOP-3</p>
-                <p class="explain">当前总积分{{ userData.score }} / 距离下个等级256分</p>
-              </div>
-            </div>
-            <div class="container-article">
-              <ul class="scoreline-linePort">
-                <li class="red">
-                  <div class="info-box">
-                    <label>等级总进度 :</label>
-                    <p class="num all">6%</p>
-                  </div>
-                  <div class="line"><span style="width:6%"></span></div>
-                </li>
-                <li class="blue">
-                  <div class="info-box">
-                    <label>当前等级进度 :</label>
-                    <p class="num all">65%</p>
-                  </div>
-                  <div class="line"><span style="width:65%"></span></div>
-                </li>
-                <li class="yellow">
-                  <div class="info-box">
-                    <label>排名榜 :</label>
-                    <p class="num all">16%</p>
-                  </div>
-                  <div class="line"><span style="width:16%"></span></div>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
         <div class="admin-project">
           <div class="admin-title">
             <p><i class="iconfont icon-gengduo"></i>展示作品</p><span>more</span>
@@ -171,6 +135,43 @@
             </div>
           </li>
         </ul>
+        <div class="admin-content scoreline">
+          <div class="content-container">
+            <div class="container-viewport">
+              <div class="viewport-content">
+                <i class="iconfont icon-shandian-copy"></i>
+                <p class="label">TOP-3</p>
+                <p class="explain">当前总积分{{ userData.score }} / 距离下个等级256分</p>
+              </div>
+            </div>
+            <div class="container-article">
+              <img src="./images/cc3.png" alt="">
+              <!-- <ul class="scoreline-linePort">
+                <li class="red">
+                  <div class="info-box">
+                    <label>等级总进度 :</label>
+                    <p class="num all">6%</p>
+                  </div>
+                  <div class="line"><span style="width:6%"></span></div>
+                </li>
+                <li class="blue">
+                  <div class="info-box">
+                    <label>当前等级进度 :</label>
+                    <p class="num all">65%</p>
+                  </div>
+                  <div class="line"><span style="width:65%"></span></div>
+                </li>
+                <li class="yellow">
+                  <div class="info-box">
+                    <label>排名榜 :</label>
+                    <p class="num all">16%</p>
+                  </div>
+                  <div class="line"><span style="width:16%"></span></div>
+                </li>
+              </ul> -->
+            </div>
+          </div>
+        </div>
         <div class="admin-content guide">
           <div class="content-container">
             <div class="container-viewport">
@@ -496,8 +497,8 @@ export default {
     color: #666;
     li {
       display: flex;
-      padding-top: 10px;
-      padding-bottom: 10px;
+      padding-top: 9px;
+      padding-bottom: 9px;
       font-size: 15px;
     }
     .label {
@@ -543,7 +544,7 @@ export default {
   .menu-category {
     box-sizing: border-box;
     flex: 1;
-    height: 320px;
+    height: 325px;
     border-bottom: 1px dashed #e6e6e6;
     @borderColor: #f5f5f5;
     &:first-child {
@@ -593,7 +594,7 @@ export default {
       }
     }
     .category-wrapper {
-      padding-top: 25px;
+      padding-top: 18px;
     }
     .category-perviewer {
       width: 100%;
@@ -614,16 +615,27 @@ export default {
       font-size: 13px;
       color: #777;
       li {
-        padding-bottom: 12px;
+        padding-bottom: 14px;
         overflow: hidden;
         cursor: pointer;
       }
       a {
+        position: relative;
         display: inline-block;
         color: #777;
+        text-indent: 15px;
         transition: color .1s;
         &:hover {
           text-decoration: underline;
+        }
+        &:before {
+          position: absolute;
+          content: '';
+          width: 4px;
+          height: 4px;
+          top: 9px;
+          left: 0;
+          border-radius: 50%;
         }
       }
       .score {
@@ -646,6 +658,11 @@ export default {
           color: #ff3c3c;
         }
       }
+      a {
+        &:before {
+          background-color: #ff3c3c;
+        }
+      }
     }
     &.love {
       .title {
@@ -654,6 +671,11 @@ export default {
       .menu-list {
         a:hover {
           color: #0087ec;
+        }
+      }
+      a {
+        &:before {
+          background-color: #0087ec;
         }
       }
     }
@@ -666,12 +688,17 @@ export default {
           color: #ffd470;
         }
       }
+      a {
+        &:before {
+          background-color: #ffd470;
+        }
+      }
     }
   }
   .admin-title {
     position: relative;
     height: 20px;
-    padding-top: .1rem;
+    padding-top: .15rem;
     line-height: 20px;
     p {
       float: left;
@@ -698,20 +725,18 @@ export default {
   }
   .project-list {
     display: flex;
-    padding-top: .2rem;
-    padding-bottom: .2rem;
+    padding-top: .3rem;
+    padding-bottom: .5rem;
     justify-content: flex-start;
     li {
-      padding: 4px;
-      margin-right: .2rem;
-      border-radius: 2px;
-      border: 1px solid #e7e7e7;
+      margin-right: .3rem;
       cursor: pointer;
     }
     .project-viewport {
       position: relative;
       width: 1.53rem;
       height: 1.24rem;
+      border-radius: 3px;
       overflow: hidden;
       &:hover {
         .mask {
@@ -753,9 +778,10 @@ export default {
       padding: .2rem;
       top: 0;
       left: 0;
+      border-radius: 3px;
       align-items: center;
       z-index: 2;
-      background-color: rgba(0, 0, 0, .8);
+      background-color: rgba(0, 0, 0, .6);
       color: #eee;
       opacity: 0;
       transition: opacity .25s;
@@ -768,7 +794,7 @@ export default {
     }
   }
   .admin-content {
-    padding: 10px 0 13px;
+    padding: .2rem 0;
     border-radius: 3px;
     border-bottom: 1px dashed #e7e7e7;
   }
@@ -780,6 +806,7 @@ export default {
   .container-viewport {
     display: flex;
     width: 3.5rem;
+    height: 2.4rem;
     min-height: 150px;
     margin-right: .4rem;
     align-items: center;
@@ -816,7 +843,6 @@ export default {
   }
   .guide {
     .container-viewport{
-      height: 2.4rem;
       background-image: url(images/bg2.jpg);
     }
     .guide-guidPort {
@@ -859,7 +885,6 @@ export default {
   }
   .scoreline {
     .container-viewport{
-      height: 2rem;
       background-image: url(images/bg.jpg);
     }
     .scoreline-linePort {
