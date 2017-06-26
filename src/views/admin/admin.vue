@@ -35,7 +35,7 @@
       </div>
       <div class="admin-bd">
         <div class="admin-breif">
-          <div class="admin-title account">
+          <div class="breif-title account">
             <p>Account Center</p>
             <span @click="showInfoBoxShow"><i class="iconfont icon-bi"></i>修改信息</span>
           </div>
@@ -48,14 +48,10 @@
               <p class='label'>级别</p>
               <p class='val'>{{ userData.alias }}</p>
             </li>
-         <!--    <li class="text">
-              <p class='label'>会员积分</p>
+            <li class="text">
+              <p class='label'>积分</p>
               <p class='val'>{{ userData.score }}</p>
             </li>
-            <li class="text">
-              <p class='label'>会员排名</p>
-              <p class='val'>03</p>
-            </li> -->
             <li class="text">
               <p class='label'>qq账号</p>
               <p class='val'>{{ userData.qq }}</p>
@@ -74,7 +70,46 @@
             </li>
           </ul>
         </div>
+        <div class="admin-content scoreline">
+          <div class="content-container">
+            <div class="container-viewport">
+              <div class="viewport-content">
+                <i class="iconfont icon-shandian-copy"></i>
+                <p class="label">TOP-3</p>
+                <p class="explain">当前总积分{{ userData.score }} / 距离下个等级256分</p>
+              </div>
+            </div>
+            <div class="container-article">
+              <ul class="scoreline-linePort">
+                <li class="red">
+                  <div class="info-box">
+                    <label>等级总进度 :</label>
+                    <p class="num all">6%</p>
+                  </div>
+                  <div class="line"><span style="width:6%"></span></div>
+                </li>
+                <li class="blue">
+                  <div class="info-box">
+                    <label>当前等级进度 :</label>
+                    <p class="num all">65%</p>
+                  </div>
+                  <div class="line"><span style="width:65%"></span></div>
+                </li>
+                <li class="yellow">
+                  <div class="info-box">
+                    <label>排名榜 :</label>
+                    <p class="num all">16%</p>
+                  </div>
+                  <div class="line"><span style="width:16%"></span></div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
         <div class="admin-project">
+          <div class="admin-title">
+            <p><i class="iconfont icon-gengduo"></i>展示作品</p><span>more</span>
+          </div>
           <ul class="project-list" :class="'flex-' + projectLits.length">
             <li v-for="item of projectLits">
               <div class="project-viewport">
@@ -136,50 +171,6 @@
             </div>
           </li>
         </ul>
-        <div class="admin-content scoreline">
-          <div class="content-container">
-            <div class="container-viewport">
-              <div class="viewport-content">
-                <i class="iconfont icon-shandian-copy"></i>
-                <p class="label">当前等级</p>
-                <p class="explain">这里展示你当前等级的展示线性图</p>
-              </div>
-            </div>
-            <div class="container-article">
-              <div class="article-hd clearfix">
-                <div class="score-box">
-                  当前积分 : <span>{{ userData.score }}</span>
-                </div>
-                <div class="score-box">
-                  会员排名 : <span>03</span>
-                </div>
-              </div>
-              <ul class="scoreline-linePort">
-                <li class="red">
-                  <div class="info-box">
-                    <label><i class="iconfont icon-star"></i>等级总进度 :</label>
-                    <p class="num all">6%</p>
-                  </div>
-                  <div class="line"><span style="width:6%"></span></div>
-                </li>
-                <li class="blue">
-                  <div class="info-box">
-                    <label><i class="iconfont icon-star"></i>当前等级进度 :</label>
-                    <p class="num all">65%</p>
-                  </div>
-                  <div class="line"><span style="width:65%"></span></div>
-                </li>
-                <li class="yellow">
-                  <div class="info-box">
-                    <label><i class="iconfont icon-star"></i>排名榜 :</label>
-                    <p class="num all">16%</p>
-                  </div>
-                  <div class="line"><span style="width:16%"></span></div>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
         <div class="admin-content guide">
           <div class="content-container">
             <div class="container-viewport">
@@ -466,7 +457,7 @@ export default {
     padding-left: .2rem;
     padding-right: .2rem;
   }
-  .admin-title {
+  .breif-title {
     display: flex;
     padding-top: .2rem;
     padding-bottom: 6px;
@@ -502,17 +493,17 @@ export default {
   .breif-list {
     padding-top: .12rem;
     border-bottom: 1px dashed #e6e6e6;
+    color: #666;
     li {
       display: flex;
-      padding-top: 8px;
-      padding-bottom: 8px;
-      font-size: 14px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      font-size: 15px;
     }
     .label {
       position: relative;
-      width: 80px;
+      width: 88px;
       float: left;
-      color: #777;
       &:after {
         position: absolute;
         content: ':';
@@ -521,7 +512,7 @@ export default {
     }
     .val {
       flex: 1;
-      color: #777;
+      .textOverFlow();
     }
     a {
       color: @primary;
@@ -677,6 +668,34 @@ export default {
       }
     }
   }
+  .admin-title {
+    position: relative;
+    height: 20px;
+    padding-top: .1rem;
+    line-height: 20px;
+    p {
+      float: left;
+      font-size: 14px;
+      letter-spacing: 1px;
+      font-weight: 600;
+      color: #333;
+    }
+    i{
+      padding-right: 4px;
+      font-size: 15px;
+      font-weight: 100;
+      color: #333;
+    }
+    span {
+      display: block;
+      height: 100%;
+      float: right;
+      font-size: 12px;
+      color: #777;
+      transform: translateY(2px);
+      cursor: pointer;
+    }
+  }
   .project-list {
     display: flex;
     padding-top: .2rem;
@@ -749,18 +768,19 @@ export default {
     }
   }
   .admin-content {
-    padding: .1rem 0;
+    padding: 10px 0 13px;
     border-radius: 3px;
-    border-bottom: 1px solid #e7e7e7;
+    border-bottom: 1px dashed #e7e7e7;
   }
   .content-container {
     display: flex;
+    align-items: center;
     overflow: hidden;
   }
   .container-viewport {
     display: flex;
     width: 3.5rem;
-    height: 2.4rem;
+    min-height: 150px;
     margin-right: .4rem;
     align-items: center;
     justify-content: center;
@@ -795,10 +815,8 @@ export default {
     color: #828181;
   }
   .guide {
-    .content-container {
-      align-items: center;
-    }
     .container-viewport{
+      height: 2.4rem;
       background-image: url(images/bg2.jpg);
     }
     .guide-guidPort {
@@ -840,38 +858,17 @@ export default {
     }
   }
   .scoreline {
-    .content-container {
-      align-items: flex-start;
-    }
     .container-viewport{
+      height: 2rem;
       background-image: url(images/bg.jpg);
     }
-    .article-hd {
-      padding-bottom: 10px;
-      font-size: 13px;
-      border-bottom: 1px dashed #e6e6e6;
-      span {
-        padding-left: 5px;
-        font-size: 17px;
-        color: @darkenRed;
-        font-weight: 600;
-      }
-      .score-box {
-        padding-right: .2rem;
-        float: left;
-      }
-    }
     .scoreline-linePort {
-      width: 80%;
-      padding-top: 10px;
+      width: 60%;
       font-size: 14px;
-      i {
-        padding-right: 6px;
-        font-size: 13px;
-        color: #a9a9a9;
-      }
+      letter-spacing: 1px;
       p {
         padding-left: 10px;
+        font-size: 17px;
         font-weight: bold;
       }
       span {
@@ -880,15 +877,15 @@ export default {
       }
       .info-box {
         display: flex;
-        height: 36px;
+        height: 50px;
         align-items: center;
       }
       .line {
         width: 100%;
-        height: 10px;
+        height: 4px;
         margin-bottom: .12rem;
         background-color: #eee;
-        border-radius: 5px;
+        border-radius: 4px;
         overflow: hidden;
       }
       li {
@@ -896,15 +893,24 @@ export default {
           span {
             background-color: #ff6d6d;
           }
+          .num {
+            color: #e14c4c;
+          }
         }
         &.blue {
           span {
             background-color: #5ebbff;
           }
+          .num {
+            color: #0087ec;
+          }
         }
         &.yellow {
           span {
-            background-color: #ffde6b;
+            background-color: #8b74c6;
+          }
+          .num {
+            color: #8b74c6;
           }
         }
       }
@@ -935,7 +941,7 @@ export default {
       padding-left: 10px;
       padding-right: 10px;
     }
-    .admin-title {
+    .breif-title {
       padding-top: 12px;
       padding-bottom: 10px;
       p {
@@ -947,7 +953,7 @@ export default {
     }
     .breif-list {
       li {
-        font-size: 13px;
+        font-size: 14px;
       }
     }
     .project-list {
@@ -1034,8 +1040,13 @@ export default {
         font-size: 20px;
       }
     }
-    .scoreline .article-hd span {
-      padding-left: 0;
+    .scoreline {
+      .scoreline-linePort {
+        width: 86%;
+      }
+      .article-hd span {
+        padding-left: 0;
+      }
     }
   }
 }
