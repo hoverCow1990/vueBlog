@@ -10,6 +10,7 @@ import SideNav from './sideNav/sideNav'
 import PageTab from './pageTab/pageTab'
 import MessageBoard from './messageBoard/messageBoard'
 import Rate from './rate/rate'
+import PropCircle from './propCircle/propCircle'
 
 export default {
   Header,
@@ -23,5 +24,6 @@ export default {
   SideNav,
   PageTab,
   MessageBoard,
-  Rate
+  Rate,
+  PropCircle
 }

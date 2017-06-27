@@ -145,7 +145,30 @@
               </div>
             </div>
             <div class="container-article">
-              <img src="./images/cc3.png" alt="">
+              <div class="prop-list clearfix">
+                <div class="article-prop">
+                  <div class="prop-text">
+                    <p class="red">Top3</p>
+                    <p>击败37%用户</p>
+                  </div>
+                  <cow-prop-circle :percent='Number(63)' color='#ff3c3c' :stroke="$Constent.isPc?12:5"></cow-prop-circle>
+                </div>
+                <div class="article-prop">
+                  <div class="prop-text">
+                    <p class="blue">16%</p>
+                    <p>总积分 : 1232</p>
+                  </div>
+                  <cow-prop-circle :percent='Number(16)' color='#0087ec' :stroke="$Constent.isPc?12:5"></cow-prop-circle>
+                </div>
+                <div class="article-prop">
+                  <div class="prop-text">
+                    <p class="yellow">42%</p>
+                    <p>升级所需 : 282</p>
+                  </div>
+                  <cow-prop-circle :percent='Number(42)' color='#ffd470' :stroke="$Constent.isPc?12:5"></cow-prop-circle>
+                </div>
+              </div>
+              <p class='prop-info'>前段时间的一个项目做到这个玩意，研究了一下绘制圆环的方法。最终使用HTML5的画布标签来做。arc()是HTML5 Canvas的一个API函数，作用是“创建弧/曲线（用于创建圆形或部分圆）”。本文先讲解如何绘制圆形以及一些应用</p>
               <!-- <ul class="scoreline-linePort">
                 <li class="red">
                   <div class="info-box">
@@ -800,7 +823,6 @@ export default {
   }
   .content-container {
     display: flex;
-    align-items: center;
     overflow: hidden;
   }
   .container-viewport {
@@ -842,6 +864,7 @@ export default {
     color: #828181;
   }
   .guide {
+    align-items: center;
     .container-viewport{
       background-image: url(images/bg2.jpg);
     }
@@ -884,10 +907,11 @@ export default {
     }
   }
   .scoreline {
+    align-items: flex-end;
     .container-viewport{
       background-image: url(images/bg.jpg);
     }
-    .scoreline-linePort {
+    /*.scoreline-linePort {
       width: 60%;
       font-size: 14px;
       letter-spacing: 1px;
@@ -939,6 +963,44 @@ export default {
           }
         }
       }
+    }*/
+    .article-prop {
+      position: relative;
+      width: 156px;
+      height: 156px;
+      float: left;
+      margin-right: .7rem;
+      .prop-text {
+        position: absolute;
+        width: 100%;
+        text-align: center;
+        top: 50px;
+        p:first-child {
+          font-size: 22px;
+          font-weight: 600;
+          &.red {
+            color: #ff3c3c;
+          }
+          &.blue {
+            color: #0087ec;
+          }
+          &.yellow {
+            color: #ffd470;
+          }
+        }
+        p:last-child {
+          padding-top: 11px;
+          font-size: 13px;
+          color: #999;
+        }
+      }
+    }
+    .prop-info {
+      padding-right: .5rem;
+      padding-top: 18px;
+      font-size: 13px;
+      line-height: 26px;
+      color: #b3b3b3;
     }
   }
 }
@@ -1071,6 +1133,26 @@ export default {
       }
       .article-hd span {
         padding-left: 0;
+      }
+    }
+    .prop-list {
+      display: flex;
+      padding-top: 6px;
+      justify-content: space-between;
+      overflow: hidden;
+      .article-prop {
+        width: 100px;
+        height: 100px;
+        margin-right: 0;
+        .prop-text {
+          top: 20px;
+          p:first-child {
+            font-size: 16px;
+          }
+          p:last-child {
+            font-size: 12px;
+          }
+        }
       }
     }
   }
