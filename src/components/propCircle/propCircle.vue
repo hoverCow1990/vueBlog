@@ -34,7 +34,6 @@ export default {
     startCanvas (ctx) {
       let {center} = this.$data
       let {percent, color, stroke} = this
-      console.log(stroke, center)
       let stColorRad = Math.PI / 2 * 3
       let endColorRad = stColorRad + Math.PI * 2 / (100 / percent)
       ctx.beginPath()

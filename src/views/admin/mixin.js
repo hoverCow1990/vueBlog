@@ -1,7 +1,44 @@
 export default {
   data () {
     return {
-      projectLits: [{
+      othersList: [{
+        name: '老实的牛',
+        score: 1236,
+        link: '123'
+      }, {
+        name: '傻逼年',
+        score: 936,
+        link: '12'
+      }, {
+        name: '强壮的小伙子',
+        score: 722,
+        link: '32'
+      }, {
+        name: '空山大鸡排',
+        score: 716,
+        link: '12'
+      }, {
+        name: '牛逼的污神',
+        score: 621,
+        link: '12'
+      }, {
+        name: '卡尔大屁股',
+        score: 536,
+        link: '12'
+      }, {
+        name: '伟大的牛哥哥',
+        score: 216,
+        link: '12'
+      }, {
+        name: '我不是陌陌',
+        score: 21,
+        link: '12'
+      }, {
+        name: 'effect',
+        score: 16,
+        link: '12'
+      }],
+      projectList: [{
         name: 'bilibili仿站',
         id: '123',
         src: require('./images/1.jpg')

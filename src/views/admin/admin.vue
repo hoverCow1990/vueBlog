@@ -74,8 +74,8 @@
           <div class="admin-title">
             <p><i class="iconfont icon-gengduo"></i>展示作品</p><span>more</span>
           </div>
-          <ul class="project-list" :class="'flex-' + projectLits.length">
-            <li v-for="item of projectLits">
+          <ul class="project-list" :class="'flex-' + projectList.length">
+            <li v-for="item of projectList">
               <div class="project-viewport">
                 <img :src="item.src">
                 <div class="mask">
@@ -83,7 +83,7 @@
                 </div>
               </div>
             </li>
-            <li v-if="projectLits.length < 4 && $Constent.isPc">
+            <li v-if="projectList.length < 4 && $Constent.isPc">
               <div class="project-upload" @click="showUploadBox">
                 <p><i class="iconfont icon-xiazai"></i>上传你的作品</p>
               </div>
@@ -140,8 +140,8 @@
             <div class="container-viewport">
               <div class="viewport-content">
                 <i class="iconfont icon-shandian-copy"></i>
-                <p class="label">TOP-3</p>
-                <p class="explain">当前总积分{{ userData.score }} / 距离下个等级256分</p>
+                <p class="label">会员等级</p>
+                <p class="explain">这里可以查看老牛会员的等级图表</p>
               </div>
             </div>
             <div class="container-article">
@@ -151,47 +151,24 @@
                     <p class="red">Top3</p>
                     <p>击败37%用户</p>
                   </div>
-                  <cow-prop-circle :percent='Number(63)' color='#ff3c3c' :stroke="$Constent.isPc?12:5"></cow-prop-circle>
+                  <cow-prop-circle :percent='Number(63)' color='#ff3c3c' :stroke="strokeWidth"></cow-prop-circle>
                 </div>
                 <div class="article-prop">
                   <div class="prop-text">
                     <p class="blue">16%</p>
                     <p>总积分 : 1232</p>
                   </div>
-                  <cow-prop-circle :percent='Number(16)' color='#0087ec' :stroke="$Constent.isPc?12:5"></cow-prop-circle>
+                  <cow-prop-circle :percent='Number(16)' color='#0087ec' :stroke="strokeWidth"></cow-prop-circle>
                 </div>
                 <div class="article-prop">
                   <div class="prop-text">
                     <p class="yellow">42%</p>
                     <p>升级所需 : 282</p>
                   </div>
-                  <cow-prop-circle :percent='Number(42)' color='#ffd470' :stroke="$Constent.isPc?12:5"></cow-prop-circle>
+                  <cow-prop-circle :percent='Number(42)' color='#ffd470' :stroke="strokeWidth"></cow-prop-circle>
                 </div>
               </div>
               <p class='prop-info'>前段时间的一个项目做到这个玩意，研究了一下绘制圆环的方法。最终使用HTML5的画布标签来做。arc()是HTML5 Canvas的一个API函数，作用是“创建弧/曲线（用于创建圆形或部分圆）”。本文先讲解如何绘制圆形以及一些应用</p>
-              <!-- <ul class="scoreline-linePort">
-                <li class="red">
-                  <div class="info-box">
-                    <label>等级总进度 :</label>
-                    <p class="num all">6%</p>
-                  </div>
-                  <div class="line"><span style="width:6%"></span></div>
-                </li>
-                <li class="blue">
-                  <div class="info-box">
-                    <label>当前等级进度 :</label>
-                    <p class="num all">65%</p>
-                  </div>
-                  <div class="line"><span style="width:65%"></span></div>
-                </li>
-                <li class="yellow">
-                  <div class="info-box">
-                    <label>排名榜 :</label>
-                    <p class="num all">16%</p>
-                  </div>
-                  <div class="line"><span style="width:16%"></span></div>
-                </li>
-              </ul> -->
             </div>
           </div>
         </div>
@@ -211,6 +188,32 @@
                   <p><span v-for="item of list.list" @mouseenter="showDegreeGuide(item)">{{ item.label }}</span></p>
                 </li>
               </ul>
+            </div>
+          </div>
+        </div>
+        <div class="admin-content others">
+          <div class="content-container">
+            <div class="container-viewport">
+              <div class="viewport-content">
+                <i class="iconfont icon-houtaiyuyanguanlinew"></i>
+                <p class="label">其他用户</p>
+                <p class="explain">这里是老牛会员的其他用户</p>
+              </div>
+            </div>
+            <div class="container-article">
+              <ul class="othersList clearfix">
+                <li v-for="(item, index) of othersList">
+                  <div class="rank">{{ index + 1 | cow-buildZero(2) }}</div>
+                  <div class="feature">
+                    <img src="./images/user.jpg">
+                  </div>
+                  <div class="info">
+                    <span class="name">{{ item.name }}</span>
+                    <span class="score">{{ item.score }}</span>
+                  </div>
+                </li>
+              </ul>
+              <cow-page-tab :allListLength='18' :singleListLength='8' @change='handlerRequestOthers'></cow-page-tab>
             </div>
           </div>
         </div>
@@ -241,17 +244,29 @@ export default {
       showExplain: '在会员中心内进行签到任务可随机获得5-10分不等',
       showLable: '每日签到',
       isUploadShow: false,
-      isInfoBoxShow: false
+      isInfoBoxShow: false,
+      strokeWidth: 0
     }
   },
   mixins: [mixin],
   created () {
     this.requestUserData()
+    this.setStrokeWidth()
   },
   methods: {
     // 请求用户数据
     requestUserData () {
       this.testDateComplete()
+    },
+    // 请求好友列表
+    handlerRequestOthers () {
+      console.log(1)
+    },
+    // 计算canvas环形宽度
+    setStrokeWidth () {
+      // 6 ~ 11线宽
+      const screenWidth = window.document.documentElement.offsetWidth
+      this.$data.strokeWidth = Math.min(12, Math.ceil(screenWidth / 2200 * 6) + 4)
     },
     // 切换展示的指示文案
     showDegreeGuide (item) {
@@ -268,7 +283,6 @@ export default {
     },
     // 显示修改资料
     showInfoBoxShow () {
-      console.log(1)
       this.$data.isInfoBoxShow = true
     },
     // 隐藏修改资料
@@ -823,6 +837,7 @@ export default {
   }
   .content-container {
     display: flex;
+    align-items: center;
     overflow: hidden;
   }
   .container-viewport {
@@ -911,59 +926,6 @@ export default {
     .container-viewport{
       background-image: url(images/bg.jpg);
     }
-    /*.scoreline-linePort {
-      width: 60%;
-      font-size: 14px;
-      letter-spacing: 1px;
-      p {
-        padding-left: 10px;
-        font-size: 17px;
-        font-weight: bold;
-      }
-      span {
-        display: block;
-        height: 100%;
-      }
-      .info-box {
-        display: flex;
-        height: 50px;
-        align-items: center;
-      }
-      .line {
-        width: 100%;
-        height: 4px;
-        margin-bottom: .12rem;
-        background-color: #eee;
-        border-radius: 4px;
-        overflow: hidden;
-      }
-      li {
-        &.red {
-          span {
-            background-color: #ff6d6d;
-          }
-          .num {
-            color: #e14c4c;
-          }
-        }
-        &.blue {
-          span {
-            background-color: #5ebbff;
-          }
-          .num {
-            color: #0087ec;
-          }
-        }
-        &.yellow {
-          span {
-            background-color: #8b74c6;
-          }
-          .num {
-            color: #8b74c6;
-          }
-        }
-      }
-    }*/
     .article-prop {
       position: relative;
       width: 156px;
@@ -1001,6 +963,68 @@ export default {
       font-size: 13px;
       line-height: 26px;
       color: #b3b3b3;
+    }
+  }
+  .others {
+    /*.content-container {
+      align-items: flex-end;
+    }*/
+    .container-viewport{
+      background-image: url(images/bg3.jpg);
+    }
+    .othersList li {
+      display: flex;
+      width: 33%;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      float: left;
+      align-items: center;
+      cursor: pointer;
+    }
+    .feature {
+      width: 40px;
+      height: 40px;
+      margin-left: 12px;
+      border-radius: 3px;
+      wekit-mask-image:-webkit-radial-gradient(circle,white,black);
+      overflow: hidden;
+      img {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+    }
+    .info {
+      flex: 1;
+      margin-right: 10px;
+      padding-left: 5px;
+      font-size: 13px;
+      .border(right);
+    }
+    .rank {
+      width: 35px;
+      height: 26px;
+      border-radius: 3px;
+      line-height: 26px;
+      text-align: center;
+      background-color: @navy;
+      font-size: 12px;
+      color: #eee;
+    }
+    .name {
+      padding-left: 3px;
+      padding-right: 5px;
+      &:hover {
+        color: @primary;
+      }
+    }
+    .score {
+      float:right;
+      padding-right: 10px;
+      color: #999;
+    }
+    .pageTab .pageTab-list {
+      justify-content: flex-end;
     }
   }
 }
@@ -1140,10 +1164,14 @@ export default {
       padding-top: 6px;
       justify-content: space-between;
       overflow: hidden;
+      &.clearfix:after {
+        display: none;
+      }
       .article-prop {
         width: 100px;
         height: 100px;
         margin-right: 0;
+        float: none;
         .prop-text {
           top: 20px;
           p:first-child {
@@ -1153,6 +1181,14 @@ export default {
             font-size: 12px;
           }
         }
+      }
+    }
+    .others {
+      .othersList li {
+        width: 100%;
+      }
+      .info {
+        margin-right: 2px;
       }
     }
   }
