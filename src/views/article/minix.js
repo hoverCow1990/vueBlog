@@ -25,13 +25,19 @@ export default {
           </div>
           <div class="btn-group">
             <div class="btn download">
-              <i class="iconfont icon-xiazai"></i>下载源码
+              <a>
+                <i class="iconfont icon-xiazai"></i>下载源码
+              </a>
             </div>
             <div class="btn watch">
-              <i class="iconfont icon-yanjing"></i>在线演示
+              <a>
+                <i class="iconfont icon-yanjing"></i>在线演示
+              </a>
             </div>
             <div class="btn github">
-              <i class="iconfont icon-github"></i>Github
+              <a>
+                <i class="iconfont icon-github"></i>Github
+              </a>
             </div>
           </div>`,
         context: `

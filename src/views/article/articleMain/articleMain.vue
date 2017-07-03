@@ -5,7 +5,6 @@
     </ul>
     <div class="article-topBar">
       <p><i class="iconfont icon-bi"></i><span>博客正文</span></p>
-      <img :src="articleData.perviewer">
     </div>
     <div class="article-box">
       <div class="article-hd">
@@ -320,17 +319,20 @@ export default {
   .btn {
     @btnColor: #5295ef;
     position: relative;
-    padding-left: 20px;
-    padding-right: 32px;
+    width: 136px;
     height: 100%;
     float: left;
     border-radius: 3px;
     background: @btnColor;
     font-size: 14px;
     text-align: center;
-    color: #fff;
     cursor: pointer;
     transition: .2s;
+    a {
+      width: 100%;
+      height: 100%;
+      color: #fff;
+    }
     &:not(:last-child) {
       margin-right: 20px;
     }
