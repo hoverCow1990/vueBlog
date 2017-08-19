@@ -43,21 +43,21 @@
           <div class="cow-input-content password">
             <label>密码</label>
             <div class="input-box">
-              <input type="text" key='reginter-password' v-model='registerData.password.val' placeholder="请输入您的密码" :class='registerData.password.verified?"":"error"'>
+              <input type="text" key='reginter-password' v-model='registerData.password.val' placeholder="请输入您的密码(5位以上)" :class='registerData.password.verified?"":"error"'>
             </div>
           </div>
           <div class="cow-upload-content feature">
             <label>头像</label>
             <div class="input-box">
-              <div class="feature-perviewer">
+              <div class="feature-perviewer" :class='registerData.feature.verified?"":"error"'>
                 <img :src="featureSrc" :class="featureSrc?'active':''">
                 <input type="file" :accept="acceptsType" @change="handlerPhotoView">
               </div>
-              <p class="exp">85*85像素,大小<span>50kb</span>以下</p>
+              <p class="exp">1:1像素,大小<span>50kb</span>以下</p>
             </div>
           </div>
           <div class="cow-btn-group submit-group">
-            <div class="cow-btn primary" @click='handlerPhotoView'>立即注册</div>
+            <div class="cow-btn primary" @click='handlerRegist'>立即注册</div>
             <div class="cow-btn default" @click='hiddenLogin'>取消</div>
           </div>
         </div>
@@ -161,7 +161,6 @@ export default {
       const reader = new FileReader()
       reader.readAsDataURL(file)
       reader.onload = (e) => {
-        console.log(e)
         this.$data.featureSrc = e.target.result
       }
       // this.$data.featureSrc = imageUrl // 在预览区域插入图片
@@ -201,6 +200,28 @@ export default {
                 //     })
                 // }
     },
+    handlerRegist () {
+      let registerData = this.$data.registerData
+      let {id, password, feature} = registerData
+      let isCanSubmit = this.verifyRegistForm(id, password, feature)
+      if (isCanSubmit.res) {
+        this.$Http({
+          url: this.$Constent.api.user.regist,
+          method: 'POST',
+          data: {
+            id: id.val,
+            password: password.val
+          }
+        }).then(res => {
+          console.log(res)
+        })
+      } else {
+        this.$message({
+          type: 'err',
+          message: isCanSubmit.msg
+        })
+      }
+    },
     // 跳转类型
     changeType (type) {
       if (type === this.$data.loginType) return
@@ -210,7 +231,7 @@ export default {
     handlerSubmit () {
       let {loginData, isRember} = this.$data
       let {id, password} = loginData
-      let isCanSubmit = this.verifyForm(id, password)
+      let isCanSubmit = this.verifyLoginForm(id, password)
       if (isCanSubmit.res) {
         // console.log('ok')
       } else {
@@ -221,8 +242,8 @@ export default {
       }
       console.log(isRember)
     },
-    // 验证表单的有效性
-    verifyForm (id, password) {
+    // 验证登录表单的有效性
+    verifyLoginForm (id, password) {
       let res = true
       let msg = ''
       if (id.val.trim() === '') {
@@ -242,6 +263,48 @@ export default {
       return {
         res,
         msg: msg + '不能为空'
+      }
+    },
+    // 验证注册表单的有效性
+    verifyRegistForm (id, password, feature) {
+      let res = true
+      if (id.val.trim() === '') {
+        id.verified = false
+        return {
+          res: false,
+          msg: '用户名不能为空'
+        }
+      } else {
+        if (/^\d+$/.test(id.val)) {
+          id.verified = false
+          return {
+            res: false,
+            msg: '用户名不能纯数字'
+          }
+        } else {
+          id.verified = true
+        }
+      }
+      if (password.val.trim() === '') {
+        password.verified = false
+        return {
+          res: false,
+          msg: '密码不能为空'
+        }
+      } else {
+        password.verified = true
+      }
+      // if (!this.$data.featureSrc) {
+      //   feature.verified = false
+      //   return {
+      //     res: false,
+      //     msg: '请上传你的头像'
+      //   }
+      // } else {
+      //   feature.verified = true
+      // }
+      return {
+        res
       }
     }
   }

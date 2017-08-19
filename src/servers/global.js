@@ -4,6 +4,7 @@ import Components from './components'
 import Cookies from './cookies'
 import Filters from './filters'
 import Constent from './constent'
+import Http from './http'
 import '@/assets/css/reset.css'
 import '@/assets/css/global.less'
 import '@/assets/font/iconfont.css'
@@ -13,3 +14,4 @@ Vue.use(Components)
 Vue.use(Filters)
 Vue.use(Cookies)
 Vue.use(Constent)
+Vue.use(Http)
