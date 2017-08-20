@@ -29,7 +29,7 @@
             </label>
           </div>
           <div class="cow-btn-group submit-group">
-            <div class="cow-btn primary" @click='handlerSubmit'>立刻登录</div>
+            <div class="cow-btn primary" @click='handlerLogin'>立刻登录</div>
             <div class="cow-btn default" @click='hiddenLogin'>取消</div>
           </div>
         </div>
@@ -53,7 +53,7 @@
                 <img :src="featureSrc" :class="featureSrc?'active':''">
                 <input type="file" :accept="acceptsType" @change="handlerPhotoView">
               </div>
-              <p class="exp">1:1像素,大小<span>50kb</span>以下</p>
+              <p class="exp">1:1像素,大小<span>{{this.$data.maxSize / 1000}}kb</span>以下</p>
             </div>
           </div>
           <div class="cow-btn-group submit-group">
@@ -86,9 +86,10 @@ export default {
       isBoxActive: false,
       isWrapperActive: false,
       acceptsType: ['image/jpeg,image/jpg,image/png,image/gif'],
-      maxSize: 30000,
+      maxSize: 70000,
       featureSrc: '',
       featureFlag: [String, Number],
+      fileData: '',
       loginData: {
         id: {
           val: '',
@@ -148,13 +149,11 @@ export default {
     },
     handlerPhotoView (ev) {
       let file = event.target.files[0]
-      // let featureFlag = this.$data.featureFlag
-      console.log(file)
       if (!file) return
       if (file.size > this.$data.maxSize) {
         this.$message({
           type: 'err',
-          message: '图片不能超过50kb'
+          message: `图片不能超过${this.$data.maxSize / 1000}kb`
         })
         return
       }
@@ -162,58 +161,37 @@ export default {
       reader.readAsDataURL(file)
       reader.onload = (e) => {
         this.$data.featureSrc = e.target.result
+        this.$data.fileData = file
       }
-      // this.$data.featureSrc = imageUrl // 在预览区域插入图片
-                //     //filter file, 文件大小,类型等过滤
-                //     //如果是图片文件
-                //     // const reader = new FileReader()
-                //     // const imageUrl = reader.readAsDataURL(file)
-                //     // img.src = imageUrl //在预览区域插入图片
-                //
-                //     const formData = new FormData()
-                //     formData.append('file', file)
-                //
-                //     //获取token
-                //     this.$http.get(`/api/token/`)
-                //     .then(response => {
-                //         const result = response.body
-                //         formData.append('token', result.token)
-                //         formData.append('key', result.key)
-                //         //提交给七牛处理
-                //         self.$http.post('https://up.qbox.me/', formData, {
-                //             progress(event) {
-                //                 //传递给父组件的progress方法
-                //                 self.$emit('progress', parseFloat(event.loaded / event.total * 100), flag)
-                //             }
-                //         })
-                //         .then(response => {
-                //             const result = response.body
-                //             if (result.hash && result.key) {
-                //                 //传递给父组件的complete方法
-                //                 self.$emit('complete', 200 , result, flag)
-                //                 //让当前target可以重新选择
-                //                 event.target.value = null
-                //             } else {
-                //                 self.$emit('complete', 500, result, flag)
-                //             }
-                //         }, error => self.$emit('complete', 500, error.message), flag)
-                //     })
-                // }
     },
+    // 处理注册
     handlerRegist () {
       let registerData = this.$data.registerData
       let {id, password, feature} = registerData
       let isCanSubmit = this.verifyRegistForm(id, password, feature)
       if (isCanSubmit.res) {
+        const formData = new FormData()
+        formData.append('file', this.$data.fileData)
+        formData.append('id', id.val)
+        formData.append('password', password.val)
         this.$Http({
           url: this.$Constent.api.user.regist,
           method: 'POST',
-          data: {
-            id: id.val,
-            password: password.val
-          }
+          data: formData
         }).then(res => {
-          console.log(res)
+          res = res.body
+          if (res.statue) {
+            this.$message({
+              type: 'success',
+              message: '恭喜你注册为老牛会员'
+            })
+            this.hiddenLogin()
+          } else {
+            this.$message({
+              type: 'err',
+              message: res.msg
+            })
+          }
         })
       } else {
         this.$message({
@@ -228,12 +206,34 @@ export default {
       this.loginType = type
     },
     // 立即登录
-    handlerSubmit () {
+    handlerLogin () {
       let {loginData, isRember} = this.$data
       let {id, password} = loginData
       let isCanSubmit = this.verifyLoginForm(id, password)
       if (isCanSubmit.res) {
-        // console.log('ok')
+        this.$Http({
+          url: this.$Constent.api.user.login,
+          method: 'POST',
+          data: {
+            id: id.val,
+            password: password.val
+          }
+        }).then(res => {
+          res = res.body
+          if (res.statue) {
+            this.$message({
+              type: 'success',
+              message: '登录成功'
+            })
+            this.hiddenLogin()
+          } else {
+            this.$message({
+              type: 'err',
+              message: res.msg
+            })
+          }
+          console.log(res)
+        })
       } else {
         this.$message({
           type: 'err',
@@ -291,18 +291,24 @@ export default {
           res: false,
           msg: '密码不能为空'
         }
+      } else if (/[\u4e00-\u9fa5]/g.test(password.val)) {
+        password.verified = false
+        return {
+          res: false,
+          msg: '密码不能存在中文'
+        }
       } else {
         password.verified = true
       }
-      // if (!this.$data.featureSrc) {
-      //   feature.verified = false
-      //   return {
-      //     res: false,
-      //     msg: '请上传你的头像'
-      //   }
-      // } else {
-      //   feature.verified = true
-      // }
+      if (!this.$data.featureSrc) {
+        feature.verified = false
+        return {
+          res: false,
+          msg: '请上传你的头像'
+        }
+      } else {
+        feature.verified = true
+      }
       return {
         res
       }

@@ -20,7 +20,8 @@ const constent = {
       api: {
         user: {
           info: HOST + '/user',
-          regist: HOST + '/user/regist'
+          regist: HOST + '/user/regist',
+          login: HOST + '/user/login'
         }
       }
     }
