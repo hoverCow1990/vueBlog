@@ -23,7 +23,7 @@
           <div class="topBar-login">
             <div class="hasLogin" v-if='isLogin'>
               <div class="user-perview">
-                <img :src="`${$Constent.host}/static/user/${userData.id}/logo.jpg`">
+                <img :src="`${$Constent.serverHost}/static/user/${userData.id}/logo.jpg`">
               </div>
               <span>{{ userData.name }}</span>
               <span class="logout" @click="handlerLogout">[ 退出 ]</span>
@@ -137,6 +137,8 @@ export default {
           })
           this.$data.userData = {}
           this.$data.isLogin = false
+          // this.$router.push(this.$Constent.host)
+          window.location.href = this.$Constent.host
         }
       })
     },

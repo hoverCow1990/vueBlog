@@ -7,9 +7,15 @@ const IsPC = () => {
 
 const HOSTS = {
   production: 'http://web-jackiee.com',
-  development: 'http://localhost:3000'
+  development: 'http://localhost:8080'
 }
 const HOST = HOSTS[process.env.NODE_ENV]
+
+const serverHosts = {
+  production: 'http://web-jackiee.com',
+  development: 'http://localhost:3000'
+}
+const serverHost = serverHosts[process.env.NODE_ENV]
 
 const APIHOSTS = {
   production: 'https://web-jackiee.com',
@@ -22,13 +28,16 @@ const constent = {
     console.log('------------------$constent------------------')
     Vue.prototype.$Constent = {
       host: HOST,
+      serverHost: serverHost,
       isPc: IsPC(),
       api: {
         user: {
           info: APIHOST + '/user',
+          userDetail: APIHOST + '/user/userDetail',
           regist: APIHOST + '/user/regist',
           login: APIHOST + '/user/login',
-          logout: APIHOST + '/user/logout'
+          logout: APIHOST + '/user/logout',
+          updateUserDetail: APIHOST + '/user/uploadUserDetail'
         }
       }
     }

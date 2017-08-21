@@ -46,7 +46,7 @@
             </li>
             <li class="text">
               <p class='label'>级别</p>
-              <p class='val'>{{ userData.alias }}</p>
+              <p class='val'>{{ userData.lv | cow-transAlias }}</p>
             </li>
             <li class="text">
               <p class='label'>积分</p>
@@ -66,7 +66,9 @@
             </li>
             <li class="talent">
               <p class='label'>掌握技能</p>
-              <p class='val'><span v-for='item of userData.talent'>{{ item }}</span></p>
+              <p class='val'>
+                <span v-for='item of userData.talent'>{{ item }}</span>
+              </p>
             </li>
           </ul>
         </div>
@@ -219,7 +221,7 @@
         </div>
       </div>
     </div>
-    <cow-user-infoBox :isShow='isInfoBoxShow' @hiddenInfoBoxShow='hiddenInfoBoxShow'></cow-user-infoBox>
+    <cow-user-infoBox :isShow='isInfoBoxShow' @hiddenInfoBoxShow='hiddenInfoBoxShow' @update="data => updateUserData(data)" ref="infoBox"></cow-user-infoBox>
     <cow-upload-box :isShow='isUploadShow' @hiddenUploadBox='hiddenUploadBox'></cow-upload-box>
   </section>
 </template>
@@ -237,7 +239,6 @@ export default {
         qq: '--',
         git: '--',
         blog: '--',
-        alias: '--',
         introduce: '--',
         talent: []
       },
@@ -256,7 +257,22 @@ export default {
   methods: {
     // 请求用户数据
     requestUserData () {
-      this.testDateComplete()
+      this.$Http({
+        url: this.$Constent.api.user.userDetail,
+        method: 'GET'
+      }).then(res => {
+        res = res.body
+        if (res.statue) {
+          this.$data.userData = res.userDetail
+          this.$data.userData.talent = res.userDetail.talent ? res.userDetail.talent.split(',') : []
+          this.testDateComplete()
+        } else {
+          this.$message({
+            type: 'err',
+            message: res.msg
+          })
+        }
+      })
     },
     // 请求好友列表
     handlerRequestOthers () {
@@ -283,13 +299,39 @@ export default {
     },
     // 显示修改资料
     showInfoBoxShow () {
+      const {introduce, blog, git, qq, talent} = this.$data.userData
+      this.$refs.infoBox.inputList = {
+        introduce: {
+          val: introduce,
+          verified: true
+        },
+        blog: {
+          val: blog,
+          verified: true
+        },
+        git: {
+          val: git,
+          verified: true
+        },
+        qq: {
+          val: qq,
+          verified: true
+        }
+      }
+      this.$refs.infoBox.talentList = talent
       this.$data.isInfoBoxShow = true
     },
     // 隐藏修改资料
     hiddenInfoBoxShow () {
       this.$data.isInfoBoxShow = false
     },
-    // 监测资料完整性
+    // 修改资料成功
+    updateUserData (data) {
+      this.$data.userData = data.userDetail
+      this.$data.userData.talent = data.userDetail.talent ? data.userDetail.talent.split(',') : []
+      this.hiddenInfoBoxShow()
+    },
+    // 检测资料完整性
     testDateComplete () {
       let {qq, talent, introduce} = this.$data.userData
       if (!qq | !introduce | !talent.length) {

@@ -24,6 +24,23 @@ const filtersUnit = {
   buildZero (str, num = 3) {
     str = typeof str === String ? str : '' + str
     return str.padStart(num, '0')
+  },
+  // 获取称号
+  transAlias (lv) {
+    switch (lv) {
+      case 1:
+        return '牛哥的基佬学徒'
+      case 2:
+        return '牛哥的机智小跟班'
+      case 3:
+        return '牛哥的忠实粉丝'
+      case 4:
+        return '牛哥的入室大弟子'
+      case 5:
+        return '貌美如花的牛哥小妾'
+      case 6:
+        return '齐牛大圣'
+    }
   }
 }
 
