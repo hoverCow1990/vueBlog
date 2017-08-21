@@ -29,8 +29,8 @@
             </label>
           </div>
           <div class="cow-btn-group submit-group">
-            <div class="cow-btn primary" @click='handlerLogin'>立刻登录</div>
-            <div class="cow-btn default" @click='hiddenLogin'>取消</div>
+            <cow-btn type="primary" @click='handlerLogin' :isLoading="isRequestLoading">立刻登录</cow-btn>
+            <cow-btn type="default" @click='hiddenLogin' :isDisabled="isRequestLoading">取消</cow-btn>
           </div>
         </div>
         <div class="reginter-container type-container" v-else>
@@ -43,7 +43,7 @@
           <div class="cow-input-content password">
             <label>密码</label>
             <div class="input-box">
-              <input type="text" key='reginter-password' v-model='registerData.password.val' placeholder="请输入您的密码(5位以上)" :class='registerData.password.verified?"":"error"'>
+              <input type="text" key='reginter-password' v-model='registerData.password.val' placeholder="请输入您的密码 (位数5~15位)" :class='registerData.password.verified?"":"error"'>
             </div>
           </div>
           <div class="cow-upload-content feature">
@@ -57,8 +57,8 @@
             </div>
           </div>
           <div class="cow-btn-group submit-group">
-            <div class="cow-btn primary" @click='handlerRegist'>立即注册</div>
-            <div class="cow-btn default" @click='hiddenLogin'>取消</div>
+            <cow-btn type="primary" @click='handlerRegist' :isLoading="isRequestLoading">立即注册</cow-btn>
+            <cow-btn type="default" @click='hiddenLogin' :isDisabled="isRequestLoading">取消</cow-btn>
           </div>
         </div>
       </div>
@@ -70,6 +70,7 @@
 export default {
   name: 'LoginBox',
   props: {
+    value: String,
     // 是否显示
     isShow: {
       type: Boolean,
@@ -80,9 +81,18 @@ export default {
       type: String
     }
   },
+  computed: {
+    loginType: {
+      get () {
+        return this.value
+      },
+      set (val) {
+        this.$emit('input', val)
+      }
+    }
+  },
   data () {
     return {
-      loginType: 'login',
       isBoxActive: false,
       isWrapperActive: false,
       acceptsType: ['image/jpeg,image/jpg,image/png,image/gif'],
@@ -90,6 +100,7 @@ export default {
       featureSrc: '',
       featureFlag: [String, Number],
       fileData: '',
+      isRequestLoading: false,
       loginData: {
         id: {
           val: '',
@@ -124,9 +135,6 @@ export default {
       }
     }
   },
-  created () {
-    if (this.initloginType) this.loginType = this.initloginType
-  },
   methods: {
     // 显示所有
     showLogin () {
@@ -147,6 +155,7 @@ export default {
         this.$emit('hiddenLoginBox')
       }, 800)
     },
+    // 渲染头像图
     handlerPhotoView (ev) {
       let file = event.target.files[0]
       if (!file) return
@@ -164,12 +173,19 @@ export default {
         this.$data.fileData = file
       }
     },
+    // 跳转类型
+    changeType (type) {
+      if (type === this.$data.loginType || this.$data.isRequestLoading) return
+      this.loginType = type
+    },
     // 处理注册
     handlerRegist () {
+      if (this.$data.isRequestLoading) return
       let registerData = this.$data.registerData
       let {id, password, feature} = registerData
       let isCanSubmit = this.verifyRegistForm(id, password, feature)
       if (isCanSubmit.res) {
+        this.$data.isRequestLoading = true
         const formData = new FormData()
         formData.append('file', this.$data.fileData)
         formData.append('id', id.val)
@@ -186,11 +202,14 @@ export default {
               message: '恭喜你注册为老牛会员'
             })
             this.hiddenLogin()
+            this.$emit('loginSuccess', res.userData)
+            this.$data.isRequestLoading = false
           } else {
             this.$message({
               type: 'err',
               message: res.msg
             })
+            this.$data.isRequestLoading = false
           }
         })
       } else {
@@ -200,17 +219,14 @@ export default {
         })
       }
     },
-    // 跳转类型
-    changeType (type) {
-      if (type === this.$data.loginType) return
-      this.loginType = type
-    },
     // 立即登录
     handlerLogin () {
+      if (this.$data.isRequestLoading) return
       let {loginData, isRember} = this.$data
       let {id, password} = loginData
       let isCanSubmit = this.verifyLoginForm(id, password)
       if (isCanSubmit.res) {
+        this.$data.isRequestLoading = true
         this.$Http({
           url: this.$Constent.api.user.login,
           method: 'POST',
@@ -226,13 +242,15 @@ export default {
               message: '登录成功'
             })
             this.hiddenLogin()
+            this.$emit('loginSuccess', res.userData)
+            this.$data.isRequestLoading = false
           } else {
             this.$message({
               type: 'err',
               message: res.msg
             })
+            this.$data.isRequestLoading = false
           }
-          console.log(res)
         })
       } else {
         this.$message({
@@ -274,16 +292,20 @@ export default {
           res: false,
           msg: '用户名不能为空'
         }
-      } else {
-        if (/^\d+$/.test(id.val)) {
-          id.verified = false
-          return {
-            res: false,
-            msg: '用户名不能纯数字'
-          }
-        } else {
-          id.verified = true
+      } else if (/^\d+$/.test(id.val)) {
+        id.verified = false
+        return {
+          res: false,
+          msg: '用户名不能纯数字'
         }
+      } else if (id.val.length > 10) {
+        id.verified = false
+        return {
+          res: false,
+          msg: '用户名最长10位'
+        }
+      } else {
+        id.verified = true
       }
       if (password.val.trim() === '') {
         password.verified = false
@@ -296,6 +318,12 @@ export default {
         return {
           res: false,
           msg: '密码不能存在中文'
+        }
+      } else if (password.val.length < 5 || password.val.length > 15) {
+        password.verified = false
+        return {
+          res: false,
+          msg: '密码位数在5~10位'
         }
       } else {
         password.verified = true

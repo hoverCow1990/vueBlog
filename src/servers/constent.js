@@ -6,22 +6,29 @@ const IsPC = () => {
 }
 
 const HOSTS = {
+  production: 'http://web-jackiee.com',
+  development: 'http://localhost:3000'
+}
+const HOST = HOSTS[process.env.NODE_ENV]
+
+const APIHOSTS = {
   production: 'https://web-jackiee.com',
   development: '/proxy/devApi'
 }
-
-const HOST = HOSTS[process.env.NODE_ENV]
+const APIHOST = APIHOSTS[process.env.NODE_ENV]
 
 const constent = {
   install (Vue, options) {
     console.log('------------------$constent------------------')
     Vue.prototype.$Constent = {
+      host: HOST,
       isPc: IsPC(),
       api: {
         user: {
-          info: HOST + '/user',
-          regist: HOST + '/user/regist',
-          login: HOST + '/user/login'
+          info: APIHOST + '/user',
+          regist: APIHOST + '/user/regist',
+          login: APIHOST + '/user/login',
+          logout: APIHOST + '/user/logout'
         }
       }
     }

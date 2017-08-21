@@ -1,5 +1,6 @@
 import Header from './header/header'
 import HeaderFiller from './headerFiller/headerFiller'
+import Button from './button/button'
 import TitleBar from './titleBar/titleBar'
 import Footer from './footer/footer'
 import LoginBox from './loginBox/loginBox'
@@ -14,6 +15,7 @@ import PropCircle from './propCircle/propCircle'
 
 export default {
   Header,
+  Button,
   HeaderFiller,
   Footer,
   TitleBar,

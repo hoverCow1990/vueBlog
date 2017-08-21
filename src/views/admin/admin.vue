@@ -231,15 +231,15 @@ export default {
     return {
       userData: {
         hasSigned: false,
-        name: '老实的牛',
-        score: '1215',
-        lv: 2,
-        qq: '547007933',
-        git: 'https://github.com/hoverCow1990',
-        blog: 'http://www.web-jackiee.com/',
-        alias: '牛哥的宠幸',
-        introduce: '超级喜欢Javascript, 最近爱上用Vue开发的快感,嘿嘿',
-        talent: ['html', 'css', 'javascript', 'vue', 'bootstrip', 'jquery', 'webpack', 'gulp', 'react']
+        name: '--',
+        score: '--',
+        lv: '-',
+        qq: '--',
+        git: '--',
+        blog: '--',
+        alias: '--',
+        introduce: '--',
+        talent: []
       },
       showExplain: '在会员中心内进行签到任务可随机获得5-10分不等',
       showLable: '每日签到',

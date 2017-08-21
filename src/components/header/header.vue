@@ -7,9 +7,9 @@
         </div>
         <div class="topBar-side">
           <div class="topBar-entrence">
-            <router-link to="/admin">
+            <div class="toAdmin" @click="handlerToAdmin">
               <i class="iconfont icon-huiyuan2"></i>
-            </router-link>
+            </div>
             <router-link to="/message">
               <i class="iconfont icon-maobi"></i>
             </router-link>
@@ -23,9 +23,10 @@
           <div class="topBar-login">
             <div class="hasLogin" v-if='isLogin'>
               <div class="user-perview">
-                <img src="./images/user.jpg">
+                <img :src="`${$Constent.host}/static/user/${userData.id}/logo.jpg`">
               </div>
-              <span>欢迎您, [ {{ user.name }} ]</span>
+              <span>{{ userData.name }}</span>
+              <span class="logout" @click="handlerLogout">[ 退出 ]</span>
             </div>
             <div class="noLogin" v-else>
               <span @click='showLoginBox("login")'>登录</span>
@@ -55,8 +56,8 @@
         <button><span><i class="iconfont icon-fangdajing"></i></span></button>
       </div>
     </div>
-    <more-box :isShow='isMoreBoxShow' @showLoginBox='showLoginBox' @hiddenMoreBox='hiddenMoreBox'></more-box>
-    <cow-login-box :isShow='isLoginBoxShow' :initloginType='initloginType' @hiddenLoginBox='hiddenLoginBox'></cow-login-box>
+    <more-box :isShow='isMoreBoxShow' @showLoginBox='showLoginBox' @hiddenMoreBox='hiddenMoreBox' :isLogin="isLogin"></more-box>
+    <cow-login-box v-model='loginType' :isShow='isLoginBoxShow' @hiddenLoginBox='hiddenLoginBox' @loginSuccess='(data) => loginSuccess(data)'></cow-login-box>
   </div>
 </template>
 
@@ -68,21 +69,40 @@ export default {
   data () {
     return {
       isLogin: false,
+      loginType: '',
       isLoginBoxShow: false,
-      initloginType: '',
       isMoreBoxShow: false,
-      user: {
-        name: '老实的牛'
+      userData: {
+        name: '',
+        id: ''
       }
     }
   },
   components: {
     MoreBox
   },
+  created () {
+    this.checkLogin()
+  },
   methods: {
+    // 检测是否登录
+    checkLogin () {
+      this.$Http({
+        url: this.$Constent.api.user.info,
+        method: 'GET'
+      }).then(res => {
+        res = res.body
+        if (res.statue) {
+          this.$data.isLogin = true
+          this.$data.userData = res.userData
+        } else {
+          this.$data.isLogin = false
+          this.$data.userData = {}
+        }
+      })
+    },
     // 显示登录盒子
-    showLoginBox (type) {
-      console.log(1)
+    showLoginBox (type = 'login') {
       this.$data.loginType = type
       this.$data.isLoginBoxShow = true
     },
@@ -97,6 +117,40 @@ export default {
     // 隐藏更多盒子
     hiddenMoreBox () {
       this.$data.isMoreBoxShow = false
+    },
+    // 登录成功
+    loginSuccess (data) {
+      this.$data.userData = data
+      this.$data.isLogin = true
+    },
+    // 退出登录
+    handlerLogout () {
+      this.$Http({
+        url: this.$Constent.api.user.logout,
+        method: 'GET'
+      }).then(res => {
+        res = res.body
+        if (res.statue) {
+          this.$message({
+            type: 'success',
+            message: '成功退出'
+          })
+          this.$data.userData = {}
+          this.$data.isLogin = false
+        }
+      })
+    },
+    // 跳转至用户
+    handlerToAdmin () {
+      if (this.$data.isLogin) {
+        this.$router.push('/admin')
+      } else {
+        this.$message({
+          type: 'warn',
+          message: '登录后可进入用户中心'
+        })
+        this.showLoginBox('login')
+      }
     }
   }
 }
@@ -158,11 +212,21 @@ export default {
       width: 26px;
       height: 26px;
       border-radius: 50%;
-      margin-right: .17rem;
+      margin-right: .12rem;
       overflow: hidden;
     }
     img {
       width: 100%;
+    }
+    .logout {
+      padding-left: .05rem;
+      cursor: pointer;
+      font-size: 12px;
+      color: #a2a2a2;
+      transition: .1s;
+      &:hover {
+        color: #eee;
+      }
     }
   }
   .noLogin {
@@ -189,12 +253,12 @@ export default {
     height: 100%;
     align-items: center;
     line-height: @topBarHeight;
+    .toAdmin:hover i{
+      color: #52c3fb;
+    }
     a {
       position: relative;
       color: #eee;
-      &:nth-child(1):hover i{
-        color: #52c3fb;
-      }
       &:nth-child(2):hover i{
         color: #f56565;
       }

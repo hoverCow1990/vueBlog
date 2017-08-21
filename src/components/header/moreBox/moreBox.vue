@@ -2,8 +2,8 @@
   <div class="header-moreBox" :class='isShow?"active":""'>
     <div class="container">
       <ul class='moreBox-menu'>
-        <li><i class="iconfont icon-huiyuan2"></i><router-link to="/admin">会员中心</router-link></li>
-        <li @click='showLoginBox'><i class="iconfont icon-dianpuxiangqingyedejiage"></i>注册 / 登录</li>
+        <li v-if="isLogin"><i class="iconfont icon-huiyuan2"></i><router-link to="/admin">会员中心</router-link></li>
+        <li v-else @click='showLoginBox'><i class="iconfont icon-dianpuxiangqingyedejiage"></i>注册 / 登录</li>
         <li><i class="iconfont icon-maobi"></i><router-link to="/message">留言板</router-link></li>
         <li><i class="iconfont icon-huiyuan"></i><router-link to="/message">游戏大厅</router-link></li>
         <li><i class="iconfont icon-dianzandian"></i><router-link to="/message">老版本首页</router-link></li>
@@ -22,6 +22,10 @@
 export default {
   props: {
     isShow: {
+      type: Boolean,
+      required: true
+    },
+    isLogin: {
       type: Boolean,
       required: true
     }

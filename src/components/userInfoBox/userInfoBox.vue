@@ -106,8 +106,8 @@
             </div>
           </div>
           <div class="cow-btn-group submit-group">
-            <div class="cow-btn primary" @click='handlerSubmit'>立刻登录</div>
-            <div class="cow-btn default" @click='hiddenInfoBox'>取消</div>
+            <cow-btn type="primary" @click='handlerSubmit'>立刻发布</cow-btn>
+            <cow-btn @click='hiddenInfoBox'>取消</cow-btn>
           </div>
         </div>
       </div>
@@ -189,10 +189,10 @@ export default {
 .userInfo-box {
   .title {
     font-size: 14px;
-    padding-bottom: 10px;
+    padding-bottom: 8px;
     letter-spacing: 1px;
     text-align: right;
-    color: #ff1e1e;
+    color: #20a0ff;
     i {
       padding-right: 5px;
     }
