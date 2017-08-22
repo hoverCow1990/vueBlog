@@ -6,11 +6,11 @@
         <div class="topBar-container">
           <div class="user">
             <div class="user-logo">
-              <img src="./images/user.jpg">
+              <img v-if="userData.keyId" :src="`${$Constent.serverHost}/static/user/${userData.keyId}/logo.jpg`">
             </div>
             <div class="user-summary">
               <div class="summary-hd">
-                <p class="name">老<span>实的牛</span></p>
+                <p class="name">{{ userData.name[0] }}<span>{{ userData.name.substring(1) }}</span></p>
                 <div class="tag">
                   <span>Lv</span>
                   <span>{{ userData.lv }}</span>
@@ -19,7 +19,7 @@
               <p class="introduce">{{ userData.introduce }}</p>
             </div>
           </div>
-          <div class="sign" :class='userData.hasSigned?"":"active"'>
+          <div class="sign" :class='userData.hasSigned?"":"active"' @click="handlerSign">
             <p><i class="iconfont icon-huiyuan2"></i>签到</p>
             <p>{{ new Date() | cow-parseTime(false) }}</p>
           </div>
@@ -30,7 +30,7 @@
           <span v-for="(item, index) of new Array(6)" :class="index + 1 === userData.lv?'active':''">Lv{{ index + 1}}</span>
         </div>
         <div class="lv-line">
-          <span></span>
+          <span :style="lvLineStyle"></span>
         </div>
       </div>
       <div class="admin-bd">
@@ -58,11 +58,11 @@
             </li>
             <li>
               <p class='label'>博客主页</p>
-              <p class='val'><a :href="userData.blog">{{ userData.blog }}</a></p>
+              <p class='val'><a :href="userData.blog" target="_blank">{{ userData.blog }}</a></p>
             </li>
             <li>
               <p class='label'>Github</p>
-              <p class='val'><a :href="userData.git">{{ userData.git }}</a></p>
+              <p class='val'><a :href="userData.git" target="_blank">{{ userData.git }}</a></p>
             </li>
             <li class="talent">
               <p class='label'>掌握技能</p>
@@ -254,6 +254,23 @@ export default {
     this.requestUserData()
     this.setStrokeWidth()
   },
+  computed: {
+    lvLineStyle () {
+      const lvConfig = [0, 150, 350, 700, 1400, 2800]
+      const { score } = this.$data.userData
+      let width = ''
+      if (score >= lvConfig[5]) {
+        width = '100%'
+      } else {
+        let endIndex = lvConfig.findIndex(item => item >= score)
+        let stIndex = endIndex - 1
+        width = (((score - lvConfig[stIndex]) / (lvConfig[endIndex] - lvConfig[stIndex])) * 100).toFixed(2) + '%'
+      }
+      return {
+        width
+      }
+    }
+  },
   methods: {
     // 请求用户数据
     requestUserData () {
@@ -329,7 +346,11 @@ export default {
     updateUserData (data) {
       this.$data.userData = data.userDetail
       this.$data.userData.talent = data.userDetail.talent ? data.userDetail.talent.split(',') : []
-      this.hiddenInfoBoxShow()
+      this.$refs.infoBox.hiddenInfoBox()
+      this.$message({
+        type: 'success',
+        message: '成功修改资料'
+      })
     },
     // 检测资料完整性
     testDateComplete () {
@@ -339,6 +360,31 @@ export default {
           this.showInfoBoxShow()
         })
       }
+    },
+    // 用户签到
+    handlerSign () {
+      if (this.$data.userData.hasSigned) {
+        return
+      }
+      this.$Http({
+        url: this.$Constent.api.user.sign,
+        method: 'GET'
+      }).then(res => {
+        res = res.body
+        if (res.statue) {
+          this.$data.userData.hasSigned = true
+          this.$data.userData.score = res.score
+          this.$message({
+            type: 'success',
+            message: '成功签到积分+10'
+          })
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.msg
+          })
+        }
+      })
     }
   }
 }
@@ -374,6 +420,7 @@ export default {
       min-height: 76px;
       border-radius: 50%;
       border: 2px solid rgba(255, 255, 255, .6);
+      background-color: rgba(255, 255, 255, .3);
       overflow: hidden;
     }
     .user-summary {
@@ -397,6 +444,7 @@ export default {
           border-top: 1px solid rgba(255, 255,255, .2);
           border-right: 1px solid rgba(255, 255,255, .2);
           font-size: 16px;
+          transition: width .3s;
         }
       }
       .tag {
@@ -524,7 +572,6 @@ export default {
       font-size: 4px;
       span {
         position: absolute;
-        width: 67%;
         height: 100%;
         left: 0;
         top: 0;

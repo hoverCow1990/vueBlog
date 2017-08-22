@@ -21,8 +21,8 @@
           </div>
           <p class="upload-des">请上传 zip / rar 格式的项目文件,上传后请主动通知牛哥,我会将你的作品展示在你的用户中心,以供他人一起观看</p>
           <div class="cow-btn-group submit-group">
-            <div class="cow-btn primary" @click='handlerSubmit'>立刻登录</div>
-            <div class="cow-btn default" @click='hiddenUpload'>取消</div>
+            <cow-btn type="primary" @click='handlerSubmit'>立刻上传</cow-btn>
+            <cow-btn @click='hiddenUpload'>取消</cow-btn>
           </div>
         </div>
       </div>

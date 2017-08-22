@@ -37,7 +37,8 @@ const constent = {
           regist: APIHOST + '/user/regist',
           login: APIHOST + '/user/login',
           logout: APIHOST + '/user/logout',
-          updateUserDetail: APIHOST + '/user/uploadUserDetail'
+          updateUserDetail: APIHOST + '/user/uploadUserDetail',
+          sign: APIHOST + '/user/sign'
         }
       }
     }
