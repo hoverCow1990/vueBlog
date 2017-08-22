@@ -38,7 +38,8 @@ const constent = {
           login: APIHOST + '/user/login',
           logout: APIHOST + '/user/logout',
           updateUserDetail: APIHOST + '/user/uploadUserDetail',
-          sign: APIHOST + '/user/sign'
+          sign: APIHOST + '/user/sign',
+          getUserList: APIHOST + 'user/getUserList'
         }
       }
     }

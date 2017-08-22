@@ -207,7 +207,7 @@
                 <li v-for="(item, index) of othersList">
                   <div class="rank">{{ index + 1 | cow-buildZero(2) }}</div>
                   <div class="feature">
-                    <img src="./images/user.jpg">
+                    <img :src="`${$Constent.serverHost}/static/user/${item.keyId}/logo.jpg`">
                   </div>
                   <div class="info">
                     <span class="name">{{ item.name }}</span>
@@ -215,7 +215,7 @@
                   </div>
                 </li>
               </ul>
-              <cow-page-tab :allListLength='18' :singleListLength='8' @change='handlerRequestOthers'></cow-page-tab>
+              <cow-page-tab :allListLength='othersListLength' :singleListLength='9' @change='handlerRequestOthers'></cow-page-tab>
             </div>
           </div>
         </div>
@@ -246,15 +246,20 @@ export default {
       showLable: '每日签到',
       isUploadShow: false,
       isInfoBoxShow: false,
-      strokeWidth: 0
+      strokeWidth: 0,
+      othersList: [],
+      othersListLength: 0,
+      isLoadingSign: false
     }
   },
   mixins: [mixin],
   created () {
     this.requestUserData()
+    this.requestUserList()
     this.setStrokeWidth()
   },
   computed: {
+    // 等级进度条
     lvLineStyle () {
       const lvConfig = [0, 150, 350, 700, 1400, 2800]
       const { score } = this.$data.userData
@@ -292,8 +297,23 @@ export default {
       })
     },
     // 请求好友列表
-    handlerRequestOthers () {
-      console.log(1)
+    requestUserList (requestCount = 0) {
+      this.$Http({
+        url: this.$Constent.api.user.getUserList,
+        method: 'GET',
+        params: {
+          s: requestCount,
+          e: requestCount + 9
+        }
+      }).then(res => {
+        res = res.body
+        this.$data.othersList = res.userList
+        this.$data.othersListLength = res.allLength
+      })
+    },
+    handlerRequestOthers (num) {
+      console.log(num)
+      this.requestUserList(num)
     },
     // 计算canvas环形宽度
     setStrokeWidth () {
@@ -363,9 +383,10 @@ export default {
     },
     // 用户签到
     handlerSign () {
-      if (this.$data.userData.hasSigned) {
+      if (this.$data.userData.hasSigned || this.$data.isLoadingSign) {
         return
       }
+      this.$data.isLoadingSign = true
       this.$Http({
         url: this.$Constent.api.user.sign,
         method: 'GET'
@@ -378,11 +399,13 @@ export default {
             type: 'success',
             message: '成功签到积分+10'
           })
+          this.$data.isLoadingSign = false
         } else {
           this.$message({
-            type: 'error',
+            type: 'err',
             message: res.msg
           })
+          this.$data.isLoadingSign = false
         }
       })
     }
@@ -1055,11 +1078,17 @@ export default {
     }
   }
   .others {
-    /*.content-container {
-      align-items: flex-end;
-    }*/
+    .content-container {
+      align-items: flex-start;
+    }
     .container-viewport{
       background-image: url(images/bg3.jpg);
+    }
+    .othersList {
+      width: 100%;
+    }
+    .othersList {
+      min-height: 1.7rem;
     }
     .othersList li {
       display: flex;

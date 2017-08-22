@@ -137,8 +137,7 @@ export default {
           })
           this.$data.userData = {}
           this.$data.isLogin = false
-          // this.$router.push(this.$Constent.host)
-          window.location.href = this.$Constent.host
+          this.$router.push('/')
         }
       })
     },

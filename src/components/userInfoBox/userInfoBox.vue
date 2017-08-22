@@ -219,7 +219,7 @@ export default {
       } else {
         this.$data.inputList.blog.verified = true
       }
-      if (qq.val.trim() === '') {
+      if (!qq.val) {
         this.$data.inputList.qq.verified = false
         return {
           statue: false,
@@ -236,7 +236,7 @@ export default {
           this.$data.inputList.qq.verified = true
         }
       }
-      if (introduce.val.trim() === '') {
+      if (!introduce.val) {
         this.$data.inputList.introduce.verified = false
         return {
           statue: false,

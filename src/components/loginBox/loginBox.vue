@@ -204,6 +204,7 @@ export default {
             this.hiddenLogin()
             this.$emit('loginSuccess', res.userData)
             this.$data.isRequestLoading = false
+            this.$router.push('/admin')
           } else {
             this.$message({
               type: 'err',
@@ -244,6 +245,7 @@ export default {
             this.hiddenLogin()
             this.$emit('loginSuccess', res.userData)
             this.$data.isRequestLoading = false
+            this.$router.push('/admin')
           } else {
             this.$message({
               type: 'err',
