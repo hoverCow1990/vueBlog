@@ -19,7 +19,7 @@
               <p class="introduce">{{ userData.introduce }}</p>
             </div>
           </div>
-          <div class="sign" :class='userData.hasSigned?"":"active"' @click="handlerSign">
+          <div class="sign" v-if="isSelf" :class='userData.hasSigned?"":"active"' @click="handlerSign">
             <p><i class="iconfont icon-huiyuan2"></i>签到</p>
             <p>{{ new Date() | cow-parseTime(false) }}</p>
           </div>
@@ -37,7 +37,7 @@
         <div class="admin-breif">
           <div class="breif-title account">
             <p>Account Center</p>
-            <span @click="showInfoBoxShow"><i class="iconfont icon-bi"></i>修改信息</span>
+            <span @click="showInfoBoxShow" v-if="isSelf"><i class="iconfont icon-bi"></i>修改信息</span>
           </div>
           <ul class="breif-list">
             <li class="text">
@@ -204,8 +204,8 @@
             </div>
             <div class="container-article">
               <ul class="othersList clearfix">
-                <li v-for="(item, index) of othersList">
-                  <div class="rank">{{ index + 1 | cow-buildZero(2) }}</div>
+                <li v-for="(item, index) of othersList" @click="linkToOtherPage(item.keyId)">
+                  <div class="rank">{{ (requestCount - 1) * 9 + index + 1 | cow-buildZero(2) }}</div>
                   <div class="feature">
                     <img :src="`${$Constent.serverHost}/static/user/${item.keyId}/logo.jpg`">
                   </div>
@@ -215,7 +215,7 @@
                   </div>
                 </li>
               </ul>
-              <cow-page-tab :allListLength='othersListLength' :singleListLength='9' @change='handlerRequestOthers'></cow-page-tab>
+              <cow-page-tab :allListLength='othersListLength' :singleListLength='singleListLength' :isShowAllLength="false"  @change='handlerRequestOthers'></cow-page-tab>
             </div>
           </div>
         </div>
@@ -232,7 +232,7 @@ export default {
   data () {
     return {
       userData: {
-        hasSigned: false,
+        hasSigned: true,
         name: '--',
         score: '--',
         lv: '-',
@@ -249,7 +249,10 @@ export default {
       strokeWidth: 0,
       othersList: [],
       othersListLength: 0,
-      isLoadingSign: false
+      singleListLength: 9,
+      requestCount: 1,
+      isLoadingSign: false,
+      isSelf: false
     }
   },
   mixins: [mixin],
@@ -279,9 +282,18 @@ export default {
   methods: {
     // 请求用户数据
     requestUserData () {
+      const query = this.$route.query
+      let isSelf = true
+      this.$data.isSelf = isSelf
+      if (query && query.id) {
+        isSelf = false
+      }
       this.$Http({
         url: this.$Constent.api.user.userDetail,
-        method: 'GET'
+        method: 'GET',
+        params: {
+          id: isSelf ? 0 : query.id
+        }
       }).then(res => {
         res = res.body
         if (res.statue) {
@@ -297,22 +309,23 @@ export default {
       })
     },
     // 请求好友列表
-    requestUserList (requestCount = 0) {
+    requestUserList (requestCount = 1) {
+      let stCount = this.$data.singleListLength * (requestCount - 1)
       this.$Http({
         url: this.$Constent.api.user.getUserList,
         method: 'GET',
         params: {
-          s: requestCount,
-          e: requestCount + 9
+          s: stCount,
+          e: stCount + this.$data.singleListLength
         }
       }).then(res => {
         res = res.body
         this.$data.othersList = res.userList
         this.$data.othersListLength = res.allLength
+        this.$data.requestCount = requestCount
       })
     },
     handlerRequestOthers (num) {
-      console.log(num)
       this.requestUserList(num)
     },
     // 计算canvas环形宽度
@@ -408,6 +421,16 @@ export default {
           this.$data.isLoadingSign = false
         }
       })
+    },
+    linkToOtherPage (id) {
+      this.$router.push({
+        path: '/admin',
+        query: {
+          id
+        }
+      })
+      this.requestUserData()
+      this.setStrokeWidth()
     }
   }
 }
@@ -1088,7 +1111,7 @@ export default {
       width: 100%;
     }
     .othersList {
-      min-height: 1.7rem;
+      min-height: 1.8rem;
     }
     .othersList li {
       display: flex;

@@ -106,8 +106,8 @@
             </div>
           </div>
           <div class="cow-btn-group submit-group">
-            <cow-btn type="primary" @click='handlerSubmit'>立刻发布</cow-btn>
-            <cow-btn @click='hiddenInfoBox'>取消</cow-btn>
+            <cow-btn type="primary" @click='handlerSubmit' :isLoading="isRequestLoading">立刻发布</cow-btn>
+            <cow-btn @click='hiddenInfoBox' :isDisabled="isRequestLoading">取消</cow-btn>
           </div>
         </div>
       </div>
@@ -147,7 +147,8 @@ export default {
           verified: true
         }
       },
-      talentList: ['html', 'css', 'javascript']
+      talentList: ['html', 'css', 'javascript'],
+      isRequestLoading: false
     }
   },
   watch: {
@@ -179,6 +180,10 @@ export default {
     },
     // 提交表单
     handlerSubmit () {
+      if (this.$data.isRequestLoading) {
+        return
+      }
+      this.$data.isRequestLoading = true
       const isCanSubmit = this.validateVal()
       if (isCanSubmit.statue) {
         this.$Http({
@@ -190,12 +195,14 @@ export default {
           if (res.statue) {
             this.$emit('update', res)
           }
+          this.$data.isRequestLoading = false
         })
       } else {
         this.$message({
           type: 'err',
           message: isCanSubmit.msg
         })
+        this.$data.isRequestLoading = false
       }
     },
     validateVal () {

@@ -1,13 +1,21 @@
 <template>
-  <div class="pageTab" v-if='allListLength !== 0 & singleListLength !== 0'>
-    <ul class='pageTab-list'>
-      <li class="main-tab" @click='handlerTabIndex(1)' :class='nowIndex === 0 ? "disabled" : ""'>首页</li>
-      <li class="main-tab" @click='handlerTabIndex("pre")' :class='nowIndex === 0 ? "disabled" : ""'>上一页</li>
-      <li class="num-tab" v-for='item of tabList' :class='item - 1 === nowIndex?"active":""' @click='handlerTabIndex(item)'>{{ item }}</li>
-      <li class="main-tab" @click='handlerTabIndex("next")' :class='nowIndex === allTabLength - 1 ? "disabled" : ""'>下一页</li>
-      <li class="main-tab" @click='handlerTabIndex(allTabLength)' :class='nowIndex === allTabLength - 1 ? "disabled" : ""'>末页</li>
-    </ul>
+<div class="pageTab" v-if='allListLength !== 0 & singleListLength !== 0'>
+  <ul class='pageTab-list'>
+    <li class="main-tab" @click='handlerTabIndex(1)' :class='nowIndex === 0 ? "disabled" : ""' v-if='isShowLimit' v-once>首页</li>
+    <li class="main-tab" @click='handlerTabIndex("pre")' :class='nowIndex === 0 ? "disabled" : ""'>上一页</li>
+    <li class="num-tab" v-for='item of tabList' :class='item - 1 === nowIndex?"active":""' @click='handlerTabIndex(item)'>{{ item }}</li>
+    <li class="main-tab" @click='handlerTabIndex("next")' :class='nowIndex === allTabLength - 1 ? "disabled" : ""'>下一页</li>
+    <li class="main-tab" @click='handlerTabIndex(allTabLength)' :class='nowIndex === allTabLength - 1 ? "disabled" : ""' v-if='isShowLimit' v-once>末页</li>
+  </ul>
+  <div class="pageTab-info" v-if="isShowAllLength">
+    <span class="info">
+        共{{allListLength}} 条数
+      </span>
+    <span class="info">
+        共{{ allTabLength }} 页
+      </span>
   </div>
+</div>
 </template>
 
 <script>
@@ -25,9 +33,18 @@ export default {
       required: true
     },
     // 最多显示的tab数量
-    showTabLength: {
+    maxShowTabLength: {
       type: Number,
       default: 10
+    },
+    // 是否显示首页末页按钮
+    isShowLimit: {
+      type: Boolean,
+      default: false
+    },
+    isShowAllLength: {
+      type: Boolean,
+      default: true
     }
   },
   data () {
@@ -37,21 +54,18 @@ export default {
       tabList: []
     }
   },
-  created () {
-    this.validateLength()
-    this.getAllTabLength()
-    this.createTab(1)
-  },
   watch: {
+    allListLength () {
+      this.validateLength()
+      this.getAllTabLength()
+      this.createTab(1)
+    },
     // 当前Index变化时处理li位移
     nowIndex () {
-      let {nowIndex, showTabLength, tabList, allTabLength} = this
-
-      if (allTabLength <= showTabLength) return
+      let {nowIndex, maxShowTabLength, tabList, allTabLength, showTabLength} = this
       let stNum = tabList[0]
-      let halfTabIndex = stNum + Math.floor(showTabLength / 2) - 1
+      let halfTabIndex = stNum + Math.floor(maxShowTabLength / 2) - 1
       let indexMinus = nowIndex + 1 - halfTabIndex
-
       if (indexMinus > 0) {
         let maxIndex = allTabLength - showTabLength + 1
         stNum = Math.min(stNum + indexMinus, maxIndex)
@@ -60,13 +74,16 @@ export default {
         stNum = Math.max(stNum + indexMinus, minIndex)
       }
       this.createTab(stNum)
-      this.$emit('change', nowIndex)
+      this.$emit('change', nowIndex + 1)
     }
   },
   methods: {
     // 验证数据的有效性
     validateLength () {
-      let {allListLength, singleListLength} = this
+      let {
+        allListLength,
+        singleListLength
+      } = this
       let isInteger = Number.isInteger
       let isDataTrue = {
         varified: true,
@@ -87,21 +104,28 @@ export default {
     },
     // 获取总共的tab数量
     getAllTabLength () {
-      let {allListLength, singleListLength} = this
+      let {
+        allListLength,
+        singleListLength,
+        maxShowTabLength
+      } = this
       this.$data.allTabLength = Math.ceil(allListLength / singleListLength)
+      this.showTabLength = Math.min(maxShowTabLength, this.$data.allTabLength)
     },
     // 创建tab
     createTab (stNum) {
       let tabList = []
       let allTabLength = this.$data.allTabLength
       let endNum = Math.min(stNum + this.showTabLength, allTabLength + 1)
-
       for (let i = stNum; i < endNum; i++) tabList.push(i)
       this.$data.tabList = tabList
     },
     // 切换tabIndex
     handlerTabIndex (index) {
-      let {allTabLength, nowIndex} = this.$data
+      let {
+        allTabLength,
+        nowIndex
+      } = this.$data
       if (typeof index === 'string') {
         index = index === 'pre' ? nowIndex - 1 : nowIndex + 1
       } else {
