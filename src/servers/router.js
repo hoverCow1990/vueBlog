@@ -22,6 +22,9 @@ export default new Router({
     }, {
       path: '/admin',
       component: Views.Admin
+    }, {
+      path: '/others',
+      component: Views.Admin
     }],
   scrollBehavior (to, from, savedPosition) {
     return {

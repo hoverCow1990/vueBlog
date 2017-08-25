@@ -137,7 +137,7 @@
             </div>
           </li>
         </ul>
-        <div class="admin-content scoreline">
+        <!-- <div class="admin-content scoreline">
           <div class="content-container">
             <div class="container-viewport">
               <div class="viewport-content">
@@ -173,7 +173,7 @@
               <p class='prop-info'>前段时间的一个项目做到这个玩意，研究了一下绘制圆环的方法。最终使用HTML5的画布标签来做。arc()是HTML5 Canvas的一个API函数，作用是“创建弧/曲线（用于创建圆形或部分圆）”。本文先讲解如何绘制圆形以及一些应用</p>
             </div>
           </div>
-        </div>
+        </div> -->
         <div class="admin-content guide">
           <div class="content-container">
             <div class="container-viewport">
@@ -205,7 +205,7 @@
             <div class="container-article">
               <ul class="othersList clearfix">
                 <li v-for="(item, index) of othersList" @click="linkToOtherPage(item.keyId)">
-                  <div class="rank">{{ (requestCount - 1) * 9 + index + 1 | cow-buildZero(2) }}</div>
+                  <div class="rank" :class="item.keyId === selfId ? 'self' : ''">{{ (requestCount - 1) * 9 + index + 1 | cow-buildZero(2) }}</div>
                   <div class="feature">
                     <img :src="`${$Constent.serverHost}/static/user/${item.keyId}/logo.jpg`">
                   </div>
@@ -232,6 +232,7 @@ export default {
   data () {
     return {
       userData: {
+        keyId: '',
         hasSigned: true,
         name: '--',
         score: '--',
@@ -252,19 +253,18 @@ export default {
       singleListLength: 9,
       requestCount: 1,
       isLoadingSign: false,
-      isSelf: false
+      isSelf: false,
+      selfId: ''
     }
   },
   mixins: [mixin],
   created () {
-    this.requestUserData()
-    this.requestUserList()
-    this.setStrokeWidth()
+    this.initialComponent()
   },
   computed: {
     // 等级进度条
     lvLineStyle () {
-      const lvConfig = [0, 150, 350, 700, 1400, 2800]
+      const lvConfig = this.$Constent.lvConfig
       const { score } = this.$data.userData
       let width = ''
       if (score >= lvConfig[5]) {
@@ -280,14 +280,22 @@ export default {
     }
   },
   methods: {
+    initialComponent () {
+      this.requestUserData()
+      this.requestUserList()
+      this.setStrokeWidth()
+      this.$nextTick(() => {
+        window.document.body.scrollTop = 0
+      })
+    },
     // 请求用户数据
     requestUserData () {
       const query = this.$route.query
       let isSelf = true
-      this.$data.isSelf = isSelf
       if (query && query.id) {
         isSelf = false
       }
+      this.$data.isSelf = isSelf
       this.$Http({
         url: this.$Constent.api.user.userDetail,
         method: 'GET',
@@ -299,6 +307,7 @@ export default {
         if (res.statue) {
           this.$data.userData = res.userDetail
           this.$data.userData.talent = res.userDetail.talent ? res.userDetail.talent.split(',') : []
+          this.$data.selfId = res.selfId
           this.testDateComplete()
         } else {
           this.$message({
@@ -423,14 +432,9 @@ export default {
       })
     },
     linkToOtherPage (id) {
-      this.$router.push({
-        path: '/admin',
-        query: {
-          id
-        }
-      })
-      this.requestUserData()
-      this.setStrokeWidth()
+      let path = id === this.$data.selfId ? '/admin' : `/admin?id=${id}`
+      this.$router.push(path)
+      this.initialComponent()
     }
   }
 }
@@ -1151,6 +1155,9 @@ export default {
       background-color: @navy;
       font-size: 12px;
       color: #eee;
+      &.self {
+        background-color: @darkenRed;
+      }
     }
     .name {
       padding-left: 3px;
@@ -1163,6 +1170,9 @@ export default {
       float:right;
       padding-right: 10px;
       color: #999;
+    }
+    .pageTab {
+      padding-top: .29rem;
     }
     .pageTab .pageTab-list {
       justify-content: flex-end;

@@ -68,10 +68,11 @@ export default {
           text: _texts[i]
         })
       }
+      this.handlerSelectIndex(this.initNum)
     },
     // 切换选择的星星index
     handlerSelectIndex (index) {
-      this.$data.selectIndex = index
+      this.$data.selectIndex = Number(index)
     }
   }
 }

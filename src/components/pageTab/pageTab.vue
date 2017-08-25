@@ -9,10 +9,10 @@
   </ul>
   <div class="pageTab-info" v-if="isShowAllLength">
     <span class="info">
-        共{{allListLength}} 条数
+        共{{allListLength}}条数
       </span>
     <span class="info">
-        共{{ allTabLength }} 页
+        共{{ allTabLength }}页
       </span>
   </div>
 </div>
@@ -140,6 +140,8 @@ export default {
 
 <style lang='less'>
 .pageTab {
+  display: flex;
+  align-items: center;
   padding-top: .4rem;
   .pageTab-list {
     display: flex;
@@ -177,6 +179,10 @@ export default {
       padding-top: 6px;
       padding-bottom: 6px;
     }
+  }
+  .pageTab-info {
+    font-size: .13rem;
+    color: #666;
   }
 }
 @media screen and (max-width: 435px) {

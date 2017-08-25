@@ -3,12 +3,12 @@
     <div class="msgBoard-perviewer" :class='type'>
       <div class="msgBoard-user">
         <div class="user-perviewer">
-          <img src="./images/user.jpg" v-if="isLogin">
-          <p v-if='!isLogin' @click='showLoginBox'>请登录</p>
+          <img v-if='isLogin' :src="`${$Constent.serverHost}/static/user/${userData.keyId}/logo.jpg`">
+          <p v-else @click='showLoginBox'>请登录</p>
         </div>
         <div class="user-info" v-if="isLogin">
-          <p class='name'>老实的牛</p>
-          <p class='level'>[<span> LV2 </span>] 牛哥的见习助理</p>
+          <p class='name'>{{ userData.name }}</p>
+          <p class='level'><span> LV{{ userData.lv }} </span>{{ userData.lv | cow-transAlias}}</p>
         </div>
       </div>
     </div>
@@ -31,8 +31,9 @@
           </ul>
         </transition>
       </div>
-      <div class="msgBoard-btns cow-btn-group">
-        <div class="cow-btn primary" @click='submitFrom'>立刻发布</div> <div class="cow-btn default" @click="cancelMsgVal">取消</div>
+      <div class="msgBoard-btns cow-btn-group submit-group">
+        <cow-btn type="primary" @click='submitFrom' :isLoading="isRequestLoading">立刻发布</cow-btn>
+        <cow-btn type="default" @click='cancelMsgVal' :isDisabled="isRequestLoading">取消</cow-btn>
       </div>
     </div>
     <div class="msgBoard-message">
@@ -89,19 +90,46 @@ export default {
   mixins: [mixin],
   data () {
     return {
+      userData: {},
       message: '',
       rateScore: 2,
       isLogin: false,
       isLoginBoxShow: false,
       isExpressionBoxShow: false,
       allListLength: 2,
-      singleListLength: 8
+      singleListLength: 8,
+      isRequestLoading: false
     }
   },
   mounted () {
     this.replaceExpression()
   },
+  created () {
+    this.requestUserData()
+  },
   methods: {
+    // 请求用户信息
+    requestUserData () {
+      this.$Http({
+        url: this.$Constent.api.user.userDetail,
+        method: 'GET',
+        params: {
+          id: 0
+        }
+      }).then(res => {
+        res = res.body
+        if (res.statue) {
+          this.$data.userData = res.userDetail
+          this.$data.isLogin = true
+        } else {
+          this.$data.isLogin = false
+          this.$message({
+            type: 'err',
+            message: res.msg
+          })
+        }
+      })
+    },
     // 处理msg value值
     handleMsgVal (ev) {
       this.$data.message = ev.target.value
@@ -165,7 +193,49 @@ export default {
     },
     // 提交表单
     submitFrom () {
-      // let {message} = this.$data
+      let {message, isLoading, isRequestLoading, rateScore} = this.$data
+      if (isLoading | isRequestLoading) return
+      let isCanSubmit = this.validateMessage(message)
+      if (isCanSubmit.statue) {
+        this.$Http({
+          url: this.$Constent.api.message.postMessage,
+          method: 'POST',
+          data: {
+            message,
+            score: rateScore
+          }
+        }).then(res => {
+          res = res.body
+          console.log(res)
+        })
+      } else {
+        this.$message({
+          type: 'err',
+          message: isCanSubmit.msg
+        })
+      }
+    },
+    // 验证信息
+    validateMessage (message) {
+      if (!message | !message.trim()) {
+        return {
+          statue: false,
+          msg: '留言内容不能为空'
+        }
+      } else if (/^\d+$/.test(message)) {
+        return {
+          statue: false,
+          msg: '留言内容不能纯数字'
+        }
+      } else if (/<\s*\/?\s*(script|div|span|p|h1|h2|h3|h4|h5|h6|style|head|body|html|button|canvas|code|ul|li|dd|dt|del|img|iframe|link|input|video|testarea|tr|td|strong).*?>/.test(message)) {
+        return {
+          statue: false,
+          msg: '存在非法字符'
+        }
+      }
+      return {
+        statue: true
+      }
     }
   }
 }
@@ -192,7 +262,7 @@ export default {
     &.red {
       height: 1.6rem;
       min-height: 60px;
-      background-image: url('./images/red.jpg');
+      background-image: url('./images/black.jpg');
     }
     &.red2 {
       height: 1.6rem;
@@ -208,15 +278,20 @@ export default {
   .msgBoard-user {
     @minSize: 50px;
     display: flex;
-    height: .6rem;
-    padding-left: 12px;
-    align-items: flex-end;
+    box-sizing: border-box;
+    height: .66rem;
+    margin-left: 12px;
+    padding-right: .3rem;
+    align-items: center;
+    border-radius: .33rem;
+    border: 2px solid rgba(34, 34, 34, 0.1);
+    background-color: rgba(0,0,0,.4);
     transform: translateY(2px);
     min-height: @minSize;
     .user-perviewer {
       box-sizing: border-box;
-      width: .6rem;
-      height: .6rem;
+      width: .66rem;
+      height: .66rem;
       min-width: @minSize;
       min-height: @minSize;
       border-radius: 50%;
@@ -224,7 +299,7 @@ export default {
       overflow: hidden;
       color: #d2d2d2;
       transition: .5s;
-      opacity: .8;
+      opacity: 1;
       img {
         display: block;
         width: 100%;
@@ -246,17 +321,21 @@ export default {
       }
     }
     .user-info {
-      padding-left: .12rem;
-      color: #b3b3b3;
+      padding-left: .08rem;
+      color: #e6e6e6;
+      transform: translateY(-2px);
       .name {
         font-size: 14px;
       }
       .level {
         padding-top: 6px;
-        padding-bottom: 7px;
         font-size: 12px;
         span {
-          color: #f3ed97;
+          padding-left: 5px;
+          padding-right: 2px;
+          margin-right: 7px;
+          background-color: #0871bf;
+          border-radius: 2px;
         }
       }
     }
@@ -475,7 +554,8 @@ export default {
       padding-right: 12px;
     }
     .msgBoard-user {
-      padding-left: 8px;
+      border-radius: 50px;
+      padding-right: 20px;
       transform: translateY(0);
       .user-perviewer {
         p {

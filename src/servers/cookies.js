@@ -22,7 +22,7 @@ const cookies = {
         Cookies.remove(name)
       }
     }
-    Vue.prototype.$cookies = cookiesObj
+    Vue.prototype.$Cookies = cookiesObj
   }
 }
 

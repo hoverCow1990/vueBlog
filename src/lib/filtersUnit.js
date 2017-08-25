@@ -27,6 +27,7 @@ const filtersUnit = {
   },
   // 获取称号
   transAlias (lv) {
+    console.log(lv)
     switch (lv) {
       case 1:
         return '牛哥的基佬学徒'

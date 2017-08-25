@@ -25,7 +25,7 @@
                 <span class="input-inner"></span>
                 <input type="checkbox" class="checkbox" v-model='isRember'>
               </span>
-              <span class="checkbox-label">记住在下</span>
+              <span class="checkbox-label">记住我</span>
             </label>
           </div>
           <div class="cow-btn-group submit-group">
@@ -131,11 +131,20 @@ export default {
   watch: {
     isShow (val) {
       if (val) {
+        this.initialData()
         this.showLogin()
       }
     }
   },
   methods: {
+    // 初始化状态
+    initialData () {
+      let cookies = this.$Cookies.get()
+      if (cookies && cookies.isRember && cookies.user) {
+        this.$data.loginData.id.val = cookies.user
+        this.$data.isRember = true
+      }
+    },
     // 显示所有
     showLogin () {
       setTimeout(() => {
@@ -245,6 +254,24 @@ export default {
             this.hiddenLogin()
             this.$emit('loginSuccess', res.userData)
             this.$data.isRequestLoading = false
+            this.$data.loginData = {
+              id: {
+                val: '',
+                verified: true
+              },
+              password: {
+                val: '',
+                verified: true
+              }
+            }
+            if (isRember) {
+              this.$Cookies.set({
+                user: id.val,
+                isRember: true
+              })
+            } else {
+              this.$Cookies.remove()
+            }
             this.$router.push('/admin')
           } else {
             this.$message({
@@ -260,7 +287,6 @@ export default {
           message: isCanSubmit.msg
         })
       }
-      console.log(isRember)
     },
     // 验证登录表单的有效性
     verifyLoginForm (id, password) {
