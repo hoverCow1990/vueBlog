@@ -42,34 +42,32 @@
         <div class="topBar-title"><i class="iconfont icon-message"></i>所有留言</div>
       </div>
       <div class="message-list">
-        <p class="no-msg" v-if='false'>
-          <i class="iconfont icon-ku"></i>小可爱, 来帮牛哥留两条吧...
-        </p>
-        <ul v-if="true">
-          <li class='message-item' v-for="item of msgList">
+        <ul v-if="messageList.length">
+          <li class='message-item' v-for="item of messageList">
             <div class="item-user">
               <div class="user-feature">
-                <img :src="item.feature">
+                <img :src="`${$Constent.serverHost}/static/user/${item.user.keyId}/logo.jpg`">
               </div>
               <div class="user-info">
-                <p class='name'>{{ item.name }}</p>
-                <p>积分 : {{ item.score }}</p>
-                <p>等级：<span>LV{{ item.lv }}</span>{{ item.alias }}</p>
+                <p class='name'>{{ item.user.name }}</p>
+                <p>积分 : {{ item.user.score }}</p>
+                <p>等级：<span>LV{{ item.user.lv }}</span>{{ item.user.lv | cow-transAlias }}</p>
               </div>
             </div>
             <div class="item-context">
               <div class="context-hd">
-                <p class='time'><i class="iconfont icon-shijian2"></i>{{ item.time | cow-parseTime }}</p>
-                <p class="rate">评分：<i class="iconfont icon-star" v-for='i of new Array(item.rate)'></i></p>
+                <p class='time'><i class="iconfont icon-shijian2"></i>{{ item.time | cow-parseTime}}</p>
+                <p class="rate">评分：<i class="iconfont icon-star" v-for='i of new Array(item.score)'></i></p>
               </div>
-              <div class="context-bd">
-                {{ item.context }}
-              </div>
+              <div class="context-bd" v-html="item.message"></div>
             </div>
           </li>
         </ul>
+        <p class="no-msg" v-else>
+          <i class="iconfont icon-ku"></i>小可爱, 来帮牛哥留两条吧...
+        </p>
       </div>
-      <cow-page-tab :allListLength='allListLength' :singleListLength='singleListLength' @change='handlerRequestMsg'></cow-page-tab>
+      <cow-page-tab :allListLength='allListLength' :singleListLength='singleListLength' @change='(index) => requestMessageList(index - 1)'></cow-page-tab>
     </div>
     <cow-login-box :isShow='isLoginBoxShow' :loginType='"regiest"' @hiddenLoginBox='hiddenLoginBox'></cow-login-box>
   </div>
@@ -98,14 +96,13 @@ export default {
       isExpressionBoxShow: false,
       allListLength: 2,
       singleListLength: 8,
-      isRequestLoading: false
+      isRequestLoading: false,
+      messageList: []
     }
-  },
-  mounted () {
-    this.replaceExpression()
   },
   created () {
     this.requestUserData()
+    this.requestMessageList()
   },
   methods: {
     // 请求用户信息
@@ -127,6 +124,27 @@ export default {
             type: 'err',
             message: res.msg
           })
+        }
+      })
+    },
+    // 请求留言板内容
+    requestMessageList (st = 0) {
+      this.$Http({
+        url: this.$Constent.api.message.getMessageList,
+        method: 'GET',
+        params: {
+          st: st * 10,
+          end: st * 10 + 10
+        }
+      }).then(res => {
+        res = res.body
+        if (res.statue) {
+          let { messageList } = res
+          messageList.forEach(item => {
+            item.message = this.getRealMessage(item.message)
+          })
+          this.$data.messageList = messageList
+          this.$data.allListLength = res.allLength
         }
       })
     },
@@ -176,15 +194,10 @@ export default {
       this.isExpressionBoxShow = false
     },
     // 转换[[..]]为表情
-    replaceExpression () {
-      let _liDom = this.$el.querySelectorAll('.context-bd')
-      Array.from(_liDom).forEach(item => {
-        if (/\[\[.+\]\]/g.test(item.innerHTML)) {
-          item.innerHTML = item.innerHTML.replace(/\[\[(.+?)\]\]/g, ($0, $1) => {
-            let _index = this.$data.expList.findIndex(str => str === $1)
-            return `<span class="cow-exp e-${_index}"></span>`
-          })
-        }
+    getRealMessage (message) {
+      return message.replace(/\[\[(.+?)\]\]/g, ($0, $1) => {
+        let _index = this.$data.expList.findIndex(str => str === $1)
+        return `<span class="cow-exp e-${_index}"></span>`
       })
     },
     // 获取更多评论
@@ -195,6 +208,7 @@ export default {
     submitFrom () {
       let {message, isLoading, isRequestLoading, rateScore} = this.$data
       if (isLoading | isRequestLoading) return
+      this.$data.isRequestLoading = true
       let isCanSubmit = this.validateMessage(message)
       if (isCanSubmit.statue) {
         this.$Http({
@@ -202,17 +216,43 @@ export default {
           method: 'POST',
           data: {
             message,
-            score: rateScore
+            score: rateScore + 1,
+            st: 0,
+            end: 10
           }
         }).then(res => {
           res = res.body
-          console.log(res)
+          if (res.statue) {
+            let { messageList } = res
+            messageList.forEach(item => {
+              item.message = this.getRealMessage(item.message)
+            })
+            this.$data.messageList = messageList
+            this.$data.message = ''
+            this.$data.allListLength = res.allLength
+            this.$refs.textarea.value = ''
+            this.$message({
+              type: 'success',
+              message: '恭喜发布成功'
+            })
+            this.$data.isRequestLoading = false
+          } else {
+            this.$message({
+              type: 'err',
+              message: res.msg
+            })
+            this.$data.isRequestLoading = false
+          }
+        }).catch(err => {
+          console.log(err)
+          this.$data.isRequestLoading = false
         })
       } else {
         this.$message({
           type: 'err',
           message: isCanSubmit.msg
         })
+        this.$data.isRequestLoading = false
       }
     },
     // 验证信息
@@ -259,12 +299,12 @@ export default {
       min-height: 55px;
       background-image: url('./images/yellow.jpg');
     }
-    &.red {
+    &.black {
       height: 1.6rem;
       min-height: 60px;
       background-image: url('./images/black.jpg');
     }
-    &.red2 {
+    &.red {
       height: 1.6rem;
       min-height: 60px;
       background-image: url('./images/red2.jpg');
@@ -276,7 +316,7 @@ export default {
     }
   }
   .msgBoard-user {
-    @minSize: 50px;
+    @minSize: 55px;
     display: flex;
     box-sizing: border-box;
     height: .66rem;
@@ -467,7 +507,7 @@ export default {
       }
     }
     .item-user {
-      width: 180px;
+      width: 230px;
       p {
         height: 22px;
         padding-left: 2px;
@@ -489,14 +529,18 @@ export default {
         color: #eee;
       }
       .user-feature {
-        width: 84px;
-        height: 84px;
+        width: .84rem;
+        height: .84rem;
+        min-width: 62px;
+        min-height: 62px;
         margin-bottom: 4px;
         border: 2px solid @navy;
         border-radius: 2px;
         overflow: hidden;
         img {
           display: block;
+          width: 100%;
+          height: 100%;
         }
       }
     }
@@ -539,6 +583,7 @@ export default {
   }
 }
 @media screen and (max-width: 435px) {
+
   .msgBoard {
     margin-top: 26px;
     .msgBoard-title {
@@ -549,6 +594,10 @@ export default {
     }
     .msgBoard-perviewer {
       border-radius: 0;
+      &.black {
+        height: 86px;
+        background-image: url('./images/black2.jpg');
+      }
     }
     .msgBoard-btns {
       padding-right: 12px;
@@ -588,8 +637,8 @@ export default {
           }
         }
         .context-bd {
-            padding-top: 10px;
-            padding-bottom: 5px;
+            padding-top: 40px;
+            padding-bottom: 40px;
         }
       }
     }

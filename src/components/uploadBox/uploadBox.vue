@@ -9,6 +9,17 @@
               <input type="text" v-model='fileName.val' placeholder="请输入文件名" :class="fileName.verified?'':'error'">
             </div>
           </div>
+          <div class="cow-input-content name">
+            <label>方式</label>
+            <div class="input-box">
+              <div class="cow-select-content">
+                <div class="cir active"></div><span>作品地址</span>
+              </div>
+              <div class="cow-select-content">
+                <div class="cir"></div><span>本地上传</span>
+              </div>
+            </div>
+          </div>
           <div class="cow-upload-content file">
             <label>文件</label>
             <div class="input-box">

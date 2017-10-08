@@ -7,7 +7,13 @@ const filtersUnit = {
   // 转换时间 1497625549376 => 2017-06-16 08:00:21
   parseTime (time, isNeedTime = true) {
     if (!time) return '未知时间'
-    time = new Date(Number(time))
+    return time.replace(/^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})$/, ($0, $1, $2, $3, $4, $5, $6) => {
+      return $1 + '-' + $2 + '-' + $3 + (isNeedTime ? ' ' + $4 + ':' + $5 + ':' + $6 : '')
+    })
+  },
+  transTime (time, isNeedTime = true) {
+    if (!time) return '未知时间'
+    time = new Date(Number(time * 1000))
     if (isNeedTime) {
       return time.toLocaleString()
         .replace(/(\d{4})\/(\d{1,2})\/(\d{1,2}).+(\d{1,2}):(\d{1,2}):(\d{1,2})/g, ($0, $1, $2, $3, $4, $5, $6) => {
@@ -27,7 +33,6 @@ const filtersUnit = {
   },
   // 获取称号
   transAlias (lv) {
-    console.log(lv)
     switch (lv) {
       case 1:
         return '牛哥的基佬学徒'
@@ -42,6 +47,10 @@ const filtersUnit = {
       case 6:
         return '齐牛大圣'
     }
+  },
+  // 获取留言条数
+  transMsgLength (str) {
+    return str.split(',').length - 1
   }
 }
 

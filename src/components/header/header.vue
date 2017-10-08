@@ -43,7 +43,7 @@
       <div class="menu-container">
         <div class="menu-lt menu">
           <router-link to='/articleList/html'>html/css</router-link>
-          <router-link to='/articleList/Javascript_React'>Javascript</router-link>
+          <router-link to='/articleList/javascript'>Javascript</router-link>
         </div>
         <div class="menu-rt menu">
           <router-link to='/articleList/node'>Node/Java</router-link>

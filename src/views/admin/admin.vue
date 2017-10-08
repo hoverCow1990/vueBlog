@@ -21,7 +21,7 @@
           </div>
           <div class="sign" v-if="isSelf" :class='userData.hasSigned?"":"active"' @click="handlerSign">
             <p><i class="iconfont icon-huiyuan2"></i>签到</p>
-            <p>{{ new Date() | cow-parseTime(false) }}</p>
+            <p>{{ new Date() | cow-transTime(false) }}</p>
           </div>
         </div>
       </div>
@@ -261,6 +261,11 @@ export default {
   created () {
     this.initialComponent()
   },
+  watch: {
+    '$route.query' () {
+      this.initialComponent()
+    }
+  },
   computed: {
     // 等级进度条
     lvLineStyle () {
@@ -397,7 +402,7 @@ export default {
     // 检测资料完整性
     testDateComplete () {
       let {qq, talent, introduce} = this.$data.userData
-      if (!qq | !introduce | !talent.length) {
+      if (this.$data.isSelf & (!qq | !introduce | !talent.length)) {
         setTimeout(() => {
           this.showInfoBoxShow()
         })
@@ -434,7 +439,6 @@ export default {
     linkToOtherPage (id) {
       let path = id === this.$data.selfId ? '/admin' : `/admin?id=${id}`
       this.$router.push(path)
-      this.initialComponent()
     }
   }
 }

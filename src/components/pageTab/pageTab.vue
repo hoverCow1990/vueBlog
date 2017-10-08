@@ -186,10 +186,17 @@ export default {
   }
 }
 @media screen and (max-width: 435px) {
-  .pageTab-list {
-    flex-wrap: wrap;
-    li {
-      margin-top: 5px;
+  .pageTab {
+    display: block;
+    .pageTab-list {
+      flex-wrap: wrap;
+      li {
+        margin-top: 5px;
+      }
+    }
+    .pageTab-info {
+      padding-top: 12px;
+      padding-bottom: 12px;
     }
   }
 }

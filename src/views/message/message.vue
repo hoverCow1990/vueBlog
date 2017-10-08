@@ -2,7 +2,7 @@
   <section id='messagePage'>
     <cow-header-filler></cow-header-filler>
     <div class="container messagePage-container">
-      <cow-message-board type='red'></cow-message-board>
+      <cow-message-board type='black'></cow-message-board>
     </div>
   </section>
 </template>
@@ -16,6 +16,9 @@ export default {
 <style lang='less'>
 .messagePage-container {
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  .msgBoard-perviewer red {
+
+  }
   .pageTab {
     padding-left: 10px;
   }

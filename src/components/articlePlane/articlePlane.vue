@@ -1,39 +1,42 @@
 <template>
-  <ul class='articlePlane-list'>
-    <li class="articlePlane-item" v-for='item of list'>
-      <div class="item-perviewer">
-        <router-link :to='getLink(item.id)'>
-          <img :src="item.perviewer">
-        </router-link>
-      </div>
-      <div class="item-inner">
-        <div class="inner-hd">
-          [<span class="tag">{{ item.mainTag }}</span>] <span class="name">{{ item.title }}</span>
-        </div>
-        <div class="inner-bd">
-          {{ item.des }}
+  <div class="articlePlane-wrapper">
+    <ul class='articlePlane-list' v-if='list.length'>
+      <li class="articlePlane-item" v-for='item of list'>
+        <div class="item-perviewer">
           <router-link :to='getLink(item.id)'>
-            <div class="cow-btn primary inner-btn">
-              点击阅读
-            </div>
+            <img :src="item.smallPerviewer">
           </router-link>
         </div>
-        <div class="inner-ft">
-          <div class="inner-time">
-            <i class="iconfont icon-shijian2"></i>{{ item.time }}
+        <div class="item-inner">
+          <div class="inner-hd">
+            <span class="name">{{ item.title }}</span>
           </div>
-          <div class="inner-hot">
-            <div class="hot-watch">
-              <i class="iconfont icon-yanjing"></i>{{ item.watch }}
+          <div class="inner-bd">
+            {{ item.description }}
+            <router-link :to='getLink(item.id)'>
+              <cow-btn type="primary">点击阅读</cow-btn>
+            </router-link>
+          </div>
+          <div class="inner-ft">
+            <div class="inner-time">
+              <i class="iconfont icon-shijian2"></i>{{ item.time | cow-transTime }}
             </div>
-            <div class="hot-message">
-              <i class="iconfont icon-message"></i>{{ item.message }}
+            <div class="inner-hot">
+              <div class="hot-watch">
+                <i class="iconfont icon-yanjing"></i>{{ item.watch }}
+              </div>
+              <div class="hot-message">
+                <i class="iconfont icon-message"></i>{{ item.message | cow-transMsgLength }}
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </li>
-  </ul>
+      </li>
+    </ul>
+    <div class="articlePlane-noData" v-else>
+      暂无数据...
+    </div>
+  </div>
 </template>
 
 <script>
@@ -57,6 +60,15 @@ export default {
 <style lang='less'>
 .articlePlane-list {
   overflow: hidden;
+}
+.articlePlane-noData {
+  width: 100%;
+  height: 2rem;
+  line-height: 2rem;
+  font-size: .15rem;
+  text-align: center;
+  color: #666;
+  .border();
 }
 .articlePlane-item {
   position: relative;
@@ -124,10 +136,11 @@ export default {
     .border(top);
     .border(bottom);
     color: #999;
-    .inner-btn {
+    .cow-btn {
       position: absolute;
       right: 0;
       bottom: 10px;
+      margin-right: 0;
     }
   }
   .inner-ft {

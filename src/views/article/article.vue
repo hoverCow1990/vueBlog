@@ -21,6 +21,9 @@ export default {
       sideNavAttr: []
     }
   },
+  created () {
+    this.requestArticle()
+  },
   mixins: [mixin],
   components: {
     ArticleMain,
@@ -30,6 +33,18 @@ export default {
     // 传递侧导航List数据
     handlerSideNavAttr (sideNavAttr) {
       this.$data.sideNavAttr = sideNavAttr
+    },
+    requestArticle () {
+      let id = this.$route.params.id
+      this.$Http({
+        url: this.$Constent.api.article.getArtcle,
+        method: 'GET',
+        params: {
+          id
+        }
+      }).then(res => {
+        console.log(res)
+      })
     }
   }
 }

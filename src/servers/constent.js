@@ -13,7 +13,7 @@ const HOST = HOSTS[process.env.NODE_ENV]
 
 const serverHosts = {
   production: 'http://web-jackiee.com',
-  development: 'http://localhost:3000'
+  development: 'http://localhost:3001'
 }
 const serverHost = serverHosts[process.env.NODE_ENV]
 
@@ -30,7 +30,7 @@ const constent = {
       host: HOST,
       serverHost: serverHost,
       isPc: IsPC(),
-      lvConfig: [0, 150, 350, 700, 1400, 2800],
+      lvConfig: [0, 150, 350, 700, 2000, 4200],
       api: {
         user: {
           info: APIHOST + '/user',  // 获取用户基础信息 检测是否登录
@@ -43,7 +43,15 @@ const constent = {
           getUserList: APIHOST + 'user/getUserList' // 所有用户列表
         },
         message: {
-          postMessage: APIHOST + '/message/postMessage'
+          postMessage: APIHOST + '/message/postMessage', // 提交留言
+          getMessageList: APIHOST + '/message/getMessage' // 获取留言列表
+        },
+        category: {
+          getList: APIHOST + '/article/getList'
+        },
+        article: {
+          getArtcleList: APIHOST + '/article/getArtcleList',
+          getArtcle: APIHOST + '/article/getArtcle'
         }
       }
     }

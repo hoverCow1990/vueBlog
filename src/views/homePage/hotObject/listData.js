@@ -4,120 +4,120 @@ export default {
       frameList: [{
         label: 'React',
         logo: require('./images/react.png'),
-        link: '/articleList/Javascript_React',
+        link: '/articleList/javascript_react',
         bgColor: 'black'
       }, {
         label: 'Vue',
         logo: require('./images/vue.png'),
-        link: '/articleList/Javascript_Vue',
+        link: '/articleList/javascript_vue',
         bgColor: 'grey'
       }, {
         label: 'Angular',
         logo: require('./images/angular.png'),
-        link: '/articleList/Javascript_Angular',
+        link: '/articleList/javascript_angular',
         bgColor: 'black'
       }, {
         label: 'JQuery',
         logo: require('./images/jquery.png'),
-        link: '/articleList/Javascript_JQuery',
+        link: '/articleList/javascript_jquery',
         bgColor: 'blue'
       }, {
         label: 'Backbone',
         logo: require('./images/backbone.png'),
-        link: '/articleList/Javascript_Backbone',
+        link: '/articleList/javascript_backbone',
         bgColor: 'yellow'
       }, {
         label: 'Bootstrip',
         logo: require('./images/bootstrap.png'),
-        link: '/articleList/Javascript_Bootstrip',
+        link: '/articleList/javascript_bootstrip',
         bgColor: 'violet'
       }, {
         label: 'Express',
         logo: require('./images/express.png'),
-        link: '/articleList/Javascript_Express',
+        link: '/articleList/javascript_express',
         bgColor: 'red'
       }],
       toolList: [{
         label: 'Webpack',
         logo: require('./images/webpack.png'),
-        link: '/articleList/Tool_Webpack',
+        link: '/articleList/tool_webpack',
         bgColor: 'grey'
       }, {
         label: 'Gulp',
         logo: require('./images/gulp.png'),
-        link: '/articleList/Tool_Gulp',
+        link: '/articleList/tool_gulp',
         bgColor: 'red'
       }, {
         label: 'Github',
         logo: require('./images/github.jpg'),
-        link: '/articleList/Tool_Github',
+        link: '/articleList/tool_github',
         bgColor: 'white'
       }, {
         label: 'Chrome',
         logo: require('./images/chrome.png'),
-        link: '/articleList/Tool_Chrome',
+        link: '/articleList/tool_chrome',
         bgColor: 'black'
       }, {
         label: 'Dede',
         logo: require('./images/dede.png'),
-        link: '/articleList/Tool_Dede',
+        link: '/articleList/tool_dede',
         bgColor: 'green'
       }, {
         label: 'Editor',
         logo: require('./images/editor.png'),
-        link: '/articleList/Tool_Editor',
+        link: '/articleList/tool_editor',
         bgColor: 'violet'
       }, {
         label: 'Others',
         logo: require('./images/others.png'),
-        link: '/articleList/Tool_Others',
+        link: '/articleList/tool_others',
         bgColor: 'black'
       }],
       bookList: [{
         label: '高级程序设计',
-        link: '/articleList/Book_Gjcxsj',
+        link: '/articleList/book_gjcxsj',
         logo: require('./images/gjcxsj.jpg')
       }, {
         label: '设计模式',
-        link: '/articleList/Book_Sjms',
+        link: '/articleList/book_sjms',
         logo: require('./images/sjms.jpg')
       }, {
         label: 'Es6入门',
-        link: '/articleList/Book_Es6rm',
+        link: '/articleList/book_es6rm',
         logo: require('./images/es6.jpg')
       }, {
         label: '函数式编程',
-        link: '/articleList/Book_Hssbc',
+        link: '/articleList/book_hssbc',
         logo: require('./images/hssbc.jpg')
       }],
       otherList: [{
         label: 'Game',
-        link: '/articleList/Others_Game',
+        link: '/articleList/others_game',
         logo: require('./images/game.png'),
         bgColor: 'black'
       }, {
         label: 'Canvas',
-        link: '/articleList/Others_Canvas',
+        link: '/articleList/others_canvas',
         logo: require('./images/canvas.png'),
         bgColor: 'white'
       }, {
         label: 'Design',
-        link: '/articleList/Others_Design',
+        link: '/articleList/others_design',
         logo: require('./images/design.png'),
         bgColor: 'green'
       }, {
         label: 'PlugIn',
-        link: '/articleList/Others_PlugIn',
+        link: '/articleList/others_plugIn',
         logo: require('./images/plugin.png'),
         bgColor: 'black'
       }, {
         label: 'Template',
-        link: '/articleList/Others_Template',
+        link: '/articleList/others_template',
         logo: require('./images/template.png'),
         bgColor: 'yellow'
       }, {
         label: 'Collection',
-        link: '/articleList/User_Collection',
+        link: '/articleList/user_collection',
         logo: require('./images/collection.png'),
         bgColor: 'white'
       }, {
