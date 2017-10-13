@@ -13,18 +13,33 @@
 <script>
 import ArticleMain from './articleMain/articleMain'
 import ArticleSideNav from './articleSideNav/articleSideNav'
-import mixin from './minix'
 
 export default {
   data () {
     return {
-      sideNavAttr: []
+      sideNavAttr: [],
+      articleData: {
+        perviewerContext: '',
+        context: '',
+        time: '',
+        watch: '',
+        love: '',
+        perviewer: 'http://www.web-jackiee.com/uploads/allimg/170313/1-1F313043542922.jpg',
+        praise: 0,
+        preArticle: {
+          name: 'es6笔记三[字符串扩展]',
+          link: 'http://localhost:8080/#/article/Javascript_React/123'
+        },
+        nextArticle: {
+          name: 'es6笔记四[正则表达]',
+          link: 'http://localhost:8080/#/article/Javascript_React/122'
+        }
+      }
     }
   },
   created () {
     this.requestArticle()
   },
-  mixins: [mixin],
   components: {
     ArticleMain,
     ArticleSideNav
@@ -43,7 +58,12 @@ export default {
           id
         }
       }).then(res => {
-        console.log(res)
+        let {perviewerContext, context, watch, love, time} = res.body
+        this.$data.articleData.perviewerContext = perviewerContext
+        this.$data.articleData.context = context
+        this.$data.articleData.watch = watch
+        this.$data.articleData.love = love
+        this.$data.articleData.time = time
       })
     }
   }

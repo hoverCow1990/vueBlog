@@ -2,14 +2,44 @@
   <section id='messagePage'>
     <cow-header-filler></cow-header-filler>
     <div class="container messagePage-container">
-      <cow-message-board type='black'></cow-message-board>
+      <cow-message-board type='black' :messageList='messageList' :allListLength='allListLength' @changeMsgPage='requestMessageList'></cow-message-board>
     </div>
   </section>
 </template>
 
 <script>
 export default {
-
+  data () {
+    return {
+      allListLength: 0, // 所有消息条数
+      singleListLength: 8, // 每页条数
+      messageList: [] // 消息列表
+    }
+  },
+  created () {
+    this.requestMessageList(0)
+  },
+  methods: {
+    // 请求留言板内容
+    requestMessageList (st) {
+      const {singleListLength} = this.$data
+      this.$Http({
+        url: this.$Constent.api.message.getMessageList,
+        method: 'GET',
+        params: {
+          st: st * singleListLength,
+          end: st * singleListLength + singleListLength
+        }
+      }).then(res => {
+        res = res.body
+        if (res.statue) {
+          let { messageList } = res
+          this.$data.messageList = messageList
+          this.$data.allListLength = res.allLength
+        }
+      })
+    }
+  }
 }
 </script>
 

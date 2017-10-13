@@ -272,7 +272,9 @@ export default {
             } else {
               this.$Cookies.remove()
             }
-            this.$router.push('/admin')
+            if (this.$route.path === '/') {
+              this.$router.push('/admin')
+            }
           } else {
             this.$message({
               type: 'err',

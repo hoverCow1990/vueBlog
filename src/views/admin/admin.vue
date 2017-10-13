@@ -21,7 +21,7 @@
           </div>
           <div class="sign" v-if="isSelf" :class='userData.hasSigned?"":"active"' @click="handlerSign">
             <p><i class="iconfont icon-huiyuan2"></i>签到</p>
-            <p>{{ new Date() | cow-transTime(false) }}</p>
+            <p>{{ new Date() / 1000 | cow-transTime(false) }}</p>
           </div>
         </div>
       </div>

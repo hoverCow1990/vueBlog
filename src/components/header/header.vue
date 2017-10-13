@@ -21,11 +21,12 @@
             </a>
           </div>
           <div class="topBar-login">
-            <div class="hasLogin" v-if='isLogin'>
+            {{$User.userData.isLogin}}
+            <div class="hasLogin" v-if='$User.userData.isLogin'>
               <div class="user-perview">
-                <img :src="`${$Constent.serverHost}/static/user/${userData.id}/logo.jpg`">
+                <img :src="`${$Constent.serverHost}/static/user/${$User.userData.userDetail.keyId}/logo.jpg`">
               </div>
-              <span>{{ userData.name }}</span>
+              <span>{{ $User.userData.userDetail.name }}</span>
               <span class="logout" @click="handlerLogout">[ 退出 ]</span>
             </div>
             <div class="noLogin" v-else>
@@ -56,7 +57,7 @@
         <button><span><i class="iconfont icon-fangdajing"></i></span></button>
       </div>
     </div>
-    <more-box :isShow='isMoreBoxShow' @showLoginBox='showLoginBox' @hiddenMoreBox='hiddenMoreBox' :isLogin="isLogin"></more-box>
+    <more-box :isShow='isMoreBoxShow' @showLoginBox='showLoginBox' @hiddenMoreBox='hiddenMoreBox' :isLogin="$User.userData.isLogin"></more-box>
     <cow-login-box v-model='loginType' :isShow='isLoginBoxShow' @hiddenLoginBox='hiddenLoginBox' @loginSuccess='(data) => loginSuccess(data)'></cow-login-box>
   </div>
 </template>
@@ -68,14 +69,9 @@ export default {
   name: 'Header',
   data () {
     return {
-      isLogin: false,
       loginType: '',
       isLoginBoxShow: false,
-      isMoreBoxShow: false,
-      userData: {
-        name: '',
-        id: ''
-      }
+      isMoreBoxShow: false
     }
   },
   components: {
@@ -88,16 +84,23 @@ export default {
     // 检测是否登录
     checkLogin () {
       this.$Http({
-        url: this.$Constent.api.user.info,
-        method: 'GET'
+        url: this.$Constent.api.user.userDetail,
+        method: 'GET',
+        params: {
+          id: 0
+        }
       }).then(res => {
         res = res.body
         if (res.statue) {
-          this.$data.isLogin = true
-          this.$data.userData = res.userData
+          this.$User.userData = {
+            isLogin: true,
+            selfId: res.selfId,
+            userDetail: res.userDetail
+          }
+          console.log(this.$User.userData.isLogin)
+          console.log(this.$User.get())
         } else {
-          this.$data.isLogin = false
-          this.$data.userData = {}
+          this.$User.remove()
         }
       })
     },
@@ -135,8 +138,7 @@ export default {
             type: 'success',
             message: '成功退出'
           })
-          this.$data.userData = {}
-          this.$data.isLogin = false
+          this.$User.remove()
           this.$router.push('/')
         }
       })

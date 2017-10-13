@@ -94,7 +94,7 @@ export default {
       this.$data.scrollTimer = window.setInterval(() => {
         crossTime = new Date() - stTime
         prop = crossTime / scrollNeedTime
-        window.document.body.scrollTop = prop * totalDistance + stScrollTop
+        window.document.documentElement.scrollTop = prop * totalDistance + stScrollTop
         if (prop > 1) {
           window.clearInterval(this.$data.scrollTimer)
           this.$data.scrollTimer = null
@@ -107,7 +107,7 @@ export default {
       let scrollTop
       const firstLevel = topLevel[0].top
       const lastLevel = topLevel[topLevel.length - 1].bottom
-      const body = document.body
+      const body = document.documentElement
       topLevel = Array.from(topLevel).reverse()
       return () => {
         scrollTop = body.scrollTop

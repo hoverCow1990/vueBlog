@@ -12,7 +12,7 @@
         <div class="info">
           <ul class='base'>
             <li>作者: 老实的牛</li>
-            <li>时间: {{ articleData.time | cow-parseTime}}</li>
+            <li>时间: {{ articleData.time | cow-transTime }}</li>
             <li>观看: {{ articleData.watch }}</li>
             <li>点赞: {{ articleData.love }}</li>
           </ul>
@@ -58,7 +58,7 @@
       </div>
     </div>
     <div class="article-box article-message">
-      <cow-message-board type='yellow'></cow-message-board>
+      <cow-message-board type='yellow' :messageList='messageList' :allListLength='allListLength' @changeMsgPage='requestMessageList'></cow-message-board>
     </div>
   </div>
 </template>
@@ -67,7 +67,10 @@
 export default {
   data () {
     return {
-      showTop: 180
+      showTop: 180, // 侧导航点击后移动至距离顶部的距离
+      allListLength: 0, // 所有消息条数
+      singleListLength: 8, // 每页条数
+      messageList: [] // 消息列表
     }
   },
   props: {
@@ -75,6 +78,9 @@ export default {
       type: Object,
       required: true
     }
+  },
+  created () {
+    this.requestMessageList(0)
   },
   computed: {
     // 跟还有路由匹配
@@ -100,7 +106,7 @@ export default {
     // 所有图片加载完毕的组件
     imgPreLoad: {
       // 组件绑定完之后执行获取右边列表数据
-      inserted (el, binding, vnode) {
+      componentUpdated (el, binding, vnode) {
         let _self = vnode.context
         let cb = _self.getArticleListAttr
         if (!_self.$Constent.isPc) return
@@ -109,6 +115,25 @@ export default {
     }
   },
   methods: {
+    // 请求留言板内容
+    requestMessageList (st) {
+      const {singleListLength} = this.$data
+      this.$Http({
+        url: this.$Constent.api.message.getMessageList,
+        method: 'GET',
+        params: {
+          st: st * singleListLength,
+          end: st * singleListLength + singleListLength
+        }
+      }).then(res => {
+        res = res.body
+        if (res.statue) {
+          let { messageList } = res
+          this.$data.messageList = messageList
+          this.$data.allListLength = res.allLength
+        }
+      })
+    },
     // 预加载所有图片
     preloadRequest (cb) {
       const _context = document.getElementById('context')
@@ -167,6 +192,7 @@ export default {
 <style lang='less'>
 .cow-code {
   margin-top: 15px;
+  margin-bottom: 15px;
   overflow: hidden;
   ul {
     max-width: 100%;
@@ -200,6 +226,7 @@ export default {
     padding-left: 12px;
     word-break:keep-all;
     white-space:nowrap;
+    color: #fff;
   }
   /*注释灰色*/
   .grey {
@@ -353,7 +380,7 @@ export default {
   }
 }
 .article-context {
-  padding-top: .8rem;
+  padding-top: .3rem;
   .box-hd {
     position: relative;
     @size: 42px;
@@ -413,7 +440,7 @@ export default {
     line-height: 32px;
     color: #7b7b7b;
     p {
-      font-size: 13px;
+      font-size: 14px;
       line-height: 30px;
     }
     a {
@@ -430,6 +457,7 @@ export default {
       }
       img {
         padding-top: 20px;
+        padding-bottom: 10px;
       }
     }
     .tip {

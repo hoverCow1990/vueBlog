@@ -3,12 +3,12 @@
     <div class="msgBoard-perviewer" :class='type'>
       <div class="msgBoard-user">
         <div class="user-perviewer">
-          <img v-if='isLogin' :src="`${$Constent.serverHost}/static/user/${userData.keyId}/logo.jpg`">
+          <img v-if='$User.userData.isLogin' :src="`${$Constent.serverHost}/static/user/${$User.userData.userDetail.keyId}/logo.jpg`">
           <p v-else @click='showLoginBox'>请登录</p>
         </div>
-        <div class="user-info" v-if="isLogin">
-          <p class='name'>{{ userData.name }}</p>
-          <p class='level'><span> LV{{ userData.lv }} </span>{{ userData.lv | cow-transAlias}}</p>
+        <div class="user-info" v-if="$User.userData.isLogin">
+          <p class='name'>{{ $User.userData.userDetail.name }}</p>
+          <p class='level'><span> LV{{ $User.userData.userDetail.lv }} </span>{{ $User.userData.userDetail.lv | cow-transAlias}}</p>
         </div>
       </div>
     </div>
@@ -59,7 +59,7 @@
                 <p class='time'><i class="iconfont icon-shijian2"></i>{{ item.time | cow-parseTime}}</p>
                 <p class="rate">评分：<i class="iconfont icon-star" v-for='i of new Array(item.score)'></i></p>
               </div>
-              <div class="context-bd" v-html="item.message"></div>
+              <div class="context-bd" v-html="getRealMessage(item.message)"></div>
             </div>
           </li>
         </ul>
@@ -67,9 +67,9 @@
           <i class="iconfont icon-ku"></i>小可爱, 来帮牛哥留两条吧...
         </p>
       </div>
-      <cow-page-tab :allListLength='allListLength' :singleListLength='singleListLength' @change='(index) => requestMessageList(index - 1)'></cow-page-tab>
+      <cow-page-tab :allListLength='allListLength' :singleListLength='singleListLength' @change='(index) => changePage(index - 1)'></cow-page-tab>
     </div>
-    <cow-login-box :isShow='isLoginBoxShow' :loginType='"regiest"' @hiddenLoginBox='hiddenLoginBox'></cow-login-box>
+    <cow-login-box :isShow='isLoginBoxShow' v-model='loginType' @hiddenLoginBox='hiddenLoginBox'></cow-login-box>
   </div>
 </template>
 
@@ -83,6 +83,17 @@ export default {
     type: {
       type: String,
       default: 'yellow'
+    },
+    // 消息列表
+    messageList: {
+      type: Array
+    },
+    singleListLength: {
+      type: Number,
+      default: 8
+    },
+    allListLength: {
+      type: Number
     }
   },
   mixins: [mixin],
@@ -94,15 +105,12 @@ export default {
       isLogin: false,
       isLoginBoxShow: false,
       isExpressionBoxShow: false,
-      allListLength: 2,
-      singleListLength: 8,
       isRequestLoading: false,
-      messageList: []
+      loginType: 'login'
     }
   },
   created () {
     this.requestUserData()
-    this.requestMessageList()
   },
   methods: {
     // 请求用户信息
@@ -120,31 +128,6 @@ export default {
           this.$data.isLogin = true
         } else {
           this.$data.isLogin = false
-          this.$message({
-            type: 'err',
-            message: res.msg
-          })
-        }
-      })
-    },
-    // 请求留言板内容
-    requestMessageList (st = 0) {
-      this.$Http({
-        url: this.$Constent.api.message.getMessageList,
-        method: 'GET',
-        params: {
-          st: st * 10,
-          end: st * 10 + 10
-        }
-      }).then(res => {
-        res = res.body
-        if (res.statue) {
-          let { messageList } = res
-          messageList.forEach(item => {
-            item.message = this.getRealMessage(item.message)
-          })
-          this.$data.messageList = messageList
-          this.$data.allListLength = res.allLength
         }
       })
     },
@@ -160,6 +143,10 @@ export default {
     // 处理分数
     handlerRateScore (index) {
       this.$data.rateScore = index
+    },
+    // 切换分页
+    changePage (index) {
+      this.$emit('changeMsgPage', index)
     },
     // 展开loginBox
     showLoginBox () {
@@ -206,8 +193,15 @@ export default {
     },
     // 提交表单
     submitFrom () {
-      let {message, isLoading, isRequestLoading, rateScore} = this.$data
+      let {message, isLoading, isRequestLoading, rateScore, isLogin} = this.$data
       if (isLoading | isRequestLoading) return
+      if (!isLogin) {
+        this.$message({
+          type: 'err',
+          message: '请先登录'
+        })
+        return
+      }
       this.$data.isRequestLoading = true
       let isCanSubmit = this.validateMessage(message)
       if (isCanSubmit.statue) {
@@ -349,7 +343,7 @@ export default {
         display: block;
         font-size: 12px;
         text-align: center;
-        line-height: 55px;
+        line-height: 61px;
         letter-spacing: 1px;
         background-color: rgba(255, 255, 255, 0.1);
         cursor: pointer;
