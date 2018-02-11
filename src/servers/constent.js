@@ -44,13 +44,15 @@ const constent = {
         },
         message: {
           postMessage: APIHOST + '/message/postMessage', // 提交留言
-          getMessageList: APIHOST + '/message/getMessage' // 获取留言列表
+          getMessageList: APIHOST + '/message/getMessage', // 获取留言列表
+          getArticleMessage: APIHOST + '/message/getArticleMessage' // 获取文章页列表
         },
         category: {
           getList: APIHOST + '/article/getList'
         },
         article: {
           getArtcleList: APIHOST + '/article/getArtcleList',
+          searchArtcleList: APIHOST + '/article/searchArtcleList',
           getArtcle: APIHOST + '/article/getArtcle'
         }
       }

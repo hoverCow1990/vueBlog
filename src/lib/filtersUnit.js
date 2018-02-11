@@ -32,7 +32,7 @@ const filtersUnit = {
     return str.padStart(num, '0')
   },
   // 获取称号
-  transAlias (lv) {
+  transAlias (lv = 1) {
     switch (lv) {
       case 1:
         return '牛哥的基佬学徒'

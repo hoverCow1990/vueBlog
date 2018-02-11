@@ -11,7 +11,6 @@ const user = {
       },
       // 设置用户数据
       set (data) {
-        console.log(this.userData)
         this.userData = {
           isLogin: true,
           selfId: data.selfId,

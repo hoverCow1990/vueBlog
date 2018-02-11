@@ -3,12 +3,12 @@
     <div class="msgBoard-perviewer" :class='type'>
       <div class="msgBoard-user">
         <div class="user-perviewer">
-          <img v-if='$User.userData.isLogin' :src="`${$Constent.serverHost}/static/user/${$User.userData.userDetail.keyId}/logo.jpg`">
+          <img v-if='isLogin' :src="`${$Constent.serverHost}/static/user/${userData.keyId}/logo.jpg`">
           <p v-else @click='showLoginBox'>请登录</p>
         </div>
-        <div class="user-info" v-if="$User.userData.isLogin">
-          <p class='name'>{{ $User.userData.userDetail.name }}</p>
-          <p class='level'><span> LV{{ $User.userData.userDetail.lv }} </span>{{ $User.userData.userDetail.lv | cow-transAlias}}</p>
+        <div class="user-info" v-if="isLogin">
+          <p class='name'>{{ userData.name }}</p>
+          <p class='level'><span> LV{{ userData.lv }} </span>{{ userData.lv | cow-transAlias}}</p>
         </div>
       </div>
     </div>
@@ -51,7 +51,7 @@
               <div class="user-info">
                 <p class='name'>{{ item.user.name }}</p>
                 <p>积分 : {{ item.user.score }}</p>
-                <p>等级：<span>LV{{ item.user.lv }}</span>{{ item.user.lv | cow-transAlias }}</p>
+                <p>等级：<span>LV{{ item.user.lv || 1 }}</span>{{ item.user.lv | cow-transAlias }}</p>
               </div>
             </div>
             <div class="item-context">
@@ -67,9 +67,9 @@
           <i class="iconfont icon-ku"></i>小可爱, 来帮牛哥留两条吧...
         </p>
       </div>
-      <cow-page-tab :allListLength='allListLength' :singleListLength='singleListLength' @change='(index) => changePage(index - 1)'></cow-page-tab>
+      <cow-page-tab :allListLength='allListLength' :singleListLength='singleListLength' @change='(index) => changePage(index - 1)' ref='cowPageTab'></cow-page-tab>
     </div>
-    <cow-login-box :isShow='isLoginBoxShow' v-model='loginType' @hiddenLoginBox='hiddenLoginBox'></cow-login-box>
+    <cow-login-box :isShow='isLoginBoxShow' v-model='loginType' @hiddenLoginBox='hiddenLoginBox' @loginSuccess='(data) => loginSuccess(data)'></cow-login-box>
   </div>
 </template>
 
@@ -111,6 +111,10 @@ export default {
   },
   created () {
     this.requestUserData()
+    this.$Events.loginData.$on(this, (isLogin, data) => {
+      this.$data.isLogin = isLogin
+      this.userData = data
+    })
   },
   methods: {
     // 请求用户信息
@@ -130,6 +134,10 @@ export default {
           this.$data.isLogin = false
         }
       })
+    },
+    // 登录成功
+    loginSuccess (data) {
+      this.$Events.loginData.$emit(true, data)
     },
     // 处理msg value值
     handleMsgVal (ev) {
@@ -204,50 +212,51 @@ export default {
       }
       this.$data.isRequestLoading = true
       let isCanSubmit = this.validateMessage(message)
-      if (isCanSubmit.statue) {
-        this.$Http({
-          url: this.$Constent.api.message.postMessage,
-          method: 'POST',
-          data: {
-            message,
-            score: rateScore + 1,
-            st: 0,
-            end: 10
-          }
-        }).then(res => {
-          res = res.body
-          if (res.statue) {
-            let { messageList } = res
-            messageList.forEach(item => {
-              item.message = this.getRealMessage(item.message)
-            })
-            this.$data.messageList = messageList
-            this.$data.message = ''
-            this.$data.allListLength = res.allLength
-            this.$refs.textarea.value = ''
-            this.$message({
-              type: 'success',
-              message: '恭喜发布成功'
-            })
-            this.$data.isRequestLoading = false
-          } else {
-            this.$message({
-              type: 'err',
-              message: res.msg
-            })
-            this.$data.isRequestLoading = false
-          }
-        }).catch(err => {
-          console.log(err)
-          this.$data.isRequestLoading = false
-        })
-      } else {
+      // 不允许提交的时候
+      if (!isCanSubmit.statue) {
         this.$message({
           type: 'err',
           message: isCanSubmit.msg
         })
         this.$data.isRequestLoading = false
+        return
       }
+      this.$Http({
+        url: this.$Constent.api.message.postMessage,
+        method: 'POST',
+        data: {
+          message,
+          score: rateScore + 1,
+          st: 0,
+          end: 10
+        }
+      }).then(res => {
+        res = res.body
+        if (res.statue) {
+          let { messageList, allLength } = res
+          messageList.forEach(item => {
+            item.message = this.getRealMessage(item.message)
+          })
+          this.$data.message = ''
+          this.$refs.textarea.value = ''
+          this.$emit('changeMsg', messageList, allLength)
+          this.$refs.cowPageTab.nowIndex = 0
+          this.$message({
+            type: 'success',
+            message: '恭喜发布成功'
+          })
+          this.$data.isRequestLoading = false
+        } else {
+          this.$message({
+            type: 'err',
+            message: res.msg
+          })
+          this.$data.isRequestLoading = false
+        }
+      }).catch(err => {
+        console.log(err)
+        this.$data.isRequestLoading = false
+      })
     },
     // 验证信息
     validateMessage (message) {

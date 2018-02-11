@@ -58,7 +58,7 @@
       </div>
     </div>
     <div class="article-box article-message">
-      <cow-message-board type='yellow' :messageList='messageList' :allListLength='allListLength' @changeMsgPage='requestMessageList'></cow-message-board>
+      <cow-message-board type='yellow' :messageList='messageList' :allListLength='allListLength' @changeMsgPage='requestMessageList' @changeMsg='changeMsg'></cow-message-board>
     </div>
   </div>
 </template>
@@ -117,22 +117,30 @@ export default {
   methods: {
     // 请求留言板内容
     requestMessageList (st) {
-      const {singleListLength} = this.$data
+      let articleId = this.$route.params.id
+      const { singleListLength } = this.$data
       this.$Http({
-        url: this.$Constent.api.message.getMessageList,
+        url: this.$Constent.api.message.getArticleMessage,
         method: 'GET',
         params: {
           st: st * singleListLength,
-          end: st * singleListLength + singleListLength
+          end: st * singleListLength + singleListLength,
+          articleId
         }
       }).then(res => {
         res = res.body
         if (res.statue) {
           let { messageList } = res
+          console.log(messageList)
           this.$data.messageList = messageList
           this.$data.allListLength = res.allLength
         }
       })
+    },
+    // 更新消息列表
+    changeMsg (messageList, allLength) {
+      this.$data.messageList = messageList
+      this.$data.allListLength = allLength
     },
     // 预加载所有图片
     preloadRequest (cb) {

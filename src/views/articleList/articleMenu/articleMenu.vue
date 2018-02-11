@@ -24,15 +24,20 @@ export default {
     }
   },
   methods: {
+    // 获取文章列表发起请求前的准备工作
     getArticleList () {
       let articleType = this.$route.params.type
       let types = articleType.split('_')
       let findType = types[types.length - 1]
-      this.requestCategory().then(categoryList => {
-        let category = categoryList.find(item => item.title.startsWith(findType))
-        this.$data.typeId = category.id
-        this.requestArticle(0)
-      })
+      if (findType === 'search') {
+        this.requestSearch(0)
+      } else {
+        this.requestCategory().then(categoryList => {
+          let category = categoryList.find(item => item.title.startsWith(findType))
+          this.$data.typeId = category.id
+          this.requestArticle(0)
+        })
+      }
     },
     // 请求类目表 有过请求就直接返回结果不然则发送请求
     requestCategory () {
@@ -63,17 +68,25 @@ export default {
           end
         }
       }).then(res => {
-        // {
-        //   perviewer: 'http://www.web-jackiee.com/uploads/allimg/170228/1-1F22P2211U54-lp.jpg',
-        //   mainTag: '展示页面',
-        //   title: '联和利华天猫首页3稿',
-        //   des: '联和利华天猫首页的3稿,不过最后又应...',
-        //   time: '2016-11-15 02:32:00',
-        //   id: '123',
-        //   watch: 12,
-        //   message: 2
-        // }
         res = res.body
+        this.$data.articleList = res.articleList
+        this.$data.allListLength = res.allLength
+      })
+    },
+    // 请求搜索文章
+    requestSearch (st = 0) {
+      let keyWords = decodeURI(this.$route.query.q)
+      let end = st + this.$data.singleListLength
+      this.$Http({
+        url: this.$Constent.api.article.searchArtcleList,
+        params: {
+          keyWords,
+          st,
+          end
+        }
+      }).then(res => {
+        res = res.body
+        if (!res.statue) return
         this.$data.articleList = res.articleList
         this.$data.allListLength = res.allLength
       })

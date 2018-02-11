@@ -21,12 +21,11 @@
             </a>
           </div>
           <div class="topBar-login">
-            {{$User.userData.isLogin}}
-            <div class="hasLogin" v-if='$User.userData.isLogin'>
+            <div class="hasLogin" v-if='isLogin'>
               <div class="user-perview">
-                <img :src="`${$Constent.serverHost}/static/user/${$User.userData.userDetail.keyId}/logo.jpg`">
+                <img :src="`${$Constent.serverHost}/static/user/${userData.keyId}/logo.jpg`">
               </div>
-              <span>{{ $User.userData.userDetail.name }}</span>
+              <span>{{ userData.name }}</span>
               <span class="logout" @click="handlerLogout">[ 退出 ]</span>
             </div>
             <div class="noLogin" v-else>
@@ -53,11 +52,11 @@
         <div class="menu-logo"></div>
       </div>
       <div class="search">
-        <input class="search-form" placeholder="面向对象" type="text">
-        <button><span><i class="iconfont icon-fangdajing"></i></span></button>
+        <input class="search-form" type="text" v-model='searchVal'>
+        <button @click='linkSearch'><span><i class="iconfont icon-fangdajing"></i></span></button>
       </div>
     </div>
-    <more-box :isShow='isMoreBoxShow' @showLoginBox='showLoginBox' @hiddenMoreBox='hiddenMoreBox' :isLogin="$User.userData.isLogin"></more-box>
+    <more-box :isShow='isMoreBoxShow' @showLoginBox='showLoginBox' @hiddenMoreBox='hiddenMoreBox' :isLogin="isLogin"></more-box>
     <cow-login-box v-model='loginType' :isShow='isLoginBoxShow' @hiddenLoginBox='hiddenLoginBox' @loginSuccess='(data) => loginSuccess(data)'></cow-login-box>
   </div>
 </template>
@@ -71,13 +70,20 @@ export default {
     return {
       loginType: '',
       isLoginBoxShow: false,
-      isMoreBoxShow: false
+      isMoreBoxShow: false,
+      isLogin: false,
+      userData: {},
+      searchVal: '面向对象'
     }
   },
   components: {
     MoreBox
   },
   created () {
+    this.$Events.loginData.$on(this, (isLogin, data) => {
+      this.$data.isLogin = isLogin
+      this.userData = data
+    })
     this.checkLogin()
   },
   methods: {
@@ -92,17 +98,16 @@ export default {
       }).then(res => {
         res = res.body
         if (res.statue) {
-          this.$User.userData = {
-            isLogin: true,
-            selfId: res.selfId,
-            userDetail: res.userDetail
-          }
-          console.log(this.$User.userData.isLogin)
-          console.log(this.$User.get())
+          this.$Events.loginData.$emit(true, res.userDetail)
         } else {
-          this.$User.remove()
+          this.$Events.loginData.$emit(false, {})
         }
       })
+    },
+    // 链接至所搜索页面
+    linkSearch () {
+      let searchVal = encodeURI(this.$data.searchVal)
+      this.$router.push('/articleList/search?q=' + searchVal)
     },
     // 显示登录盒子
     showLoginBox (type = 'login') {
@@ -123,8 +128,7 @@ export default {
     },
     // 登录成功
     loginSuccess (data) {
-      this.$data.userData = data
-      this.$data.isLogin = true
+      this.$Events.loginData.$emit(true, data)
     },
     // 退出登录
     handlerLogout () {
@@ -138,8 +142,8 @@ export default {
             type: 'success',
             message: '成功退出'
           })
-          this.$User.remove()
-          this.$router.push('/')
+          this.$Events.loginData.$emit(false, {})
+          // this.$router.push('/')
         }
       })
     },
@@ -366,6 +370,7 @@ export default {
       text-indent: 10px;
       outline: none;
       letter-spacing: 1px;
+      color: #777;
     }
     button {
       box-sizing: border-box;

@@ -2,7 +2,7 @@
   <section id='messagePage'>
     <cow-header-filler></cow-header-filler>
     <div class="container messagePage-container">
-      <cow-message-board type='black' :messageList='messageList' :allListLength='allListLength' @changeMsgPage='requestMessageList'></cow-message-board>
+      <cow-message-board type='black' :messageList='messageList' :allListLength='allListLength' @changeMsgPage='requestMessageList' @changeMsg='changeMsg'></cow-message-board>
     </div>
   </section>
 </template>
@@ -38,6 +38,11 @@ export default {
           this.$data.allListLength = res.allLength
         }
       })
+    },
+    // 发送成功后刷新messageList
+    changeMsg (messageList, allLength) {
+      this.$data.messageList = messageList
+      this.$data.allListLength = allLength
     }
   }
 }
