@@ -23,7 +23,7 @@
           <div class="topBar-login">
             <div class="hasLogin" v-if='isLogin'>
               <div class="user-perview">
-                <img :src="`${$Constent.serverHost}/static/user/${userData.keyId}/logo.jpg`">
+                <img :src="`${$Constent.serverHost}/uploads/user/${userData.id}/logo.jpg`">
               </div>
               <span>{{ userData.name }}</span>
               <span class="logout" @click="handlerLogout">[ 退出 ]</span>

@@ -1,4 +1,5 @@
 import Axios from 'axios'
+import Message from '@/components/message/main'
 
 const Http = {
   install (Vue) {
@@ -55,6 +56,10 @@ const Http = {
       //       Vue.prototype.$Navigation.goLogin()
       //     }
       //   }
+      Message({
+        type: 'err',
+        message: err.response.data.message
+      })
       return Promise.reject(err)
     })
     Vue.prototype.$Http = Axios
