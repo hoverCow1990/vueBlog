@@ -3,7 +3,7 @@ import Axios from 'axios'
 const Http = {
   install (Vue) {
     Axios.defaults.timeout = 30000
-
+    Axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
     // 请求拦截器
     Axios.interceptors.request.use(config => {
       // const USI = Vue.prototype.$Auth.get()

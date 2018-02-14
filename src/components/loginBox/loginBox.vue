@@ -201,6 +201,7 @@ export default {
         formData.append('password', password.val)
         this.$Http({
           url: this.$Constent.api.user.regist,
+          header
           method: 'POST',
           data: formData
         }).then(res => {
