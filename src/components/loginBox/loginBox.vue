@@ -197,7 +197,7 @@ export default {
         this.$data.isRequestLoading = true
         const formData = new FormData()
         formData.append('file', this.$data.fileData)
-        formData.append('id', id.val)
+        formData.append('name', id.val)
         formData.append('password', password.val)
         this.$Http({
           url: this.$Constent.api.user.regist,
@@ -222,6 +222,8 @@ export default {
             })
             this.$data.isRequestLoading = false
           }
+        }).catch(() => {
+          this.$data.isRequestLoading = false
         })
       } else {
         this.$message({

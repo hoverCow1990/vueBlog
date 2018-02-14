@@ -6,7 +6,7 @@
         <div class="topBar-container">
           <div class="user">
             <div class="user-logo">
-              <img v-if="userData.keyId" :src="`${$Constent.serverHost}/static/user/${userData.keyId}/logo.jpg`">
+              <img v-if="userData.id" :src="`${$Constent.serverHost}/static/user/${userData.id}/logo.jpg`">
             </div>
             <div class="user-summary">
               <div class="summary-hd">
@@ -232,7 +232,7 @@ export default {
   data () {
     return {
       userData: {
-        keyId: '',
+        id: '',
         hasSigned: true,
         name: '--',
         score: '--',
