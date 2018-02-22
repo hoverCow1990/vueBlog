@@ -14,19 +14,24 @@
           <div class="inner-bd">
             {{ item.description }}
             <router-link :to='getLink(item.id)'>
-              <cow-btn type="primary">点击阅读</cow-btn>
+              <div class="item-btn">
+                <div class="btn-container">
+                  <div class="btn-tp">点击阅读</div>
+                  <div class="btn-bt"><i class="iconfont icon-yanjing"></i></div>
+                </div>
+              </div>
             </router-link>
           </div>
           <div class="inner-ft">
             <div class="inner-time">
-              <i class="iconfont icon-shijian2"></i>{{ item.time | cow-transTime }}
+              <i class="iconfont icon-shijian2"></i>{{ item.time }}
             </div>
             <div class="inner-hot">
               <div class="hot-watch">
                 <i class="iconfont icon-yanjing"></i>{{ item.watch }}
               </div>
               <div class="hot-message">
-                <i class="iconfont icon-message"></i>{{ item.message | cow-transMsgLength }}
+                <i class="iconfont icon-message"></i>{{ item.message }}
               </div>
             </div>
           </div>
@@ -83,11 +88,59 @@ export default {
   &:not(:first-child){
     margin-top: 10px;
   }
+  .item-btn {
+    @btnHeight: 37px;
+    position: absolute;
+    display: inline-block;
+    width: 88px;
+    height: @btnHeight;
+    right: 0;
+    bottom: 10px;
+    margin-right: 0;
+    font-size: 14px;
+    border-radius: 4px;
+    line-height: 1;
+    white-space: nowrap;
+    border: 1px solid #1f7dc3;
+    -webkit-appearance: none;
+    text-align: center;
+    box-sizing: border-box;
+    overflow: hidden;
+    outline: none;
+    &:hover {
+      .btn-container {
+        transform: translate3d(0, -@btnHeight , 0);
+      }
+    }
+    .btn-container {
+      position: absolute;
+      width: 100%;
+      transition: .5s;
+      &>div {
+        width: 100%;
+        height: @btnHeight;
+        line-height: @btnHeight;
+        text-align: center;
+        color: #fff;
+        &:nth-child(1) {
+          background-color: @primary;
+          border-radius: 4px 4px 0 0;
+        }
+        &:nth-child(2) {
+          i {
+            font-size: 20px;
+          }
+          background-color: darken(@primary, 10%);
+          border-radius: 0 0 4px 4px;
+        }
+      }
+    }
+  }
   .item-perviewer {
     position: relative;
     display: flex;
     justify-content: center;
-    width: 2.83rem;
+    width: 2.81rem;
     height: 100%;
     overflow: hidden;
     cursor: pointer;
@@ -136,12 +189,6 @@ export default {
     .border(top);
     .border(bottom);
     color: #999;
-    .cow-btn {
-      position: absolute;
-      right: 0;
-      bottom: 10px;
-      margin-right: 0;
-    }
   }
   .inner-ft {
     display: flex;
@@ -152,9 +199,6 @@ export default {
     color: #999;
     i {
       padding-right: 5px;
-    }
-    .inner-time {
-
     }
     .inner-hot {
       display: flex;
@@ -169,6 +213,9 @@ export default {
     height: auto;
     padding-right: 8px;
     flex-wrap: wrap;
+    &:nth-child(1) {
+      border-radius: 0 0 6px 6px;
+    }
     .item-perviewer {
       width: 100%;
       height: 8.57rem;

@@ -7,6 +7,11 @@ const filtersUnit = {
   // 转换时间 1497625549376 => 2017-06-16 08:00:21
   parseTime (time, isNeedTime = true) {
     if (!time) return '未知时间'
+    if (time.length === 8) {
+      return time.replace(/^(\d{4})(\d{2})(\d{2})$/, ($0, $1, $2, $3) => {
+        return $1 + '-' + $2 + '-' + $3
+      })
+    }
     return time.replace(/^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})$/, ($0, $1, $2, $3, $4, $5, $6) => {
       return $1 + '-' + $2 + '-' + $3 + (isNeedTime ? ' ' + $4 + ':' + $5 + ':' + $6 : '')
     })

@@ -13,6 +13,8 @@ const events = {
           })
         },
         '$emit' (isLogin, data) {
+          console.log('------events------')
+          console.log(data)
           if (this.currentObj) {
             this.currentObj.$emit('loginData.status', isLogin, data)
           }

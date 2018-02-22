@@ -3,95 +3,92 @@ export default {
     return {
       langList: [{
         title: 'javascript',
-        link: '/'
+        link: '/articleList/fronts_javascript'
       }, {
         title: 'es6',
-        link: '/'
+        link: '/articleList/fronts_es6'
       }, {
         title: 'html',
-        link: '/'
+        link: '/articleList/fronts_html'
       }, {
         title: 'css',
-        link: '/'
+        link: '/articleList/fronts_css'
       }, {
-        title: 'node',
-        link: '/'
+        title: 'nodeJs',
+        link: '/articleList/backstages_node'
       }, {
         title: 'vue',
-        link: '/'
+        link: '/articleList/fronts_vue'
       }, {
         title: 'react',
-        link: '/'
-      }, {
-        title: 'angular',
-        link: '/'
+        link: '/articleList/fronts_react'
       }, {
         title: 'jquery',
-        link: '/'
+        link: '/articleList/fronts_jquery'
       }, {
-        title: 'require',
-        link: '/'
+        title: 'java',
+        link: '/articleList/backstages_java'
+      }, {
+        title: 'koa',
+        link: '/articleList/backstages_koa'
+      }, {
+        title: 'mysql',
+        link: '/articleList/backstages_mysql'
       }, {
         title: 'bootstrip',
-        link: '/'
+        link: '/articleList/fronts_bootstrip'
       }, {
         title: 'less',
-        link: '/'
+        link: '/articleList/fronts_less'
       }, {
-        title: 'jade',
-        link: '/'
-      }, {
-        title: 'ejs',
-        link: '/'
-      }, {
-        title: 'juicer',
-        link: '/'
+        title: 'mongoose',
+        link: '/articleList/backstages_mongoose'
       }, {
         title: 'webpack',
-        link: '/'
+        link: '/articleList/tools_webpack'
       }, {
         title: 'gulp',
-        link: '/'
+        link: '/articleList/tools_gulp'
       }, {
         title: 'github',
-        link: '/'
+        link: '/articleList/tools_github'
       }, {
         title: 'photoshop',
-        link: '/'
+        link: '/articleList/tools_photoshop'
       }],
       hotList: [{
         title: '面向对象',
-        link: '/'
+        link: '/articleList/search?q=面向对象'
       }, {
         title: '展示页面',
-        link: '/'
+        link: '/articleList/search?q=页面'
       }, {
         title: '插件封装',
-        link: '/'
+        link: '/articleList/search?q=插件'
       }, {
         title: '游戏',
-        link: '/'
+        link: '/articleList/search?q=游戏'
       }, {
         title: 'web特效',
-        link: '/'
+        link: '/articleList/search?q=特效'
       }, {
         title: '工具',
-        link: '/'
+        link: '/articleList/search?q=工具'
       }, {
         title: '实战项目',
-        link: '/'
+        link: '/articleList/search?q=实战'
       }, {
         title: '数组',
-        link: '/'
+        link: '/articleList/search?q=数组'
       }, {
         title: '对象',
-        link: '/'
+        link: '/articleList/search?q=对象'
       }, {
         title: '字符串',
-        link: '/'
+        link: '/articleList/search?q=字符串'
       }, {
         title: 'promise',
-        link: '/'
+        link: '/articleList/search?q=promise'
       }]
     }
   }

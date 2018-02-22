@@ -4,38 +4,43 @@ export default {
       frameList: [{
         label: 'React',
         logo: require('./images/react.png'),
-        link: '/articleList/javascript_react',
+        link: '/articleList/fronts_react',
         bgColor: 'black'
       }, {
         label: 'Vue',
         logo: require('./images/vue.png'),
-        link: '/articleList/javascript_vue',
+        link: '/articleList/fronts_vue',
         bgColor: 'grey'
       }, {
         label: 'Angular',
         logo: require('./images/angular.png'),
-        link: '/articleList/javascript_angular',
+        link: '/articleList/fronts_angular',
         bgColor: 'black'
       }, {
         label: 'JQuery',
         logo: require('./images/jquery.png'),
-        link: '/articleList/javascript_jquery',
+        link: '/articleList/fronts_jquery',
         bgColor: 'blue'
       }, {
         label: 'Backbone',
         logo: require('./images/backbone.png'),
-        link: '/articleList/javascript_backbone',
+        link: '/articleList/fronts_backbone',
         bgColor: 'yellow'
       }, {
         label: 'Bootstrip',
         logo: require('./images/bootstrap.png'),
-        link: '/articleList/javascript_bootstrip',
+        link: '/articleList/fronts_bootstrip',
         bgColor: 'violet'
       }, {
-        label: 'Express',
-        logo: require('./images/express.png'),
-        link: '/articleList/javascript_express',
+        label: 'Koa2',
+        logo: require('./images/koa.png'),
+        link: '/articleList/backstages_koa',
         bgColor: 'red'
+      }, {
+        label: 'Mongoose',
+        logo: require('./images/mongoose.png'),
+        link: '/articleList/backstages_mongoose',
+        bgColor: 'black'
       }],
       toolList: [{
         label: 'Webpack',
@@ -45,32 +50,32 @@ export default {
       }, {
         label: 'Gulp',
         logo: require('./images/gulp.png'),
-        link: '/articleList/tool_gulp',
+        link: '/articleList/tools_gulp',
         bgColor: 'red'
       }, {
         label: 'Github',
         logo: require('./images/github.jpg'),
-        link: '/articleList/tool_github',
+        link: '/articleList/tools_github',
         bgColor: 'white'
       }, {
         label: 'Chrome',
         logo: require('./images/chrome.png'),
-        link: '/articleList/tool_chrome',
+        link: '/articleList/tools_chrome',
         bgColor: 'black'
       }, {
         label: 'Dede',
         logo: require('./images/dede.png'),
-        link: '/articleList/tool_dede',
+        link: '/articleList/tools_dede',
         bgColor: 'green'
       }, {
         label: 'Editor',
         logo: require('./images/editor.png'),
-        link: '/articleList/tool_editor',
+        link: '/articleList/tools_编辑器',
         bgColor: 'violet'
       }, {
         label: 'Others',
         logo: require('./images/others.png'),
-        link: '/articleList/tool_others',
+        link: '/articleList/tool_other',
         bgColor: 'black'
       }],
       bookList: [{
@@ -92,32 +97,32 @@ export default {
       }],
       otherList: [{
         label: 'Game',
-        link: '/articleList/others_game',
+        link: '/articleList/others_游戏',
         logo: require('./images/game.png'),
         bgColor: 'black'
       }, {
         label: 'Canvas',
-        link: '/articleList/others_canvas',
+        link: '/articleList/fronts_canvas',
         logo: require('./images/canvas.png'),
         bgColor: 'white'
       }, {
         label: 'Design',
-        link: '/articleList/others_design',
+        link: '/articleList/others_设计',
         logo: require('./images/design.png'),
         bgColor: 'green'
       }, {
         label: 'PlugIn',
-        link: '/articleList/others_plugIn',
+        link: '/articleList/fronts_插件',
         logo: require('./images/plugin.png'),
         bgColor: 'black'
       }, {
         label: 'Template',
-        link: '/articleList/others_template',
+        link: '/articleList/fronts_模板',
         logo: require('./images/template.png'),
         bgColor: 'yellow'
       }, {
-        label: 'Collection',
-        link: '/articleList/user_collection',
+        label: 'Storys',
+        link: '/articleList/others_故事',
         logo: require('./images/collection.png'),
         bgColor: 'white'
       }, {

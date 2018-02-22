@@ -16,7 +16,13 @@ export default {
       canvasHeight: 0
     }
   },
+  watch: {
+    percent () {
+      this.setCanvas()
+    }
+  },
   mounted () {
+    if (Number.isNaN(this.$props.percent)) return
     this.setCanvas()
   },
   methods: {

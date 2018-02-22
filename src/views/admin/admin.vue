@@ -6,7 +6,7 @@
         <div class="topBar-container">
           <div class="user">
             <div class="user-logo">
-              <img v-if="userData.id" :src="`${$Constent.serverHost}/static/user/${userData.id}/logo.jpg`">
+              <img v-if="userData.id" :src="`${$Constent.serverHost}/uploads/user/${userData.id}/logo.${userData.logoType}`">
             </div>
             <div class="user-summary">
               <div class="summary-hd">
@@ -30,7 +30,7 @@
           <span v-for="(item, index) of new Array(6)" :class="index + 1 === userData.lv?'active':''">Lv{{ index + 1}}</span>
         </div>
         <div class="lv-line">
-          <span :style="lvLineStyle"></span>
+          <span :style="{width: lvLineStyle + '%'}"></span>
         </div>
       </div>
       <div class="admin-bd">
@@ -74,20 +74,25 @@
         </div>
         <div class="admin-project">
           <div class="admin-title">
-            <p><i class="iconfont icon-gengduo"></i>展示作品</p><span>more</span>
+            <p><i class="iconfont icon-gengduo"></i>展示作品</p><span>product</span>
           </div>
-          <ul class="project-list" :class="'flex-' + projectList.length">
-            <li v-for="item of projectList">
-              <div class="project-viewport">
-                <img :src="item.src">
+          <ul class="project-list" :class="'flex-' + userData.productList.length">
+            <li v-for="(item, index) of userData.productList" key="index">
+              <div class="project-viewport" @click="linkToProduct(item.url)">
+                <img :src="item.img ? $Constent.serverHost + item.img : require('./images/examine.jpg')">
                 <div class="mask">
-                  <p>{{ item.name }}</p>
+                  <p>{{ item.title }}</p>
                 </div>
               </div>
             </li>
-            <li v-if="projectList.length < 4 && $Constent.isPc">
+            <li v-if="isSelf && userData.productList.length < 4">
               <div class="project-upload" @click="showUploadBox">
                 <p><i class="iconfont icon-xiazai"></i>上传你的作品</p>
+              </div>
+            </li>
+            <li v-if="!isSelf && userData.productList.length === 0">
+              <div class="project-viewport">
+                <img :src="require('./images/noPro.jpg')">
               </div>
             </li>
           </ul>
@@ -96,28 +101,30 @@
           <li class="menu-category collection">
             <div class="category-container">
               <div class="title">
-                <p><i class="iconfont icon-gengduo"></i>收藏文章</p><span>more</span>
+                <p><i class="iconfont icon-gengduo"></i>收藏文章</p><span :class="userData.collect.length > articleMax ? '' : 'disable'" @click="handlerChangeArticle(1)">换一批</span>
               </div>
               <div class="category-wrapper">
-                <ul class="menu-list">
-                  <li v-for='item of collectionList'>
-                    <router-link :to="item.link">{{ item.name }}</router-link>
+                <ul class="menu-list" v-if="userData.collect.length">
+                  <li v-for='item of collectList'>
+                    <router-link :to="`/article/${ item.id }`">{{ item.title }}</router-link>
                   </li>
                 </ul>
+                <p class="category-notice" v-else>暂无收藏...</p>
               </div>
             </div>
           </li>
           <li class="menu-category love">
             <div class="category-container">
               <div class="title">
-                <p><i class="iconfont icon-gengduo"></i>点赞文章</p><span>more</span>
+                <p><i class="iconfont icon-gengduo"></i>点赞文章</p><span :class="userData.love.length > articleMax ? '' : 'disable'" @click="handlerChangeArticle(2)">换一批</span>
               </div>
               <div class="category-wrapper">
-                <ul class="menu-list">
+                <ul class="menu-list" v-if="userData.love.length">
                   <li v-for='item of loveList'>
-                    <router-link :to="item.link">{{ item.name }}</router-link>
+                    <router-link :to="`/article/${ item.id }`">{{ item.title }}</router-link>
                   </li>
                 </ul>
+                <p class="category-notice" v-else>暂无点赞...</p>
               </div>
             </div>
           </li>
@@ -137,7 +144,7 @@
             </div>
           </li>
         </ul>
-        <!-- <div class="admin-content scoreline">
+        <div class="admin-content scoreline">
           <div class="content-container">
             <div class="container-viewport">
               <div class="viewport-content">
@@ -150,30 +157,30 @@
               <div class="prop-list clearfix">
                 <div class="article-prop">
                   <div class="prop-text">
-                    <p class="red">Top3</p>
-                    <p>击败37%用户</p>
+                    <p class="red">{{ userData.score }}</p>
+                    <p>总积分</p>
                   </div>
-                  <cow-prop-circle :percent='Number(63)' color='#ff3c3c' :stroke="strokeWidth"></cow-prop-circle>
+                  <cow-prop-circle :percent='Number(66)' color='#ff3c3c' :stroke="strokeWidth"></cow-prop-circle>
                 </div>
                 <div class="article-prop">
                   <div class="prop-text">
-                    <p class="blue">16%</p>
-                    <p>总积分 : 1232</p>
+                    <p class="blue">{{ lvPropAll }}%</p>
+                    <p>总进度</p>
                   </div>
-                  <cow-prop-circle :percent='Number(16)' color='#0087ec' :stroke="strokeWidth"></cow-prop-circle>
+                  <cow-prop-circle :percent='Number(lvPropAll)' color='#0087ec' :stroke="strokeWidth"></cow-prop-circle>
                 </div>
                 <div class="article-prop">
                   <div class="prop-text">
-                    <p class="yellow">42%</p>
-                    <p>升级所需 : 282</p>
+                    <p class="yellow">{{ lvLineStyle }}%</p>
+                    <p>升级所需</p>
                   </div>
-                  <cow-prop-circle :percent='Number(42)' color='#ffd470' :stroke="strokeWidth"></cow-prop-circle>
+                  <cow-prop-circle :percent='lvLineStyle' color='#ffd470' :stroke="strokeWidth"></cow-prop-circle>
                 </div>
               </div>
-              <p class='prop-info'>前段时间的一个项目做到这个玩意，研究了一下绘制圆环的方法。最终使用HTML5的画布标签来做。arc()是HTML5 Canvas的一个API函数，作用是“创建弧/曲线（用于创建圆形或部分圆）”。本文先讲解如何绘制圆形以及一些应用</p>
+              <p class='prop-info'>javascript在1995年时，由Netscape公司的Brendan Eich，在网景导航者浏览器上首次设计实现而成。因为Netscape与Sun合作，Netscape管理层希望它外观看起来像Java，因此取名为JavaScript。</p>
             </div>
           </div>
-        </div> -->
+        </div>
         <div class="admin-content guide">
           <div class="content-container">
             <div class="container-viewport">
@@ -204,14 +211,14 @@
             </div>
             <div class="container-article">
               <ul class="othersList clearfix">
-                <li v-for="(item, index) of othersList" @click="linkToOtherPage(item.keyId)">
-                  <div class="rank" :class="item.keyId === selfId ? 'self' : ''">{{ (requestCount - 1) * 9 + index + 1 | cow-buildZero(2) }}</div>
+                <li v-for="(item, index) of othersList" @click="linkToOtherPage(item.id)">
+                  <div class="rank" :class="item.id === selfId ? 'self' : ''">{{ (requestCount - 1) * 9 + index + 1 | cow-buildZero(2) }}</div>
                   <div class="feature">
-                    <img :src="`${$Constent.serverHost}/static/user/${item.keyId}/logo.jpg`">
+                    <img :src="`${$Constent.serverHost}/uploads/user/${item.id}/logo.${item.logoType}`">
                   </div>
                   <div class="info">
                     <span class="name">{{ item.name }}</span>
-                    <span class="score">{{ item.score }}</span>
+                    <span class="score">{{ item.score }} 分</span>
                   </div>
                 </li>
               </ul>
@@ -222,7 +229,7 @@
       </div>
     </div>
     <cow-user-infoBox :isShow='isInfoBoxShow' @hiddenInfoBoxShow='hiddenInfoBoxShow' @update="data => updateUserData(data)" ref="infoBox"></cow-user-infoBox>
-    <cow-upload-box :isShow='isUploadShow' @hiddenUploadBox='hiddenUploadBox'></cow-upload-box>
+    <cow-upload-box :isShow='isUploadShow' @hiddenUploadBox='hiddenUploadBox' @upDateSuccess="upDateSuccess"></cow-upload-box>
   </section>
 </template>
 
@@ -241,7 +248,10 @@ export default {
         git: '--',
         blog: '--',
         introduce: '--',
-        talent: []
+        productList: [],
+        talent: [],
+        love: [],
+        collect: []
       },
       showExplain: '在会员中心内进行签到任务可随机获得5-10分不等',
       showLable: '每日签到',
@@ -254,7 +264,10 @@ export default {
       requestCount: 1,
       isLoadingSign: false,
       isSelf: false,
-      selfId: ''
+      selfId: '',
+      collectIndex: 0,
+      loveIndex: 0,
+      articleMax: 7
     }
   },
   mixins: [mixin],
@@ -267,6 +280,22 @@ export default {
     }
   },
   computed: {
+    // 收藏文章列表
+    collectList () {
+      let { collect } = this.$data.userData
+      let { collectIndex, articleMax } = this.$data
+      let st = collectIndex * articleMax
+      let end = st + articleMax
+      return collect.slice(st, end)
+    },
+    // 点赞文章列表
+    loveList () {
+      let { love } = this.$data.userData
+      let { loveIndex, articleMax } = this.$data
+      let st = loveIndex * articleMax
+      let end = st + articleMax
+      return love.slice(st, end)
+    },
     // 等级进度条
     lvLineStyle () {
       const lvConfig = this.$Constent.lvConfig
@@ -277,11 +306,21 @@ export default {
       } else {
         let endIndex = lvConfig.findIndex(item => item >= score)
         let stIndex = endIndex - 1
-        width = (((score - lvConfig[stIndex]) / (lvConfig[endIndex] - lvConfig[stIndex])) * 100).toFixed(2) + '%'
+        width = Math.ceil((((score - lvConfig[stIndex]) / (lvConfig[endIndex] - lvConfig[stIndex])) * 100))
       }
-      return {
-        width
+      return width
+    },
+    // 总进度的canvas园
+    lvPropAll () {
+      const lvConfig = this.$Constent.lvConfig
+      const { score } = this.$data.userData
+      let prop = 0
+      if (score >= lvConfig[5]) {
+        prop = 100
+      } else {
+        prop = Math.ceil((score / lvConfig[5]) * 100)
       }
+      return prop
     }
   },
   methods: {
@@ -312,13 +351,17 @@ export default {
         if (res.statue) {
           this.$data.userData = res.userDetail
           this.$data.userData.talent = res.userDetail.talent ? res.userDetail.talent.split(',') : []
-          this.$data.selfId = res.selfId
-          this.testDateComplete()
+          this.$data.userData.love = this.$data.userData.love.reverse()
+          this.$data.userData.collect = this.$data.userData.collect.reverse()
+          this.$data.userData.productList = this.$data.userData.productList.reverse()
+          if (this.$data.isSelf) this.$data.selfId = res.userDetail.id
+          this.testDateComplete() // 检测信息完整性
         } else {
           this.$message({
             type: 'err',
             message: res.msg
           })
+          this.$router.push('/')
         }
       })
     },
@@ -346,7 +389,7 @@ export default {
     setStrokeWidth () {
       // 6 ~ 11线宽
       const screenWidth = window.document.documentElement.offsetWidth
-      this.$data.strokeWidth = Math.min(12, Math.ceil(screenWidth / 2200 * 6) + 4)
+      this.$data.strokeWidth = Math.max(Math.min(12, Math.ceil(screenWidth / 2200 * 6)), 4)
     },
     // 切换展示的指示文案
     showDegreeGuide (item) {
@@ -391,8 +434,8 @@ export default {
     },
     // 修改资料成功
     updateUserData (data) {
-      this.$data.userData = data.userDetail
-      this.$data.userData.talent = data.userDetail.talent ? data.userDetail.talent.split(',') : []
+      this.$data.userData = data.userData
+      this.$data.userData.talent = data.userData.talent ? data.userData.talent.split(',') : []
       this.$refs.infoBox.hiddenInfoBox()
       this.$message({
         type: 'success',
@@ -402,10 +445,20 @@ export default {
     // 检测资料完整性
     testDateComplete () {
       let {qq, talent, introduce} = this.$data.userData
-      if (this.$data.isSelf & (!qq | !introduce | !talent.length)) {
+      let isOldUser = true
+      if (this.$data.isSelf && (!qq | !introduce | !talent.length)) {
+        isOldUser = false
         setTimeout(() => {
           this.showInfoBoxShow()
         })
+      }
+      if (this.$data.isSelf && isOldUser && this.$data.userData.productList.length === 0) {
+        setTimeout(() => {
+          this.$message({
+            type: 'warn',
+            message: '您可以在展示作品一栏上传自己的页面'
+          })
+        }, 6000)
       }
     },
     // 用户签到
@@ -420,11 +473,13 @@ export default {
       }).then(res => {
         res = res.body
         if (res.statue) {
+          let upScore = res.score - this.$data.userData.score // 本次增加的分数
           this.$data.userData.hasSigned = true
           this.$data.userData.score = res.score
+          this.$data.userData.lv = res.lv
           this.$message({
             type: 'success',
-            message: '成功签到积分+10'
+            message: '成功签到积分+' + upScore
           })
           this.$data.isLoadingSign = false
         } else {
@@ -436,9 +491,37 @@ export default {
         }
       })
     },
+    // 链接去别的用户页面
     linkToOtherPage (id) {
       let path = id === this.$data.selfId ? '/admin' : `/admin?id=${id}`
       this.$router.push(path)
+    },
+    // 文章换一换
+    handlerChangeArticle (type) {
+      type = type === 1 ? 'collect' : 'love'
+      let listLength = this.$data.userData[type].length
+      if (!listLength) return
+      let maxLength = Math.ceil(listLength / this.$data.articleMax) // 总共可以翻几页
+      this.$data[type + 'Index'] = (this.$data[type + 'Index'] + 1) % maxLength
+    },
+    // 本地项目上传成功
+    upDateSuccess (data) {
+      this.$data.userData = {
+        ...this.$data.userData,
+        ...data
+      }
+    },
+    // 链接去作品页面
+    linkToProduct (url) {
+      if (!url) { // 审核中
+        if (!this.$data.isSelf) return
+        this.$message({
+          type: 'warn',
+          message: '作品审核中,等不及请主动联系老牛！'
+        })
+      } else {
+        window.open(this.$Constent.serverHost + url)
+      }
     }
   }
 }
@@ -611,7 +694,7 @@ export default {
           background-color: #828282;
         }
         &:nth-child(6) {
-          flex: 10;
+          flex: 9;
           background-color: #6b6b6b;
         }
         &.active {
@@ -771,6 +854,10 @@ export default {
         color: #777;
         transform: translateY(2px);
         cursor: pointer;
+        &.disable {
+          color: #c6c6c6;
+          cursor: not-allowed;
+        }
       }
     }
     .category-wrapper {
@@ -790,6 +877,10 @@ export default {
           opacity: .8;
         }
       }
+    }
+    .category-notice {
+      font-size: 12px;
+      color: #ababab;
     }
     .menu-list {
       font-size: 13px;
@@ -877,7 +968,9 @@ export default {
   }
   .admin-title {
     position: relative;
+    display: flex;
     height: 20px;
+    justify-content: space-between;
     padding-top: .15rem;
     line-height: 20px;
     p {
@@ -934,6 +1027,7 @@ export default {
       color: #888;
       text-align: center;
       border: 1px dashed #e6e6e6;
+      background: #f9f9f9;
       p {
         width: 100%;
       }
@@ -1074,14 +1168,14 @@ export default {
       width: 156px;
       height: 156px;
       float: left;
-      margin-right: .7rem;
+      margin-right: .6rem;
       .prop-text {
         position: absolute;
         width: 100%;
         text-align: center;
         top: 50px;
         p:first-child {
-          font-size: 22px;
+          font-size: .3rem;
           font-weight: 600;
           &.red {
             color: #ff3c3c;
@@ -1261,6 +1355,7 @@ export default {
           width: 100%;
         }
         .category-wrapper {
+          min-height: 60px;
           padding-top: 16px;
           overflow: hidden;
         }
@@ -1314,6 +1409,9 @@ export default {
         padding-left: 0;
       }
     }
+    .container-article {
+      width: 100%;
+    }
     .prop-list {
       display: flex;
       padding-top: 6px;
@@ -1330,6 +1428,7 @@ export default {
         .prop-text {
           top: 20px;
           p:first-child {
+            padding-top: .15rem;
             font-size: 16px;
           }
           p:last-child {

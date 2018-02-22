@@ -13,6 +13,7 @@ let Message = option => {
       message: option
     }
   }
+  if (!option.message) return
   let userOnClose = option.onClose
   let id = 'message_' + count++
 

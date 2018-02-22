@@ -1,5 +1,5 @@
 <template>
-  <section class='homePage-banner' @mousemove='handlerImgMove'>
+  <section class='homePage-banner' @mousemove='handlerImgMove' @touchmove.prevent="handlerMbImgMove">
     <div class="banner">
       <div class="banner-bg">
         <img class='luce' src="./images/bg_luce.png">
@@ -56,9 +56,18 @@ export default {
     },
     // 调整图片位子
     handlerImgMove (ev) {
+      if (!this.$Constent.isPc) return
       let {centerPoint, imgOffset} = this.$data
       let moveX = ev.clientX - centerPoint.x
       let moveY = ev.clientY - centerPoint.y
+      for (let key in this.$data.imgOffset) {
+        imgOffset[key].transform = `translate3D(${moveX * imgOffset[key].propX}px, ${moveY * imgOffset[key].propY}px, 0)`
+      }
+    },
+    handlerMbImgMove (ev) {
+      let {centerPoint, imgOffset} = this.$data
+      let moveX = ev.touches[0].clientX - centerPoint.x
+      let moveY = ev.touches[0].clientY - centerPoint.y
       for (let key in this.$data.imgOffset) {
         imgOffset[key].transform = `translate3D(${moveX * imgOffset[key].propX}px, ${moveY * imgOffset[key].propY}px, 0)`
       }
@@ -74,7 +83,7 @@ export default {
 }
 </script>
 
-<style lang='less' scoped>
+<style lang='less'>
 .homePage-banner {
   position: relative;
   width: 100%;
@@ -208,6 +217,7 @@ export default {
 }
 @media screen and (max-width: 435px){
   .homePage-banner {
+    margin-top: .2rem;
       img {
         &.fish {
           top: 3.6rem;

@@ -9,21 +9,31 @@
           <div class="topBar-entrence">
             <div class="toAdmin" @click="handlerToAdmin">
               <i class="iconfont icon-huiyuan2"></i>
+              <div class="popBox">会员中心</div>
             </div>
             <router-link to="/message">
               <i class="iconfont icon-maobi"></i>
+              <div class="popBox">留言中心</div>
             </router-link>
             <a href="https://github.com/hoverCow1990" target='_blanket'>
               <i class="iconfont icon-github"></i>
+              <div class="popBox">github</div>
             </a>
-            <a href="#">
+            <router-link to='/game'>
               <i class="iconfont icon-huiyuan"></i>
+              <div class="popBox">游戏中心</div>
+            </router-link>
+            <a href="tencent://message/?uin=547007933&Site=http://vps.shuidazhe.com&Menu=yes">
+              <i class="iconfont icon-message"></i>
+              <div class="popBox">联系QQ</div>
             </a>
           </div>
           <div class="topBar-login">
             <div class="hasLogin" v-if='isLogin'>
               <div class="user-perview">
-                <img :src="`${$Constent.serverHost}/uploads/user/${userData.id}/logo.jpg`">
+                <router-link to='/admin'>
+                  <img :src="`${$Constent.serverHost}/uploads/user/${userData.id}/logo.${userData.logoType}`">
+                </router-link>
               </div>
               <span>{{ userData.name }}</span>
               <span class="logout" @click="handlerLogout">[ 退出 ]</span>
@@ -42,12 +52,12 @@
     <div class="header-menu">
       <div class="menu-container">
         <div class="menu-lt menu">
-          <router-link to='/articleList/html'>html/css</router-link>
-          <router-link to='/articleList/javascript'>Javascript</router-link>
+          <router-link to='/articleList/fronts'>Fronts</router-link>
+          <router-link to='/articleList/backstages'>Backstages</router-link>
         </div>
         <div class="menu-rt menu">
-          <router-link to='/articleList/node'>Node/Java</router-link>
-          <router-link to='/articleList/others'>Others</router-link>
+          <router-link to='/articleList/tools'>tools</router-link>
+          <router-link to='/articleList/others'>others</router-link>
         </div>
         <div class="menu-logo"></div>
       </div>
@@ -56,7 +66,7 @@
         <button @click='linkSearch'><span><i class="iconfont icon-fangdajing"></i></span></button>
       </div>
     </div>
-    <more-box :isShow='isMoreBoxShow' @showLoginBox='showLoginBox' @hiddenMoreBox='hiddenMoreBox' :isLogin="isLogin"></more-box>
+    <more-box v-if="!$Constent.isPc" :isShow='isMoreBoxShow' @showLoginBox='showLoginBox' @hiddenMoreBox='hiddenMoreBox' @linkSearch="linkSearch" @handlerToAdmin="handlerToAdmin" :isLogin="isLogin"></more-box>
     <cow-login-box v-model='loginType' :isShow='isLoginBoxShow' @hiddenLoginBox='hiddenLoginBox' @loginSuccess='(data) => loginSuccess(data)'></cow-login-box>
   </div>
 </template>
@@ -73,7 +83,7 @@ export default {
       isMoreBoxShow: false,
       isLogin: false,
       userData: {},
-      searchVal: '面向对象'
+      searchVal: '实战'
     }
   },
   components: {
@@ -98,15 +108,16 @@ export default {
       }).then(res => {
         res = res.body
         if (res.statue) {
+          window.articleColor = res.userDetail.articleColor
           this.$Events.loginData.$emit(true, res.userDetail)
         } else {
           this.$Events.loginData.$emit(false, {})
         }
       })
     },
-    // 链接至所搜索页面
-    linkSearch () {
-      let searchVal = encodeURI(this.$data.searchVal)
+    // 链接至所搜索页面 传val的为手机端moreBox内传递的
+    linkSearch (val) {
+      let searchVal = val || encodeURI(this.$data.searchVal)
       this.$router.push('/articleList/search?q=' + searchVal)
     },
     // 显示登录盒子
@@ -128,6 +139,8 @@ export default {
     },
     // 登录成功
     loginSuccess (data) {
+      this.$data.isLogin = true
+      this.$data.userData = data
       this.$Events.loginData.$emit(true, data)
     },
     // 退出登录
@@ -142,8 +155,10 @@ export default {
             type: 'success',
             message: '成功退出'
           })
+          this.$data.isLogin = false
+          this.$data.userData = {}
           this.$Events.loginData.$emit(false, {})
-          // this.$router.push('/')
+          this.$route.path === '/admin' && this.$router.push('/')
         }
       })
     },
@@ -263,6 +278,37 @@ export default {
     .toAdmin:hover i{
       color: #52c3fb;
     }
+    &>div,
+    &>a {
+      position: relative;
+
+    }
+    &>div:hover,
+    &>a:hover {
+      .popBox {
+        transform: translate3d(0, 0, 0);
+        opacity: 1;
+        z-index: 20;
+      }
+    }
+    .popBox {
+      position: absolute;
+      width: 70px;
+      height: 30px;
+      left: -45%;
+      top: 0.45rem;
+      background-image: repeating-linear-gradient(-45deg, #111113 0, #111113 10px, #1e1e20 10px, #1e1e20 12px);
+      border-radius: 0 0 4px 4px;
+      color: #d2d2d2;
+      letter-spacing: 1px;
+      line-height: 30px;
+      text-align: center;
+      font-size: 12px;
+      z-index: 9;
+      opacity: 0;
+      transform: translate3d(0, -30px, 0);
+      transition: .3s;
+    }
     a {
       position: relative;
       color: #eee;
@@ -274,6 +320,9 @@ export default {
       }
       &:nth-child(4):hover i{
         color: #e2bb23;
+      }
+      &:nth-child(5):hover i{
+        color: @primary;
       }
     }
     i {

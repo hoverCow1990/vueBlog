@@ -1,39 +1,37 @@
 <template>
   <div class="articleList-sideMenu">
-    <cow-side-nav title='热门排行' :navList='navList1'></cow-side-nav>
-    <cow-side-nav title='最新留言' :navList='navList1'></cow-side-nav>
+    <cow-side-nav title='相关子类' className="sub" :navList='navSubList'></cow-side-nav>
+    <cow-side-nav title='老牛推荐' className="mes"  :navList='navRecommendList'></cow-side-nav>
   </div>
 </template>
-
 <script>
+
 export default {
-  data () {
-    return {
-      navList1: [{
-        tag: '[node-04]Express构架web相册',
-        href: '/'
-      }, {
-        tag: '阿里云ecs服务器node环境安装',
-        href: '/'
-      }, {
-        tag: '[node-03]Jade模板的运用',
-        href: '/'
-      }, {
-        tag: 'Backbone构架老牛外卖',
-        href: '/'
-      }, {
-        tag: '百度地图二次封装',
-        href: '/'
-      }, {
-        tag: 'Ajax以及跨域访问',
-        href: '/'
-      }, {
-        tag: 'WebPack进阶[开发与生产模式]',
-        href: '/'
-      }]
-    }
+  props: {
+    subList: Object,
+    recommendList: Object
   },
-  components: {
+  computed: {
+    navSubList () {
+      let { list, parTitle } = this.$props.subList
+      if (parTitle === 'search') {
+        return list.map(item => ({
+          tag: item,
+          href: `/articleList/search?q=${item}`
+        }))
+      }
+      return list.map(item => ({
+        tag: item.title,
+        href: `/articleList/${parTitle}_${item.title}`
+      }))
+    },
+    navRecommendList () {
+      let { list, mainType } = this.$props.recommendList
+      return list.map(item => ({
+        tag: item.title,
+        href: `/article/${mainType}/${item.id}`
+      }))
+    }
   }
 }
 </script>
@@ -46,7 +44,21 @@ export default {
 }
 @media screen and (max-width: 435px){
   .articleList-sideMenu {
-    display: none;
+    width: 100%;
+    height: auto;
+    .sideNav:nth-child(1) {
+      min-height: auto;
+      margin-bottom: 0;
+      &:after {
+        display: none;
+      }
+      .sideNav-container {
+        padding: 3px 10px .3rem 10px;
+      }
+    }
+    .sideNav:nth-child(2) {
+      display: none;
+    }
   }
 }
 </style>

@@ -5,16 +5,14 @@
       <cow-titlebar title='Cow Project' info='老牛的实战项目' theme='dark'></cow-titlebar>
       <div class="project-wrapper">
         <ul class="project-list">
-          <li class="project-item" v-for='item of projectList'>
-            <router-link :to="item.link">
-              <div class="item-perviewer">
-                <img :src="item.perviewer">
-                <div class="perviewer-masker"></div>
-              </div>
-              <p class="item-title" :class='item.isOnline?"online":""'>&nbsp; [ {{ item.title }} ]</p>
-              <p class='item-info'>运用技能 : {{ item.info }}</p>
-              <div class="ftBtn">{ {{ item.tag }} }</div>
-            </router-link>
+          <li class="project-item" v-for='item of projectList' @click="handlerGoLink(item.link)" :class="$Constent.isPc?'pop':''">
+            <div class="item-perviewer">
+              <img :src="item.perviewer">
+              <div class="perviewer-masker"></div>
+            </div>
+            <p class="item-title" :class='item.isOnline?"online":""'>&nbsp; [ {{ item.title }} ]</p>
+            <p class='item-info'>运用技能 : {{ item.info }}</p>
+            <div class="ftBtn">{ {{ item.tag }} }</div>
           </li>
         </ul>
       </div>
@@ -33,57 +31,67 @@ export default {
         title: '金银猫Pc端',
         info: 'Angular, Require, Jquery, Bootstrip, Less, Proxy',
         isOnline: true,
-        link: '/article/12'
+        link: 'https://www.jinyinmao.com.cn'
       }, {
         perviewer: require('./images/jymMb.jpg'),
         tag: 'Vue',
         title: '金银猫Mb端',
         info: 'ES6, Vue, Vue-Router, Vux, Yd-Ui, Axios, Less, Webpack, Github',
         isOnline: true,
-        link: '/article/12'
+        link: 'https://m.jinyinmao.com.cn'
       }, {
         perviewer: require('./images/admin.jpg'),
         tag: 'React',
         title: 'Github管理系统',
         info: 'ES6, React, Redux, React-Router, ReactEchart, Antd, Less',
         isOnline: false,
-        link: '/article/12'
+        link: '/article/100'
       }, {
         perviewer: require('./images/outFood.jpg'),
         tag: 'Backbone',
         title: '老牛外卖APP',
         info: 'Backbone, Jquery, Juicer, Jquery-weui, Less, Swiper, Gulp, Webpack, 百度地图',
         isOnline: false,
-        link: '/article/12'
+        link: '/article/100'
       }, {
         perviewer: require('./images/audio.jpg'),
         tag: 'JQuery',
         title: 'QQ音乐简易版',
         info: 'Jquery, H5-audio, 面向对象',
         isOnline: false,
-        link: '/article/12'
+        link: '/article/11'
       }, {
         perviewer: require('./images/bilibili.jpg'),
         tag: 'JQuery',
         title: 'bilibili仿页',
         info: 'Jquery, 面向对象',
         isOnline: false,
-        link: '/article/12'
+        link: '/article/2'
       }, {
         perviewer: require('./images/fishMan.jpg'),
         tag: 'JQuery',
         title: '捕鱼达人',
         info: 'Jquery, 面向对象',
         isOnline: false,
-        link: '/article/12'
+        link: '/article/100'
       }, {
         perviewer: require('./images/lbtt.jpg'),
         tag: 'Bootstrip',
         title: '萝卜特甜仿页',
         info: 'Bootstrip, Jquery, Less, 面向对象',
         isOnline: false,
-        link: '/article/12'
+        link: '/article/100'
       }]
+    }
+  },
+  methods: {
+    // 点击后进入链接
+    handlerGoLink (link) {
+      if (link.startsWith('http')) {
+        window.open(link)
+      } else {
+        this.$router.push(link)
+      }
     }
   }
 }
@@ -161,7 +169,7 @@ export default {
     .border(right);
     transition: all .2s ease-in-out;
     overflow: hidden;
-    &:hover {
+    &.pop:hover {
       box-shadow: 2px 15px 30px rgba(0, 0, 0, .5);
       transform: translate3d(0, -6px, 0);
     }
@@ -245,17 +253,34 @@ export default {
 @media screen and (max-width: 435px) {
   .project-container {
     width: 100%;
+    .project-list {
+      padding-top: .5rem;
+    }
     .project-item {
-      width: 49%;
+      width: 50%;
       border-radius: 0;
-      .border(bottom);
+      margin-top: 0;
+      border: 0;
+      text-align: center;
+      font-size: 13px;
+      &:nth-child(1),
+      &:nth-child(2),
+      &:nth-child(3),
+      &:nth-child(4),
+      &:nth-child(5),
+      &:nth-child(6),{
+        border-bottom: 1px dashed #efefef;
+      }
+      &:nth-child(odd) {
+        border-right: 1px dashed #efefef;
+      }
       &:nth-child(even){
         border-left: 0;
       }
       .ftBtn {
         display: none;
-        /*padding-top: 8px;
-        padding-bottom: 8px;*/
+        /* padding-top: 8px;
+        padding-bottom: 8px; */
       }
     }
     .item-perviewer {
@@ -264,8 +289,8 @@ export default {
       background-color: #fff;
     }
     .item-title {
-      /*padding-top: 8px;
-      padding-bottom: 10px;*/
+      padding-top: 4px;
+      padding-bottom: 10px;
       margin-left: 0;
       font-size: 11px;
       /*text-indent: 4px;*/

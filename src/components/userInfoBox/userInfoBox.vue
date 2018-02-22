@@ -48,28 +48,16 @@
                 <label for="es6">es6</label>
               </div>
               <div>
-                <input type="checkbox" id="node" value="node" v-model="talentList">
-                <label for="node">node</label>
-              </div>
-              <div>
-                <input type="checkbox" id="java" value="java" v-model="talentList">
-                <label for="java">java</label>
-              </div>
-              <div>
-                <input type="checkbox" id="php" value="php" v-model="talentList">
-                <label for="php">php</label>
-              </div>
-              <div>
                 <input type="checkbox" id="jq" value="jquery" v-model="talentList">
                 <label for="jquery">jquery</label>
               </div>
               <div>
                 <input type="checkbox" id="backbone" value="backbone" v-model="talentList">
-                <label for="vue">backbone</label>
+                <label for="backbone">backbone</label>
               </div>
               <div>
                 <input type="checkbox" id="boots" value="boots" v-model="talentList">
-                <label for="vue">boots</label>
+                <label for="boots">boots</label>
               </div>
               <div>
                 <input type="checkbox" id="vue" value="vue" v-model="talentList">
@@ -80,16 +68,16 @@
                 <label for="backbone">angular</label>
               </div>
               <div>
-                <input type="checkbox" id="wechat" value="wechat" v-model="talentList">
-                <label for="wechat">wechat</label>
+                <input type="checkbox" id="wechat" value="react" v-model="talentList">
+                <label for="wechat">react</label>
               </div>
               <div>
                 <input type="checkbox" id="less" value="less" v-model="talentList">
                 <label for="less">less</label>
               </div>
               <div>
-                <input type="checkbox" id="sass" value="sass" v-model="talentList">
-                <label for="sass">sass</label>
+                <input type="checkbox" id="wechat" value="wechat" v-model="talentList">
+                <label for="wechat">wechat</label>
               </div>
               <div>
                 <input type="checkbox" id="webpack" value="webpack" v-model="talentList">
@@ -102,6 +90,30 @@
               <div>
                 <input type="checkbox" id="ps" value="ps" v-model="talentList">
                 <label for="ps">ps</label>
+              </div>
+              <div>
+                <input type="checkbox" id="node" value="node" v-model="talentList">
+                <label for="node">node</label>
+              </div>
+              <div>
+                <input type="checkbox" id="java" value="java" v-model="talentList">
+                <label for="java">java</label>
+              </div>
+              <div>
+                <input type="checkbox" id="php" value="php" v-model="talentList">
+                <label for="php">php</label>
+              </div>
+              <div>
+                <input type="checkbox" id="python" value="python" v-model="talentList">
+                <label for="python">python</label>
+              </div>
+              <div>
+                <input type="checkbox" id="mongodb" value="mongodb" v-model="talentList">
+                <label for="mongodb">mongodb</label>
+              </div>
+              <div>
+                <input type="checkbox" id="mysql" value="mysql" v-model="talentList">
+                <label for="mysql">mysql</label>
               </div>
             </div>
           </div>
@@ -180,9 +192,7 @@ export default {
     },
     // 提交表单
     handlerSubmit () {
-      if (this.$data.isRequestLoading) {
-        return
-      }
+      if (this.$data.isRequestLoading) return
       this.$data.isRequestLoading = true
       const isCanSubmit = this.validateVal()
       if (isCanSubmit.statue) {
@@ -195,6 +205,8 @@ export default {
           if (res.statue) {
             this.$emit('update', res)
           }
+          this.$data.isRequestLoading = false
+        }).catch(() => {
           this.$data.isRequestLoading = false
         })
       } else {
@@ -303,7 +315,7 @@ export default {
 .cow-screen-form.userInfo-box {
   top: 3%;
   .form-wrapper {
-    height: 470px;
+    height: 485px;
     padding-left: 24px;
     padding-top: 10px;
   }

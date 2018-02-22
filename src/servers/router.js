@@ -5,7 +5,7 @@ import Views from '@/views/index'
 Vue.use(Router)
 
 export default new Router({
-  // mode: 'history',
+  mode: 'history',
   routes: [
     {
       path: '/',
@@ -16,6 +16,12 @@ export default new Router({
     }, {
       path: '/article(/.+)?/:id',
       component: Views.Article
+    }, {
+      path: '/game',
+      component: Views.Game
+    }, {
+      path: '/game/:id',
+      component: Views.Game
     }, {
       path: '/message',
       component: Views.Message

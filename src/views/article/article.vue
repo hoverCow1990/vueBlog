@@ -1,9 +1,9 @@
 <template>
   <section id='articlePage'>
     <cow-header-filler></cow-header-filler>
-    <div class="article-wrapper">
+    <div class="article-wrapper" :class="articleData.articleColor === 1 ? 'day' : 'night'">
       <div class="article-container container">
-        <article-main :articleData='articleData' @postAttr='handlerSideNavAttr'></article-main>
+        <article-main :articleData='articleData' @postAttr='handlerSideNavAttr' @changeLoveCollectStatue="changeLoveCollectStatue" @changeArticleColorType="changeArticleColorType"></article-main>
         <article-side-nav :sideNavAttr='sideNavAttr'></article-side-nav>
       </div>
     </div>
@@ -19,32 +19,46 @@ export default {
     return {
       sideNavAttr: [],
       articleData: {
+        title: '',
         perviewerContext: '',
-        context: '',
+        articleColor: window.articleColor || 1,
+        context: '<div class="article-loading"><i class="iconfont icon-icon-loading"></i></div>',
         time: '',
         watch: '',
-        love: '',
-        perviewer: 'http://www.web-jackiee.com/uploads/allimg/170313/1-1F313043542922.jpg',
-        praise: 0,
-        preArticle: {
-          name: 'es6笔记三[字符串扩展]',
-          link: 'http://localhost:8080/#/article/Javascript_React/123'
-        },
-        nextArticle: {
-          name: 'es6笔记四[正则表达]',
-          link: 'http://localhost:8080/#/article/Javascript_React/122'
-        }
+        collect: 0,
+        love: 0,
+        perviewer: '',
+        preArticle: {name: '', link: ''},
+        nextArticle: {name: '', link: ''}
       }
     }
   },
   created () {
     this.requestArticle()
+    window.onLoginUser = (colorType) => {
+      this.$data.articleData.articleColor = colorType
+    }
   },
   components: {
     ArticleMain,
     ArticleSideNav
   },
+  watch: {
+    '$route.query' () {
+      this.requestArticle()
+      this.$data.articleData.context = '<div class="article-loading"><i class="iconfont icon-icon-loading"></i></div>'
+    }
+  },
   methods: {
+    changeArticleColorType (type) {
+      this.$data.articleData.articleColor = type
+    },
+    // 点赞,收藏后的状态切换
+    changeLoveCollectStatue (type, changeType, statue) {
+      let count = statue === 2 ? 1 : -1
+      this.$data.articleData[changeType] = this.$data.articleData[changeType] + count
+      this.$data.articleData[type] = statue
+    },
     // 传递侧导航List数据
     handlerSideNavAttr (sideNavAttr) {
       this.$data.sideNavAttr = sideNavAttr
@@ -55,15 +69,39 @@ export default {
         url: this.$Constent.api.article.getArtcle,
         method: 'GET',
         params: {
-          id
+          id,
+          cust: true
         }
       }).then(res => {
-        let {perviewerContext, context, watch, love, time} = res.body
-        this.$data.articleData.perviewerContext = perviewerContext
-        this.$data.articleData.context = context
-        this.$data.articleData.watch = watch
-        this.$data.articleData.love = love
-        this.$data.articleData.time = time
+        if (res.body.statue) {
+          let { id, perviewerContext, context, watch, love, collect, time, articleInner, isFirstWatch, isCanlove, isCanCollect, preArticle, nextArticle, articleColor = 1 } = res.body.article
+          this.$data.articleData = Object.assign({}, this.$data.articleData, {
+            title: articleInner.title,
+            id,
+            perviewerContext,
+            context,
+            watch,
+            love: love,
+            collect: collect,
+            time,
+            isCanCollect,
+            isCanlove,
+            articleColor,
+            preArticle: preArticle ? {name: preArticle.articleInner.title, link: `/article/${preArticle.id}`} : null,
+            nextArticle: nextArticle ? {name: nextArticle.articleInner.title, link: `/article/${nextArticle.id}`} : null
+          })
+          if (isFirstWatch) {
+            this.$message({
+              type: 'success',
+              message: '首次观看,您获得15积分'
+            })
+          }
+        } else {
+          this.$message({
+            type: 'err',
+            message: '文章获取失败,请稍后再试'
+          })
+        }
       })
     }
   }
@@ -72,9 +110,22 @@ export default {
 
 <style lang='less'>
 #articlePage {
+  &~#footer {
+    margin-top: 0;
+  }
   .article-container {
     width: 12.32rem;
     padding-bottom: .5rem;
+  }
+}
+.article-wrapper {
+  padding-bottom: .6rem;
+  &.day {
+    background-image: repeating-linear-gradient(-45deg, #f4f4f4 0, #f4f4f4 10px, #f1efef 10px, #f1efef 12px);
+  }
+  &.night {
+    background-image: repeating-linear-gradient(-45deg, #111113 0, #111113 10px, #1e1e20 10px, #1e1e20 12px);
+    border-bottom: 3px solid #696969;
   }
 }
 .article-container {

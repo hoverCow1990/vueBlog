@@ -35,6 +35,7 @@ export default {
   },
   watch: {
     sideNavAttr () {
+      console.log('sideNavAttr')
       this.getTopLevel()
       this.$nextTick(this.initizialEvent)
     }
@@ -94,7 +95,7 @@ export default {
       this.$data.scrollTimer = window.setInterval(() => {
         crossTime = new Date() - stTime
         prop = crossTime / scrollNeedTime
-        window.document.documentElement.scrollTop = prop * totalDistance + stScrollTop
+        document.documentElement.scrollTop = document.body.scrollTop = prop * totalDistance + stScrollTop
         if (prop > 1) {
           window.clearInterval(this.$data.scrollTimer)
           this.$data.scrollTimer = null
@@ -107,10 +108,9 @@ export default {
       let scrollTop
       const firstLevel = topLevel[0].top
       const lastLevel = topLevel[topLevel.length - 1].bottom
-      const body = document.documentElement
       topLevel = Array.from(topLevel).reverse()
       return () => {
-        scrollTop = body.scrollTop
+        scrollTop = document.documentElement.scrollTop || document.body.scrollTop
         if (scrollTop < firstLevel) {   // 回到顶部时清除首个高亮
           this.$data.nowLightIndex = '0'
           return

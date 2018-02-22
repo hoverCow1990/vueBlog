@@ -40,11 +40,11 @@
             </div>
           </div>
           <p class='name clearfix'>老牛の博客</p>
-          <p class='info clearfix'>欢迎您的浏览 [ 点击收藏 ]</p>
+          <p class='info clearfix'>欢迎您的浏览 [ 微信好友 ]</p>
         </div>
       </div>
     </div>
-    <div class="copyright"><p>Copyright &copy; 2016-2023 老实的牛 版权所有</p> <p>沪ICP备16027135号</p></div>
+    <div class="copyright"><p>Copyright &copy; 2016-2023 老实的牛 版权所有</p> <p><a href="http://www.miitbeian.gov.cn" target="_blanket">沪ICP备16027135号</a></p></div>
   </div>
 </template>
 
@@ -194,6 +194,9 @@ export default {
     color: #999;
     p:first-child {
       padding-bottom: 8px;
+    }
+    a {
+      color: #999;
     }
   }
 }

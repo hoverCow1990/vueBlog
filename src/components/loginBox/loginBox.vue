@@ -10,13 +10,13 @@
           <div class="cow-input-content name">
             <label>用户名</label>
             <div class="input-box">
-              <input type="text" key='login-id' v-model='loginData.id.val' placeholder="请输入您的用户名" :class='loginData.id.verified?"":"error"'>
+              <input type="text" autocapitalize="off" key='login-id' v-model='loginData.id.val' placeholder="请输入您的用户名" :class='loginData.id.verified?"":"error"'>
             </div>
           </div>
           <div class="cow-input-content password">
             <label>密码</label>
             <div class="input-box">
-              <input type="text" key='login-password' v-model='loginData.password.val' placeholder="请输入您的密码" :class='loginData.password.verified?"":"error"'>
+              <input type="text" autocapitalize="off" key='login-password' v-model='loginData.password.val' placeholder="请输入您的密码" :class='loginData.password.verified?"":"error"'>
             </div>
           </div>
           <div class="cow-rember">
@@ -37,13 +37,13 @@
           <div class="cow-input-content name">
             <label>用户名</label>
             <div class="input-box">
-              <input type="text"  key='reginter-id'  v-model='registerData.id.val' placeholder="请输入您的用户名" :class='registerData.id.verified?"":"error"'>
+              <input type="text" autocapitalize="off"  key='reginter-id' v-model='registerData.id.val' placeholder="请输入您的用户名" :class='registerData.id.verified?"":"error"' maxlength="10">
             </div>
           </div>
           <div class="cow-input-content password">
             <label>密码</label>
             <div class="input-box">
-              <input type="text" key='reginter-password' v-model='registerData.password.val' placeholder="请输入您的密码 (位数5~15位)" :class='registerData.password.verified?"":"error"'>
+              <input type="text" autocapitalize="off" key='reginter-password' v-model='registerData.password.val' placeholder="请输入您的密码 (位数5~15位)" :class='registerData.password.verified?"":"error"' maxlength="15">
             </div>
           </div>
           <div class="cow-upload-content feature">
@@ -96,7 +96,7 @@ export default {
       isBoxActive: false,
       isWrapperActive: false,
       acceptsType: ['image/jpeg,image/jpg,image/png,image/gif'],
-      maxSize: 70000,
+      maxSize: 100000,
       featureSrc: '',
       featureFlag: [String, Number],
       fileData: '',
@@ -130,6 +130,10 @@ export default {
   },
   watch: {
     isShow (val) {
+      if (!this.$Constent.isPc) { // 解决ios的输入框往光标下掉的问题
+        let bodyClass = val ? 'fixed' : ''
+        document.body.className = bodyClass
+      }
       if (val) {
         this.initialData()
         this.showLogin()
@@ -201,7 +205,6 @@ export default {
         formData.append('password', password.val)
         this.$Http({
           url: this.$Constent.api.user.regist,
-          header
           method: 'POST',
           data: formData
         }).then(res => {
@@ -212,7 +215,8 @@ export default {
               message: '恭喜你注册为老牛会员'
             })
             this.hiddenLogin()
-            this.$emit('loginSuccess', res.userData)
+            this.$emit('loginSuccess', res.userDetail)
+            this.clearValue('regist')
             this.$data.isRequestLoading = false
             this.$router.push('/admin')
           } else {
@@ -244,7 +248,7 @@ export default {
           url: this.$Constent.api.user.login,
           method: 'POST',
           data: {
-            id: id.val,
+            name: id.val,
             password: password.val
           }
         }).then(res => {
@@ -255,18 +259,11 @@ export default {
               message: '登录成功'
             })
             this.hiddenLogin()
-            this.$emit('loginSuccess', res.userData)
+            window.onLoginUser && window.onLoginUser(res.userDetail.articleColor)
+            window.articleColor = res.userDetail.articleColor
+            this.$emit('loginSuccess', res.userDetail)
             this.$data.isRequestLoading = false
-            this.$data.loginData = {
-              id: {
-                val: '',
-                verified: true
-              },
-              password: {
-                val: '',
-                verified: true
-              }
-            }
+            this.clearValue('login')
             if (isRember) {
               this.$Cookies.set({
                 user: id.val,
@@ -275,9 +272,7 @@ export default {
             } else {
               this.$Cookies.remove()
             }
-            if (this.$route.path === '/') {
-              this.$router.push('/admin')
-            }
+            if (this.$route.path === '/') this.$router.push('/admin')
           } else {
             this.$message({
               type: 'err',
@@ -285,12 +280,24 @@ export default {
             })
             this.$data.isRequestLoading = false
           }
+        }).catch(() => {
+          this.$data.isRequestLoading = false
         })
       } else {
         this.$message({
           type: 'err',
           message: isCanSubmit.msg
         })
+      }
+    },
+    // 登陆后清空数据
+    clearValue (type) {
+      if (type === 'login') {
+        this.$data.loginData = {id: {val: '', verified: true}, password: {val: '', verified: true}}
+      } else {
+        this.$data.registData = {id: {val: '', verified: true}, password: {val: '', verified: true}, feature: {val: '', verified: true}}
+        this.$data.featureSrc = ''
+        this.$data.fileData = ''
       }
     },
     // 验证登录表单的有效性
@@ -380,6 +387,9 @@ export default {
 
 <style lang='less'>
 .login-box {
+  input {
+    font-family: 'Arial';
+  }
   .login-type {
     display: flex;
     font-size: 15px;

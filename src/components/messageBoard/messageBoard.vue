@@ -3,7 +3,7 @@
     <div class="msgBoard-perviewer" :class='type'>
       <div class="msgBoard-user">
         <div class="user-perviewer">
-          <img v-if='isLogin' :src="`${$Constent.serverHost}/static/user/${userData.keyId}/logo.jpg`">
+          <img v-if='isLogin' :src="`${$Constent.serverHost}/uploads/user/${userData.id}/logo.${userData.logoType}`">
           <p v-else @click='showLoginBox'>请登录</p>
         </div>
         <div class="user-info" v-if="isLogin">
@@ -20,7 +20,7 @@
     </div>
     <div class="msgBoard-context">
       <img src="./images/r1.png" @click='fuocusTextarea'>
-      <textarea class='textarea' placeholder="谈谈您的看法 ..." @keyup="handleMsgVal" ref='textarea'></textarea>
+      <textarea class='textarea' autocapitalize="off" placeholder="谈谈您的看法 ..." @change="handleMsgVal" @blur="handleMsgVal" ref='textarea'></textarea>
     </div>
     <div class="msgBoard-form">
       <div class="msgBoard-expression">
@@ -45,18 +45,20 @@
         <ul v-if="messageList.length">
           <li class='message-item' v-for="item of messageList">
             <div class="item-user">
-              <div class="user-feature">
-                <img :src="`${$Constent.serverHost}/static/user/${item.user.keyId}/logo.jpg`">
-              </div>
-              <div class="user-info">
-                <p class='name'>{{ item.user.name }}</p>
-                <p>积分 : {{ item.user.score }}</p>
-                <p>等级：<span>LV{{ item.user.lv || 1 }}</span>{{ item.user.lv | cow-transAlias }}</p>
-              </div>
+              <router-link :to="`/admin?id=${item.user.id}`">
+                <div class="user-feature">
+                  <img :src="`${$Constent.serverHost}/uploads/user/${item.user.id}/logo.${item.user.logoType}`">
+                </div>
+                <div class="user-info">
+                  <p class='name'>{{ item.user.name }}</p>
+                  <p>积分 : {{ item.user.score }}</p>
+                  <div class="info-lv">等级：<div class="lv-tag"><span>LV</span>{{ item.user.lv || 1 }}</div>{{ item.user.lv | cow-transAlias }}</div>
+                </div>
+              </router-link>
             </div>
             <div class="item-context">
               <div class="context-hd">
-                <p class='time'><i class="iconfont icon-shijian2"></i>{{ item.time | cow-parseTime}}</p>
+                <p class='time'><i class="iconfont icon-shijian2"></i><span>{{ item.time, false | cow-parseTime }}</span></p>
                 <p class="rate">评分：<i class="iconfont icon-star" v-for='i of new Array(item.score)'></i></p>
               </div>
               <div class="context-bd" v-html="getRealMessage(item.message)"></div>
@@ -93,6 +95,9 @@ export default {
       default: 8
     },
     allListLength: {
+      type: Number
+    },
+    articleId: {
       type: Number
     }
   },
@@ -141,6 +146,7 @@ export default {
     },
     // 处理msg value值
     handleMsgVal (ev) {
+      // alert(2)
       this.$data.message = ev.target.value
     },
     // 取消所有的msg value
@@ -202,7 +208,7 @@ export default {
     // 提交表单
     submitFrom () {
       let {message, isLoading, isRequestLoading, rateScore, isLogin} = this.$data
-      if (isLoading | isRequestLoading) return
+      if (isLoading || isRequestLoading) return
       if (!isLogin) {
         this.$message({
           type: 'err',
@@ -221,6 +227,35 @@ export default {
         this.$data.isRequestLoading = false
         return
       }
+
+      // console.log(this.$route.fullPath)
+      let articleId = this.$props.articleId
+      if (articleId) {
+        this.requestPostArticleMessage(message, rateScore, articleId)
+      } else {
+        this.requestPostMessage(message, rateScore)
+      }
+    },
+    // 提交文章列表的留言
+    requestPostArticleMessage (message, rateScore, articleId) {
+      this.$Http({
+        url: this.$Constent.api.message.postArticleMessage,
+        method: 'POST',
+        data: {
+          articleId,
+          message,
+          score: rateScore + 1,
+          st: 0,
+          end: 10
+        }
+      }).then(res => {
+        this.handlerPostOk(res, 20)
+      }).catch(() => {
+        this.$data.isRequestLoading = false
+      })
+    },
+    // 提交留言中心中的留言
+    requestPostMessage (message, rateScore) {
       this.$Http({
         url: this.$Constent.api.message.postMessage,
         method: 'POST',
@@ -231,36 +266,39 @@ export default {
           end: 10
         }
       }).then(res => {
-        res = res.body
-        if (res.statue) {
-          let { messageList, allLength } = res
-          messageList.forEach(item => {
-            item.message = this.getRealMessage(item.message)
-          })
-          this.$data.message = ''
-          this.$refs.textarea.value = ''
-          this.$emit('changeMsg', messageList, allLength)
-          this.$refs.cowPageTab.nowIndex = 0
-          this.$message({
-            type: 'success',
-            message: '恭喜发布成功'
-          })
-          this.$data.isRequestLoading = false
-        } else {
-          this.$message({
-            type: 'err',
-            message: res.msg
-          })
-          this.$data.isRequestLoading = false
-        }
-      }).catch(err => {
-        console.log(err)
+        this.handlerPostOk(res, 15)
+      }).catch(() => {
         this.$data.isRequestLoading = false
       })
     },
+    handlerPostOk (res, score) {
+      res = res.body
+      if (res.statue) {
+        let { messageList, allListLength, userLv, isAddScore } = res
+        messageList.forEach(item => {
+          item.message = this.getRealMessage(item.message)
+        })
+        this.$data.message = ''
+        this.$refs.textarea.value = ''
+        this.$emit('changeMsg', messageList, allListLength)
+        this.$refs.cowPageTab.nowIndex = 0
+        this.$data.userData.lv = userLv
+        this.$message({
+          type: 'success',
+          message: '恭喜发布成功' + (isAddScore ? ',您的积分+' + score : '')
+        })
+        this.$data.isRequestLoading = false
+      } else {
+        this.$message({
+          type: 'err',
+          message: res.msg
+        })
+        this.$data.isRequestLoading = false
+      }
+    },
     // 验证信息
     validateMessage (message) {
-      if (!message | !message.trim()) {
+      if (!message || !message.trim()) {
         return {
           statue: false,
           msg: '留言内容不能为空'
@@ -286,6 +324,9 @@ export default {
 
 <style lang='less'>
 .msgBoard {
+  textarea {
+    font-family: 'Arial' !important;
+  }
   margin-top: .5rem;
   padding-bottom: .2rem;
   background-color: #fff;
@@ -477,9 +518,6 @@ export default {
     position: relative;
     min-height: 100px;
     padding-top: .4rem;
-    .message-title {
-
-    }
   }
   .message-list {
     padding-left:12px;
@@ -523,13 +561,34 @@ export default {
           font-weight: bolder;
         }
       }
-      span {
-        padding-left: 10px;
-        padding-right: 10px;
+      div.info-lv {
+        display: flex;
+        align-items: center;
+        margin-top: 1px;
+        padding-left: 2px;
+        font-size: 12px;
+        color: #868686;
+      }
+      div.lv-tag {
+        display: flex;
+        width: 42px;
+        height: 17px;
+        align-items: center;
         margin-right: 5px;
         border-radius: 2px;
-        background-color: @navy;
+        background-color: @red;
         color: #eee;
+        overflow: hidden;
+        span {
+          height: 100%;
+          padding-left: 4px;
+          padding-right: 3px;
+          margin-right: 6px;
+          line-height: 18px;
+          display: inline-block;
+          vertical-align: middle;
+          background-color: @navy;
+        }
       }
       .user-feature {
         width: .84rem;
@@ -562,11 +621,13 @@ export default {
           padding-left: 12px;
         }
         .time {
+          display: flex;
+          align-items: center;
           i {
             display: block;
-            float: left;
             padding-right: 2px;
             color: #adadad;
+            transform: translateY(-1px);
           }
         }
         .rate {
@@ -620,10 +681,12 @@ export default {
     }
     .message-list {
       .item-user {
-        display: flex;
         min-width: 100%;
-        .user-info {
-          padding-left: .6rem;
+        a {
+          display: flex;
+          .user-info {
+            padding-left: .6rem;
+          }
         }
       }
       .message-item {

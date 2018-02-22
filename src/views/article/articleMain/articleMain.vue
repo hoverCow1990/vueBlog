@@ -8,11 +8,11 @@
     </div>
     <div class="article-box">
       <div class="article-hd">
-        <h1 class="title">React与Redux实现后台管理系统</h1>
+        <h1 class="title">{{ articleData.title }}</h1>
         <div class="info">
           <ul class='base'>
             <li>作者: 老实的牛</li>
-            <li>时间: {{ articleData.time | cow-transTime }}</li>
+            <li>时间: {{ articleData.time }}</li>
             <li>观看: {{ articleData.watch }}</li>
             <li>点赞: {{ articleData.love }}</li>
           </ul>
@@ -26,39 +26,48 @@
         <div class="article-perviewer" v-html='articleData.perviewerContext'></div>
       </template>
     </div>
-    <div class="article-context" id="context" v-imgPreLoad v-html='articleData.context'>
-    </div>
+    <div class="article-context" id="context" v-html='articleData.context'></div>
     <div class="article-box">
       <div class="article-ft">
         <p class='article-cow'><i class="iconfont icon-bi"></i>责任编辑 老实的牛</p>
         <div class="article-event">
-          <div class="thumbs-up">
+          <div class="love" :class="loveClassName" @click="handlerLoveAndCollect(1)">
             <div class="event-hd">
               <div class="tag">
                 <i class="iconfont icon-dianzan"></i>
               </div>
-            <p>点赞 --<span>{{ articleData.praise | cow-buildZero }}</span></p>
+            <p>{{ articleData.isCanlove === 2 ? '取消' : '点赞' }} --<span>{{ articleData.love | cow-buildZero }}</span></p>
             </div>
             <div class="line"></div>
           </div>
-          <div class="love">
+          <div class="collect" :class="collectClassName"  @click="handlerLoveAndCollect(2)">
             <div class="event-hd">
               <div class="tag">
                 <i class="iconfont icon-dianzandian"></i>
               </div>
-              <p>收藏 --<span>{{ articleData.love | cow-buildZero }}</span></p>
+              <p>{{ articleData.isCanCollect === 2 ? '取消' : '收藏' }} --<span>{{ articleData.collect | cow-buildZero }}</span></p>
             </div>
             <div class="line"></div>
           </div>
         </div>
         <div class="article-links">
-          <p>上一篇: <router-link :to='articleData.preArticle.link'>{{ articleData.preArticle.name }}</router-link></p>
-          <p>下一篇: <router-link :to='articleData.nextArticle.link'>{{ articleData.nextArticle.name }}</router-link></p>
+          <p>上一篇:
+            <router-link v-if="articleData.preArticle" :to='articleData.preArticle.link'>{{ articleData.preArticle.name }}</router-link>
+            <template v-else>这是第一篇了</template>
+          </p>
+          <p>下一篇:
+            <router-link v-if="articleData.nextArticle" :to='articleData.nextArticle.link'>{{ articleData.nextArticle.name }}</router-link>
+            <template v-else>这是最后篇了</template>
+          </p>
         </div>
       </div>
     </div>
     <div class="article-box article-message">
-      <cow-message-board type='yellow' :messageList='messageList' :allListLength='allListLength' @changeMsgPage='requestMessageList' @changeMsg='changeMsg'></cow-message-board>
+      <cow-message-board ref="messageBoard" :articleId="articleData.id" type='yellow' :messageList='messageList' :allListLength='allListLength' @changeMsgPage='requestMessageList' @changeMsg='changeMsg'></cow-message-board>
+    </div>
+    <div class="article-type" v-if="$Constent.isPc">
+      <div class="article-typeModel model-night" :class="articleData.articleColor === 1 ? 'active' : ''" @click="changeArticleColorType(2)"></div>
+      <div class="article-typeModel model-day" :class="articleData.articleColor === 2 ? 'active' : ''" @click="changeArticleColorType(1)"></div>
     </div>
   </div>
 </template>
@@ -70,7 +79,9 @@ export default {
       showTop: 180, // 侧导航点击后移动至距离顶部的距离
       allListLength: 0, // 所有消息条数
       singleListLength: 8, // 每页条数
-      messageList: [] // 消息列表
+      messageList: [], // 消息列表
+      isRequestLoveCollect: false,
+      isRequestArticleColor: false
     }
   },
   props: {
@@ -81,6 +92,13 @@ export default {
   },
   created () {
     this.requestMessageList(0)
+  },
+  watch: {
+    'articleData.context' () {
+      let cb = [this.getArticleListAttr, this.setCoderCopy]
+      if (!this.$Constent.isPc) return
+      this.preloadRequest(cb)
+    }
   },
   computed: {
     // 跟还有路由匹配
@@ -100,21 +118,64 @@ export default {
         }]
       }
       return articleTypeList
-    }
-  },
-  directives: {
-    // 所有图片加载完毕的组件
-    imgPreLoad: {
-      // 组件绑定完之后执行获取右边列表数据
-      componentUpdated (el, binding, vnode) {
-        let _self = vnode.context
-        let cb = _self.getArticleListAttr
-        if (!_self.$Constent.isPc) return
-        _self.preloadRequest(cb)
-      }
+    },
+    // 点赞的class
+    loveClassName () {
+      let isCanlove = this.$props.articleData.isCanlove
+      return this.getClassName(isCanlove)
+    },
+    // 收藏的class
+    collectClassName () {
+      let isCanCollect = this.$props.articleData.isCanCollect
+      return this.getClassName(isCanCollect)
     }
   },
   methods: {
+    // 切换文章夜间白昼模式
+    changeArticleColorType (type) {
+      if (this.$data.isRequestArticleColor) return
+      this.$data.isRequestArticleColor = true
+      this.$Http({
+        url: this.$Constent.api.user.changeArticleColorType,
+        method: 'GET',
+        params: {
+          type: type
+        }
+      }).then(res => {
+        res = res.body
+        if (res.statue === 1) {
+          this.$emit('changeArticleColorType', type)
+        } else if (res.statue === -1) {
+          this.$message({
+            type: 'err',
+            message: '该功能需先登录'
+          })
+          this.$refs.messageBoard.isLoginBoxShow = true
+        } else {
+          this.$message({
+            type: 'err',
+            message: '模式切换,请稍后再试'
+          })
+        }
+        this.$data.isRequestArticleColor = false
+      }).catch(e => {
+        console.log(e)
+        this.$data.isRequestArticleColor = false
+      })
+    },
+    // 获取点赞或者收藏按钮的className
+    getClassName (type) {
+      switch (type) {
+        case 0:
+          return 'disable'
+        case 1:
+          return ''
+        case 2:
+          return 'off'
+        default:
+          return ''
+      }
+    },
     // 请求留言板内容
     requestMessageList (st) {
       let articleId = this.$route.params.id
@@ -130,10 +191,9 @@ export default {
       }).then(res => {
         res = res.body
         if (res.statue) {
-          let { messageList } = res
-          console.log(messageList)
+          let { messageList, allLength } = res
           this.$data.messageList = messageList
-          this.$data.allListLength = res.allLength
+          this.$data.allListLength = allLength
         }
       })
     },
@@ -154,7 +214,7 @@ export default {
         })
       })
       Promise.all(promiseQuery).then(() => {
-        cb && cb()
+        cb && Array.isArray(cb) && cb.forEach(c => c())
       })
     },
     // 获取列表属性
@@ -192,16 +252,174 @@ export default {
           bottom: parseInt(item.offsetTop) + parseInt(item.offsetHeight) - showTop
         }
       })
+    },
+    // 处理点赞收藏 type 1:点击love 2:点击collect
+    handlerLoveAndCollect (type) {
+      const isCanType = type === 1 ? 'isCanlove' : 'isCanCollect'
+      const isCanStatue = this.$props.articleData[isCanType]
+      const articleId = this.$props.articleData.id
+      if (this.$data.isRequestLoveCollect || !articleId) return // 请求收藏中或者还没请求到文章时
+      this.$data.isRequestLoveCollect = true
+      if (isCanStatue === 0) { // 未登录状态
+        this.$message({type: 'err', message: '请先登录'})
+        this.$refs.messageBoard.$data.isLoginBoxShow = true
+        this.$data.isRequestLoveCollect = false
+      } else if (isCanStatue === 1) { // 发送收藏或者点赞操作
+        this.requestLoveAndCollect(type, articleId, isCanType)
+      } else if (isCanStatue === 2) { // 取消收藏或者点赞操作
+        this.requestStopLoveAndCollect(type, articleId, isCanType)
+      }
+    },
+    // 代码复制功能
+    setCoderCopy () {
+      let coders = document.querySelectorAll('.cow-code')
+      let _self = this
+      Array.from(coders).forEach(code => {
+        let copyInput = document.createElement('i')
+        copyInput.className = 'copy iconfont icon-bi'
+        copyInput.onclick = function () {
+          let ul = this.nextElementSibling
+          let text = ul.innerText
+          let textarea = document.createElement('textarea')
+          textarea.className = 'copy-textarea '
+          text = text.replace(/(\n)(\d+)(\n)/g, ($0, $1, $2, $3) => $1).replace(/^1\n/, '\n')
+          console.log(text)
+          textarea.value = text
+          document.documentElement.appendChild(textarea)
+          textarea.select()
+          document.execCommand('Copy')
+          document.documentElement.removeChild(textarea)
+          _self.$message({
+            type: 'success',
+            message: '复制成功,按ctrl+v黏贴'
+          })
+        }
+        code.prepend(copyInput)
+      })
+    },
+    // 发送点赞收藏请求
+    requestLoveAndCollect (type, articleId, isCanType) {
+      this.$Http({
+        url: this.$Constent.api.article.loveAndCollectArticle,
+        method: 'POST',
+        data: {
+          type,
+          articleId
+        }
+      }).then(res => {
+        res = res.body
+        if (res.statue === 1) {
+          let changeType = type === 1 ? 'love' : 'collect'
+          this.$message({type: 'success', message: `恭喜你${type === 1 ? '点赞' : '收藏'}, 用户积分+20`})
+          this.$emit('changeLoveCollectStatue', isCanType, changeType, 2)
+          this.$data.isRequestLoveCollect = false
+        } else if (res.statue === -1) {
+          this.$message({type: 'err', message: res.msg})
+          this.$Events.loginData.$emit(false, {})
+          this.$refs.messageBoard.$data.isLoginBoxShow = true
+          this.$data.isRequestLoveCollect = false
+        }
+      }).catch(() => {
+        this.$data.isRequestLoveCollect = false
+      })
+    },
+    // 发送取消点赞收藏请求
+    requestStopLoveAndCollect (type, articleId, isCanType) {
+      this.$Http({
+        url: this.$Constent.api.article.stopLoveAndCollectArticle,
+        method: 'POST',
+        data: {
+          type,
+          articleId
+        }
+      }).then(res => {
+        res = res.body
+        if (res.statue === 1) {
+          let changeType = type === 1 ? 'love' : 'collect'
+          this.$message({type: 'success', message: `取消${type === 1 ? '点赞' : '收藏'}, 用户积分-20`})
+          this.$emit('changeLoveCollectStatue', isCanType, changeType, 1)
+          this.$data.isRequestLoveCollect = false
+        } else if (res.statue === -1) {
+          this.$message({type: 'err', message: res.msg})
+          this.$Events.loginData.$emit(false, {})
+          this.$refs.messageBoard.$data.isLoginBoxShow = true
+          this.$data.isRequestLoveCollect = false
+        }
+      }).catch(() => {
+        this.$data.isRequestLoveCollect = false
+      })
     }
   }
 }
 </script>
 
 <style lang='less'>
+.copy-textarea {
+  position: fixed;
+  left: -300px;
+  top: 0;
+  opacity: 0;
+}
+.article-type {
+  position: fixed;
+  width: 172px;
+  height: 105px;
+  left: 0;
+  bottom: 15%;
+  transform: translateX(-10px);
+  transition: .5s;
+  cursor: pointer;
+  z-index: 999;
+  .article-typeModel {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: -110%;
+    opacity: 0;
+    -webkit-transition: 1s;
+    -moz-transition: 1s;
+    -ms-transition: 1s;
+    -o-transition: 1s;
+    transition: 1s;
+    &.model-night {
+      background: url(./images/night.png);
+    }
+    &.model-day {
+      background: url(./images/day.png);
+    }
+    &.active {
+      transition: 1s .6s;
+      opacity: 1;
+      left: 0;
+    }
+  }
+}
 .cow-code {
+  position: relative;
   margin-top: 15px;
   margin-bottom: 15px;
   overflow: hidden;
+  &:hover {
+    .copy {
+      opacity: .8;
+    }
+  }
+  .copy {
+    position: absolute;
+    display: block;
+    width: 20px;
+    height: 20px;
+    right: 8px;
+    top: 8px;
+    line-height: 22px;
+    text-align: center;
+    border-radius: 3px;
+    background-color: #fff;
+    color: #111;
+    cursor: pointer;
+    transition: .2s;
+    opacity: 0;
+  }
   ul {
     max-width: 100%;
     padding-top: 8px;
@@ -253,9 +471,37 @@ export default {
   .red {
     color: #f92672;
   }
+  /*绿色*/
+  .green {
+    color: #80ff7f;
+  }
   /*字符串*/
   .yellow {
     color: #e6db74;
+  }
+}
+.article-loading {
+  padding-top: .8rem;
+  padding-bottom: .8rem;
+  i {
+    display: block;
+    width: 40px;
+    height: 40px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 40px;
+    text-align: 30px;
+    transform-origin: 46% 51%;
+    font-size: 40px;
+    color: #2c3e50;
+    animation: articleLoading .5s infinite linear;
+  }
+  @keyframes articleLoading {
+    from {
+      transform: rotate(0);
+    } to {
+      transform: rotate(360deg);
+    }
   }
 }
 .article-main {
@@ -364,6 +610,7 @@ export default {
     cursor: pointer;
     transition: .2s;
     a {
+      display: block;
       width: 100%;
       height: 100%;
       color: #fff;
@@ -389,6 +636,12 @@ export default {
 }
 .article-context {
   padding-top: .3rem;
+  .context-box:nth-child(1n) .box-hd:before {
+    background-color: #e34c26;
+  }
+  .context-box:nth-child(2n) .box-hd:before {
+    background-color: #fbcd26;
+  }
   .box-hd {
     position: relative;
     @size: 42px;
@@ -405,7 +658,7 @@ export default {
       left: 0;
       top: 0;
     }
-    &.red:before {
+    /* &.red:before {
       background-color: #e34c26;
     }
     &.yellow:before {
@@ -416,7 +669,7 @@ export default {
     }
     &.orange:before {
       background-color: #ec8b49;
-    }
+    } */
     .tag {
       display: none;
       position: absolute;
@@ -456,7 +709,7 @@ export default {
       padding-left: .1rem;
     }
     .bd-para {
-      padding: 20px .3rem;
+      padding: 20px .2rem;
       &:nth-child(odd) {
         background-color: #f9f9f9;
       }
@@ -499,6 +752,21 @@ export default {
       .border();
       border-radius: 2px;
       cursor: pointer;
+      &.off {
+        opacity: .5;
+        i {
+          color: @primary;
+        }
+        .line:before {
+          transform: translate3d(0, 0, 0);
+        }
+      }
+      &.disable {
+        opacity: 0.5;
+        .line:before {
+          transform: translate3d(0, 0, 0);
+        }
+      }
       &:hover {
         .line:before {
           transform: translate3d(0, 0, 0);

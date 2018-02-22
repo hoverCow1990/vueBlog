@@ -5,12 +5,12 @@
       <cow-titlebar title='New Artical' info='老牛最新发布的文章' theme='light'></cow-titlebar>
       <ul class='newCollection-list'>
         <li v-for='item of articleList'>
-          <router-link :to='item.link'>
+          <router-link :to='"/article/" + item.id'>
             <div class="perviewer">
-              <img :src='item.perviewer'>
+              <img :src='item.smallPerviewer'>
             </div>
             <p class='title'>{{ item.title }}</p>
-            <p class='time'>2017-01-16 13:01:02</p>
+            <p class='time'>{{ item.time }}</p>
           </router-link>
         </li>
       </ul>
@@ -23,47 +23,27 @@
 export default {
   data () {
     return {
-      articleList: [{
-        perviewer: require('./images/1.jpg'),
-        title: '阿里云ecs服务器node环境安装',
-        link: '/article/12'
-      }, {
-        perviewer: require('./images/2.jpg'),
-        title: '[node-04]Express构架web相册',
-        link: '/article/12'
-      }, {
-        perviewer: require('./images/3.jpg'),
-        title: '[node-03]Jade模板的运用',
-        link: '/article/12'
-      }, {
-        perviewer: require('./images/4.jpg'),
-        title: '[node-02]解析cookie以及session',
-        link: '/article/12'
-      }, {
-        perviewer: require('./images/5.jpg'),
-        title: '[node-01]环境以及起步',
-        link: '/article/12'
-      }, {
-        perviewer: require('./images/6.jpg'),
-        title: 'Backbone构架老牛外卖',
-        link: '/article/12'
-      }, {
-        perviewer: require('./images/7.jpg'),
-        title: 'React与Redux实现后台管理系统',
-        link: '/article/12'
-      }, {
-        perviewer: require('./images/8.jpg'),
-        title: '百度地图二次封装',
-        link: '/article/12'
-      }, {
-        perviewer: require('./images/9.jpg'),
-        title: 'javascript积累小记',
-        link: '/article/12'
-      }, {
-        perviewer: require('./images/10.jpg'),
-        title: 'es6.Promise作弊小游戏',
-        link: '/article/12'
-      }]
+      articleList: []
+    }
+  },
+  created () {
+    this.requestArtcleList()
+  },
+  methods: {
+    requestArtcleList () {
+      let end = this.$Constent.isPc ? 10 : 9
+      this.$Http({
+        url: this.$Constent.api.article.getArtcleList,
+        method: 'GET',
+        params: {
+          st: 0,
+          end
+        }
+      }).then(res => {
+        if (res.body.statue) {
+          this.$data.articleList = res.body.articleList
+        }
+      })
     }
   }
 }
@@ -156,9 +136,6 @@ export default {
       width: @listWidth * 5 / 3;
       .perviewer{
           height: @listHeight * 5 / 3;
-      }
-      &:last-child {
-        display: none;
       }
     }
   }

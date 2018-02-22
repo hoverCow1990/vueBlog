@@ -6,33 +6,39 @@
           <div class="cow-input-content name">
             <label>作品名</label>
             <div class="input-box">
-              <input type="text" v-model='fileName.val' placeholder="请输入文件名" :class="fileName.verified?'':'error'">
+              <input type="text" v-model='fileName.val' placeholder="请输入文件名" :class="fileName.verified?'':'error'" maxlength="20">
             </div>
           </div>
-          <div class="cow-input-content name">
+          <div class="cow-input-content type">
             <label>方式</label>
             <div class="input-box">
-              <div class="cow-select-content">
-                <div class="cir active"></div><span>作品地址</span>
+              <div class="cow-select-content" @click="changeUpType(0)">
+                <div class="cir" :class="upType === 0 ? 'active':''"></div><span>本地上传</span>
               </div>
-              <div class="cow-select-content">
-                <div class="cir"></div><span>本地上传</span>
+              <div class="cow-select-content" @click="changeUpType(1)">
+                <div class="cir" :class="upType === 1 ? 'active':''"></div><span>地址上传</span>
               </div>
             </div>
           </div>
-          <div class="cow-upload-content file">
+          <div v-if="upType === 0" class="cow-upload-content file">
             <label>文件</label>
             <div class="input-box">
               <div class="file-btn" :class="fileVerified?'':'error'">
                 <p class='inner'><i class="icon-font icon-xiazai"></i>选择文件</p>
-                <input type="file" accept="" @change="handlerFilePerviewer"></div>
-                <p class="exp" v-html="fileShowName"></p>
+                <input type="file" accept="" @change="handlerFilePerviewer" />
               </div>
+              <p class="exp" v-html="fileShowName"></p>
             </div>
           </div>
-          <p class="upload-des">请上传 zip / rar 格式的项目文件,上传后请主动通知牛哥,我会将你的作品展示在你的用户中心,以供他人一起观看</p>
+          <div v-else class="cow-input-content url">
+            <label>地址</label>
+            <div class="input-box">
+              <input type="text" v-model="fileUrl.val" placeholder="请输入页面地址" :class="fileUrl.verified?'':'error'"></div>
+            </div>
+          </div>
+          <p class="upload-des"><i class="iconfont icon-zliconwarning01"></i>{{ upType === 0 ? '请上传 zip / rar 格式文件' : '写上 http / https 地址' + ',上传后通知牛哥审核' }}</p>
           <div class="cow-btn-group submit-group">
-            <cow-btn type="primary" @click='handlerSubmit'>立刻上传</cow-btn>
+            <cow-btn type="primary" :isLoading="isUpLoading" @click='handlerSubmit'>立刻上传</cow-btn>
             <cow-btn @click='hiddenUpload'>取消</cow-btn>
           </div>
         </div>
@@ -56,14 +62,20 @@ export default {
       isBoxActive: false,
       isWrapperActive: false,
       acceptsType: 'zip',
-      maxSize: 500000,
-      featureFlag: [String, Number],
+      maxSize: 8000000,
+      upType: this.$Constent.isPc ? 0 : 1,
       fileName: {
         val: '',
         verified: true
       },
+      fileUrl: {
+        val: '',
+        verified: true
+      },
+      file: null,
       fileVerified: true,
-      fileShowName: '大小限制<span>3Mb</span>以下'
+      fileShowName: '大小限制<span>8Mb</span>以下',
+      isUpLoading: false
     }
   },
   watch: {
@@ -74,6 +86,17 @@ export default {
     }
   },
   methods: {
+    // 切换上传方式
+    changeUpType (type) {
+      if (type === 0 && !this.$Constent.isPc) {
+        this.$message({
+          type: 'warn',
+          message: '手机端只能通过地址上传'
+        })
+        return
+      }
+      this.$data.upType = type
+    },
     handlerFilePerviewer () {
       let file = event.target.files[0]
       if (!file) return
@@ -91,10 +114,11 @@ export default {
       if (file.size > this.$data.maxSize) {
         this.$message({
           type: 'err',
-          message: '文件不能超过5mb'
+          message: '文件不能超过' + this.$data.maxSize / 1000000 + 'mb'
         })
         return
       }
+      this.$data.file = file
     },
     // 显示所有
     showUpload () {
@@ -117,10 +141,21 @@ export default {
     },
     // 立即上传
     handlerSubmit () {
-      let fileName = this.$data.fileName
-      let isCanSubmit = this.verifyForm(fileName)
+      let { fileName, fileUrl, upType, file } = this.$data
+      let isCanSubmit = ''
+      if (this.$data.isUpLoading) return
+      if (upType === 0) { // 本地文件
+        isCanSubmit = this.verifyForm(fileName, file, 0)
+      } else { // 作品地址
+        isCanSubmit = this.verifyForm(fileName, fileUrl, 1)
+      }
       if (isCanSubmit.res) {
-        // console.log('ok')
+        this.$data.isUpLoading = true
+        if (upType === 0) {
+          this.requestUpProuctFile(fileName.val, file)
+        } else {
+          this.requestUpProuctUrl(fileName.val, fileUrl.val)
+        }
       } else {
         this.$message({
           type: 'err',
@@ -128,20 +163,90 @@ export default {
         })
       }
     },
+    // 上传作品文件
+    requestUpProuctFile (fileName, file) {
+      let formData = new FormData()
+      formData.append('title', fileName)
+      formData.append('file', file)
+      this.$Http({
+        url: this.$Constent.api.user.upProuctFile,
+        method: 'POST',
+        data: formData
+      }).then(res => {
+        res = res.body
+        this.handlerUpSuccess(res)
+      }).catch(() => {
+        this.$data.isUpLoading = false
+      })
+    },
+    // 上传作品地址
+    requestUpProuctUrl (fileName, fileUrl) {
+      this.$Http({
+        url: this.$Constent.api.user.upProuctUrl,
+        method: 'POST',
+        data: {
+          title: fileName,
+          url: fileUrl
+        }
+      }).then(res => {
+        res = res.body
+        this.handlerUpSuccess(res)
+      }).catch(() => {
+        this.$data.isUpLoading = false
+      })
+    },
+    handlerUpSuccess (res) {
+      if (res.statue === 1) {
+        this.$emit('upDateSuccess', {
+          productList: res.productList,
+          score: res.score,
+          lv: res.lv
+        })
+        this.$message({
+          type: 'success',
+          message: '上传成功,请通知老牛审核,用户积分+99'
+        })
+        this.hiddenUpload()
+      }
+      this.$data.fileName.val = ''
+      this.$data.fileUrl.val = ''
+      this.$data.fileShowName = '大小限制<span>8Mb</span>以下'
+      this.$data.file = null
+      this.$data.isUpLoading = false
+    },
     // 验证表单的有效性
-    verifyForm (fileName) {
+    verifyForm (fileName, fileData, type) {
       let res = true
       let msg = ''
       if (fileName.val.trim() === '') {
-        fileName.verified = false
         res = false
-        msg = '文件名'
+        msg = '文件名不能为空'
+        fileName.verified = false
       } else {
         fileName.verified = true
       }
+
+      if (type === 0) { // 上传文件
+        if (!fileData || fileData.size > this.$data.maxSize) {
+          res = false
+          msg += (msg ? ',' : '') + '上传文件有误'
+          this.$data.fileVerified = false
+        } else {
+          fileName.verified = true
+        }
+      } else { // 作品地址
+        if (!/^https?:\/\/.+/.test(fileData.val)) {
+          res = false
+          msg += (msg ? ',' : '') + '作品地址有误'
+          fileData.verified = false
+        } else {
+          fileData.verified = true
+        }
+      }
+
       return {
         res,
-        msg: msg + '不能为空'
+        msg: msg
       }
     }
   }
@@ -155,6 +260,13 @@ export default {
     font-size: 13px;
     color: #888;
     line-height: 26px;
+    i {
+      padding-right: 5px;
+      color: #ff8c26;
+    }
+  }
+  .cow-input-content.url {
+    height: 38px;
   }
 }
 </style>

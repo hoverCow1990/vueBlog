@@ -17,63 +17,19 @@ export default {
       gameList: [{
         name: '捕鱼达人',
         link: '/game/bydr',
-        rank: '12'
+        rank: '??'
       }, {
         name: '2014',
         link: '/game/2014',
-        rank: '01'
+        rank: '??'
       }, {
         name: '知识竞赛',
         link: '/game/zsjs',
-        rank: '04'
+        rank: '??'
       }, {
         name: '大家一起来找茬',
         link: '/game/dayqlzc',
-        rank: '02'
-      }],
-      collectionList: [{
-        name: '[node-04]Express构架web相册',
-        link: '/article/12'
-      }, {
-        name: '百度地图二次封装',
-        link: '/article/12'
-      }, {
-        name: '3D 螺旋体翻转',
-        link: '/article/12'
-      }, {
-        name: '寰宇利人易拉宝设计',
-        link: '/article/12'
-      }, {
-        name: '常用工具类的网站',
-        link: '/article/12'
-      }, {
-        name: 'Backbone构架老牛外卖',
-        link: '/article/12'
-      }, {
-        name: 'Java练习[单例模式]',
-        link: '/article/12'
-      }],
-      loveList: [{
-        name: '萝卜特甜仿站[boots与less初体验]',
-        link: '/article/12'
-      }, {
-        name: 'Less的安装,编译以及高亮',
-        link: '/article/12'
-      }, {
-        name: 'HTML与XML的区别',
-        link: '/article/12'
-      }, {
-        name: '第一个手写网页',
-        link: '/article/12'
-      }, {
-        name: 'WebPack进阶[开发与生产模式]',
-        link: '/article/12'
-      }, {
-        name: '英豪传单设计',
-        link: '/article/12'
-      }, {
-        name: 'Java练习[单例模式]',
-        link: '/article/12'
+        rank: '??'
       }],
       degreeGuide: [{
         add: 10,
@@ -93,29 +49,26 @@ export default {
           label: '阅读文章',
           info: '阅读一篇新的文章即获得15分'
         }, {
-          label: '收藏主页',
-          info: '首次将老牛的博客页收藏'
-        }, {
           label: '留言中心',
-          info: '在留言板内留取一条信息( 每日至多一次 )'
+          info: '在留言板内留取一条信息( 每日至多两次 )'
         }]
       }, {
         add: 20,
         list: [{
-          label: '完善资料',
-          info: '完善个人中心的资料获取20分'
+          label: '点赞文章',
+          info: '点赞一片文章,即获取20分'
+        }, {
+          label: '收藏文章',
+          info: '收藏一片文章,即获取20分'
         }, {
           label: '文章评论',
           info: '文章页留言 ( 每篇1次 / 与文章无关或被扣分 )'
-        }, {
-          label: '点赞文章',
-          info: '点赞一片文章,即获取20分'
         }]
       }, {
         add: 50,
         list: [{
-          label: '收藏文章',
-          info: '收藏一片文章,即获取50分'
+          label: '完善资料',
+          info: '完善个人中心的资料获取50分'
         }, {
           label: '经典评论',
           info: '文章评论经审核后,有见地性,即获取50分'

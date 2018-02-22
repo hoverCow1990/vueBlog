@@ -5,10 +5,11 @@
         <i class="iconfont icon-gengduo"></i>
         <span>{{ title }}</span>
       </div>
-      <ul class='sideNav-list'>
+      <ul class='sideNav-list' :class="className">
         <li v-for='(item, index) of navList'>
           <router-link :to='item.href'>
-            <p><span class='flag' :class='index < 3 ? "hot hot-" + index: ""'>{{ index + 1}}</span><span class='text'>{{ item.tag }}</span></p>
+            <p v-if="className==='mes'"><span class='flag' :class='index < 3 ? "hot hot-" + index: ""'>{{ index + 1}}</span><span class='text'>{{ item.tag }}</span></p>
+            <template  v-else>{{ item.tag[0].toUpperCase() + item.tag.substr(1)}}</template >
           </router-link>
         </li>
       </ul>
@@ -21,13 +22,8 @@ export default {
   name: 'SideNav',
   props: {
     navList: Array,
-    title: String
-  },
-  data () {
-    return {}
-  },
-  methods: {
-
+    title: String,
+    className: String
   }
 }
 </script>
@@ -37,7 +33,7 @@ export default {
   position: relative;
   box-sizing: border-box;
   width: 100%;
-  min-height: 350px;
+  min-height: 320px;
   margin-bottom: 20px;
   background-color: #fff;
   border-radius: 6px 6px 0 0;
@@ -54,7 +50,7 @@ export default {
     background: #000;
   }
   .sideNav-container {
-    padding: 10px;
+    padding: 10px 10px 50px 10px;
   }
   .sideNav-title {
     font-size: 0;
@@ -77,54 +73,83 @@ export default {
   }
   .sideNav-list {
     padding-top: 10px;
-    li {
-      padding-top: 6px;
-      padding-bottom: 6px;
-      font-size: 12px;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      transition: .3s ease-in-out;
-      cursor: pointer;
-      &:hover {
-        background-color: #EAEAEA;
-        .text {
-          transform: translate3d(4px, 0, 0);
+    &.mes {
+      li {
+        padding-top: 6px;
+        padding-bottom: 6px;
+        font-size: 12px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        transition: .3s ease-in-out;
+        cursor: pointer;
+        &:hover {
+          background-color: #EAEAEA;
+          .text {
+            transform: translate3d(4px, 0, 0);
+          }
         }
       }
-    }
-    a {
-      display: block;
-      width: 100%;
-      color: #999;
-    }
-    .text {
-      display: inline-block;
-      transition: .3s ease-in-out;
-    }
-    .flag {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      margin-right: .1rem;
-      border-radius: 3px;
-      background-color: #A2A2A2;
-      text-indent: 0;
-      line-height: 20px;
-      text-align: center;
-      color: #eee;
-      &.hot-0 {
-        background-color: darken(@primary, 25%);/*#ff4348;*/
+      a {
+        display: block;
+        width: 100%;
+        color: #999;
       }
-      &.hot-1 {
-        background-color: darken(@primary, 15%); /*#ff954d;*/
+      .text {
+        display: inline-block;
+        transition: .3s ease-in-out;
       }
-      &.hot-2 {
-        background-color: darken(@primary, 2%); /*#ffd04d;*/
+      .flag {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        margin-right: .1rem;
+        border-radius: 3px;
+        background-color: #A2A2A2;
+        text-indent: 0;
+        line-height: 20px;
+        text-align: center;
+        color: #eee;
+        &.hot-0 {
+          background-color: darken(@primary, 25%);/*#ff4348;*/
+        }
+        &.hot-1 {
+          background-color: darken(@primary, 15%); /*#ff954d;*/
+        }
+        &.hot-2 {
+          background-color: darken(@primary, 2%); /*#ffd04d;*/
+        }
+        /*&.hot {
+          background-color: darken(@primary, 2%);
+        }*/
       }
-      /*&.hot {
-        background-color: darken(@primary, 2%);
-      }*/
+    }
+    &.sub {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      li {
+        width: 26%;
+        height: 30px;
+        margin-bottom: 10px;
+        border-radius: 3px;
+        line-height: 30px;
+        border: 1px solid #e6e6e6;
+        font-size: 12px;
+        text-align: center;
+        transition: .1s;
+        a {
+          display: block;
+          width: 100%;
+          color: #313131;
+          font-weight: 600;
+
+        }
+        &:hover {
+            background-color: #ffa92b;
+            box-shadow: 0 0 2px #da9b3e;
+        }
+      }
     }
   }
 }

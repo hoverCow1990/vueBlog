@@ -6,7 +6,7 @@
       <div class="category-wrapper" :style='getWrapperTransform'>
         <div class="category-frame category">
           <ul class='frame-list list'>
-            <li v-for='item of frameList'>
+            <li v-for='item of frameList' :class="$Constent.isPc?'pop':''">
               <router-link :to='item.link'>
                 <div class="item-bg">
                     <div class="item-perviewer" :class='item.bgColor'>
@@ -64,10 +64,10 @@
       <div class="category-tab-wrapper">
         <div class="category-tab">
           <ul class='tab-list'>
-            <li @click='handlerChangeIndex(0)'>框架</li>
-            <li @click='handlerChangeIndex(1)'>工具</li>
-            <li @click='handlerChangeIndex(2)'>书架</li>
-            <li @click='handlerChangeIndex(3)'>其他</li>
+            <li @mouseenter='handlerChangeIndex(0)' @click='handlerChangeIndex(0)'>框架</li>
+            <li @mouseenter='handlerChangeIndex(1)' @click='handlerChangeIndex(1)'>工具</li>
+            <li @mouseenter='handlerChangeIndex(2)' @click='handlerChangeIndex(2)'>书架</li>
+            <li @mouseenter='handlerChangeIndex(3)' @click='handlerChangeIndex(3)'>其他</li>
           </ul>
           <div class="tab-piston" :style='getTabTransform'></div>
         </div>
@@ -105,6 +105,7 @@ export default {
   methods: {
     // 进入tab时 切换index
     handlerChangeIndex (index) {
+      if (this.$data.showIndex === index) return
       this.$data.showIndex = index
     }
   }
@@ -143,7 +144,7 @@ export default {
       flex:1;
     }
     .list {
-      @liWidth:  1.4rem;
+      @liWidth:  1.2rem;
       display: flex;
       flex-wrap: wrap;
       justify-content: space-around;
@@ -152,7 +153,7 @@ export default {
         width: @liWidth;
         cursor: pointer;
       }
-      li:hover {
+      li.pop:hover {
         .item-bg {
           box-shadow: 5px 8px 25px 2px rgba(0, 0, 0, .7);
           transform: translate3d(1px, -8px, 0);
@@ -169,10 +170,10 @@ export default {
       }
       .item-perviewer {
         position: absolute;
-        width: @liWidth - 0.2;
-        height:  @liWidth - 0.2;
-        top: 0.1rem;
-        left: 0.1rem;
+        width: @liWidth - 0.13;
+        height:  @liWidth - 0.13;
+        top: 0.06rem;
+        left: 0.06rem;
         border-radius: 50%;
         background-color: #eee;
         box-shadow: 0 0 6px 1px rgba(0,0,0,.85) inset;
@@ -218,7 +219,7 @@ export default {
     }
   }
   .category-tab-wrapper {
-    padding-top: 1.2rem;
+    padding-top: 1rem;
     padding-bottom: .3rem;
     overflow: hidden;
   }
@@ -269,9 +270,9 @@ export default {
     display: none;
   }
   .hotObject-container {
-    width: 100%;
-  }
-  .hotObject-container {
+    &.container {
+      width: 100%;
+    }
     .category-tab-wrapper {
       padding-top: 1.8rem;
       padding-bottom: 1.2rem;

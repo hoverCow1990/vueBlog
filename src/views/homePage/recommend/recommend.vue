@@ -8,15 +8,15 @@
           <div class="category-container">
             <div class="title">
               <p><i class="iconfont icon-gengduo"></i>老牛推荐</p>
-              <span>more</span>
+              <span>recommend</span>
             </div>
             <div class="category-wrapper">
-              <div class="category-perviewer">
+              <div class="category-perviewer" @click="handlerGoLink('/game')">
                 <img src="./images/game.jpg">
               </div>
               <ul class="menu-list">
                 <li v-for="item of recommendList">
-                  <router-link :to="item.link">
+                  <router-link :to="'/article/' + item.id">
                     <p>{{ item.title }}</p>
                   </router-link>
                 </li>
@@ -30,7 +30,7 @@
               <p><i class="iconfont icon-gengduo"></i>联系老牛</p>
             </div>
             <div class="category-wrapper">
-              <div class="category-perviewer">
+              <div class="category-perviewer" @click="handlerGoLink('http://www.hovercow.cn/pages/canvas/resume/entrance.html')">
                 <img src="./images/resume.jpg">
               </div>
               <ul class="menu-list">
@@ -40,6 +40,12 @@
                   <div class="wechat-box" v-if='item.className==="wechat"'>
                     <img src="./images/wechat.jpg">
                   </div>
+                </li>
+                <li>
+                  <a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=80be6527b80c5ae4fd416c896cae7ab79ce9a2dfc85ea5927e9240d43e288d05">
+                    <i class="iconfont icon-code1"></i>
+                    <span>加入Web技术交流群</span>
+                  </a>
                 </li>
               </ul>
             </div>
@@ -51,7 +57,7 @@
               <p><i class="iconfont icon-gengduo"></i>友情连接</p>
             </div>
             <div class="category-wrapper">
-              <div class="category-perviewer">
+              <div class="category-perviewer" @click="handlerGoLink('http://www.web-jackiee.com/a/xiangguanwebwenzhang/2016/1224/220.html')">
                 <img src="./images/shop.jpg">
               </div>
               <ul class="menu-list">
@@ -70,29 +76,14 @@
 export default {
   data () {
     return {
-      recommendList: [{
-        title: '[node-04]Express构架web相册',
-        link: '/article/12'
-      }, {
-        title: '百度地图二次封装',
-        link: '/article/12'
-      }, {
-        title: '3D 螺旋体翻转',
-        link: '/article/12'
-      }, {
-        title: 'GitHub实用命令',
-        link: '/article/12'
-      }, {
-        title: '寰宇利人易拉宝设计',
-        link: '/article/12'
-      }, {
-        title: '常用工具类的网站',
-        link: '/article/12'
-      }],
+      recommendList: [],
       connectList: [{
         title: '联系老牛的qq',
         icon: 'icon-qq-copy',
-        event: () => {}
+        event: () => {
+          let url = this.$Constent.isPc ? 'tencent://message/?uin=547007933&Site=http://vps.shuidazhe.com&Menu=yes' : 'mqqwpa://im/chat?chat_type=wpa&uin=547007933&version=1&src_type=web&web_src=oicqzone.com'
+          window.location.href = url
+        }
       }, {
         title: '微信',
         icon: 'icon-weixin1',
@@ -108,14 +99,10 @@ export default {
         event: () => {
           window.open('https://github.com/hoverCow1990')
         }
-      }, {
-        title: '加入Web技术交流群',
-        icon: 'icon-code1',
-        event: () => {}
       }],
       friendList: [{
         title: '陌陌的个人博客',
-        link: '/'
+        link: 'https://www.xuanmo.xin'
       }, {
         title: '大年的个人博客',
         link: '/'
@@ -127,8 +114,38 @@ export default {
         link: '/'
       }, {
         title: '慕课网',
-        link: '/'
+        link: 'https://www.imooc.com'
       }]
+    }
+  },
+  created () {
+    this.requestRecommend()
+  },
+  methods: {
+    // 请求推荐列表
+    requestRecommend () {
+      this.$Http({
+        url: this.$Constent.api.article.getSortArticleList,
+        method: 'GET',
+        params: {
+          st: 0,
+          end: 6,
+          sortType: 'w'
+        }
+      }).then(res => {
+        res = res.body
+        if (res.statue) {
+          this.$data.recommendList = res.articleList
+        }
+      })
+    },
+    // 点击后进入链接
+    handlerGoLink (link) {
+      if (link.startsWith('http')) {
+        window.open(link)
+      } else {
+        this.$router.push(link)
+      }
     }
   }
 }

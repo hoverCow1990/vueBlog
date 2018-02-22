@@ -6,11 +6,11 @@ html{
   /*-webkit-user-select: none;/* 禁止文本被选中 */*/
   -webkit-tap-highlight-color: transparent;/* a标签点击蓝色背景 */
 }
-html,body{
+html, body{
   width:100%;
 }
 body{
-  font-family: '-apple-system-font','Helvetica Neue','Microsoft YaHei',sans-serif;
+  font-family: 'Arial', '-apple-system-font','Helvetica Neue','Microsoft YaHei', sans-serif;
   overflow-x: hidden;
   /*-webkit-overflow-scrolling: touch;  /* 开启手机端moblie网页快速滚动和回弹的效果 坑fixed失效*/
 }
