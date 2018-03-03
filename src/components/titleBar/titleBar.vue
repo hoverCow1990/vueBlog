@@ -41,7 +41,7 @@ export default {
     font-size: 30px;
   }
   p {
-    font-size: 12px;
+    font-size: 14px;
     letter-spacing: 2px;
   }
   &.light {

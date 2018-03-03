@@ -94,10 +94,10 @@ export default {
     this.requestMessageList(0)
   },
   watch: {
-    'articleData.context' () {
+    'articleData.title' () {
       let cb = [this.getArticleListAttr, this.setCoderCopy]
       if (!this.$Constent.isPc) return
-      this.preloadRequest(cb)
+      this.$nextTick(() => this.preloadRequest(cb))
     }
   },
   computed: {
@@ -159,7 +159,6 @@ export default {
         }
         this.$data.isRequestArticleColor = false
       }).catch(e => {
-        console.log(e)
         this.$data.isRequestArticleColor = false
       })
     },
@@ -173,7 +172,7 @@ export default {
         case 2:
           return 'off'
         default:
-          return ''
+          return 'disable'
       }
     },
     // 请求留言板内容
@@ -283,7 +282,6 @@ export default {
           let textarea = document.createElement('textarea')
           textarea.className = 'copy-textarea '
           text = text.replace(/(\n)(\d+)(\n)/g, ($0, $1, $2, $3) => $1).replace(/^1\n/, '\n')
-          console.log(text)
           textarea.value = text
           document.documentElement.appendChild(textarea)
           textarea.select()
@@ -479,6 +477,10 @@ export default {
   .yellow {
     color: #e6db74;
   }
+  /*紫色*/
+  .violet {
+    color: #ae81ff
+  }
 }
 .article-loading {
   padding-top: .8rem;
@@ -636,6 +638,9 @@ export default {
 }
 .article-context {
   padding-top: .3rem;
+  img {
+    max-width: 100%;
+  }
   .context-box:nth-child(1n) .box-hd:before {
     background-color: #e34c26;
   }

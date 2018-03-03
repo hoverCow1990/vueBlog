@@ -35,7 +35,6 @@ export default {
   },
   watch: {
     sideNavAttr () {
-      console.log('sideNavAttr')
       this.getTopLevel()
       this.$nextTick(this.initizialEvent)
     }

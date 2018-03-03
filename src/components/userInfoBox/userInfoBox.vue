@@ -320,7 +320,7 @@ export default {
     padding-top: 10px;
   }
   .cow-input-content {
-    margin-bottom: 22px;
+    margin-bottom: 12px;
   }
   .cow-checkBox-content {
     padding-top: 3px;

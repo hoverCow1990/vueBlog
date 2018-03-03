@@ -1,5 +1,6 @@
 <template>
-  <section id='adminPage'>
+  <transition name="bounce">
+    <section id='adminPage'>
     <cow-header-filler></cow-header-filler>
     <div class="container adminPage-container">
       <div class="admin-topBar">
@@ -194,7 +195,7 @@
               <ul class="guide-guidPort">
                 <li v-for="list of degreeGuide" v-once>
                   <div class="scroll">+{{ list.add }}</div>
-                  <p><span v-for="item of list.list" @mouseenter="showDegreeGuide(item)">{{ item.label }}</span></p>
+                  <p><span v-for="item of list.list" @mouseenter="showDegreeGuide(item)" @touchstart="showDegreeGuide(item)">{{ item.label }}</span></p>
                 </li>
               </ul>
             </div>
@@ -231,11 +232,13 @@
     <cow-user-infoBox :isShow='isInfoBoxShow' @hiddenInfoBoxShow='hiddenInfoBoxShow' @update="data => updateUserData(data)" ref="infoBox"></cow-user-infoBox>
     <cow-upload-box :isShow='isUploadShow' @hiddenUploadBox='hiddenUploadBox' @upDateSuccess="upDateSuccess"></cow-upload-box>
   </section>
+</transition>
 </template>
 
 <script>
 import mixin from './mixin'
 export default {
+  name: 'admin',
   data () {
     return {
       userData: {
@@ -520,7 +523,7 @@ export default {
           message: '作品审核中,等不及请主动联系老牛！'
         })
       } else {
-        window.open(this.$Constent.serverHost + url)
+        window.open(url)
       }
     }
   }
@@ -735,7 +738,7 @@ export default {
     }
     p {
       font-size: .26rem;
-      font-family: Arial;
+      font-family: 'Arial';
       color: #222;
       font-weight: 600;
       text-shadow: 0 0 1px rgba(0, 0, 0, .2);

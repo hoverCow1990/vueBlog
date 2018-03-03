@@ -1,14 +1,17 @@
 <template>
-  <section id='messagePage'>
-    <cow-header-filler></cow-header-filler>
-    <div class="container messagePage-container">
-      <cow-message-board type='black' :messageList='messageList' :singleListLength='singleListLength' :allListLength='allListLength' @changeMsgPage='requestMessageList' @changeMsg='changeMsg'></cow-message-board>
-    </div>
-  </section>
+  <transition name="bounce">
+    <section id='messagePage'>
+      <cow-header-filler></cow-header-filler>
+      <div class="container messagePage-container">
+        <cow-message-board type='black' :messageList='messageList' :singleListLength='singleListLength' :allListLength='allListLength' @changeMsgPage='requestMessageList' @changeMsg='changeMsg'></cow-message-board>
+      </div>
+    </section>
+  </transition>
 </template>
 
 <script>
 export default {
+  name: 'message',
   data () {
     return {
       allListLength: 0, // 所有消息条数
@@ -49,6 +52,9 @@ export default {
 </script>
 
 <style lang='less'>
+/* #messagePage {
+  transition: .5s;
+} */
 .messagePage-container {
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
   .msgBoard-perviewer red {

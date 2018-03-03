@@ -1,7 +1,7 @@
 <template>
   <div class="articlePlane-wrapper">
     <ul class='articlePlane-list' v-if='list.length'>
-      <li class="articlePlane-item" v-for='item of list'>
+      <li class="articlePlane-item" v-for='item of list' key="item.id">
         <div class="item-perviewer">
           <router-link :to='getLink(item.id)'>
             <img :src="item.smallPerviewer">
@@ -9,10 +9,13 @@
         </div>
         <div class="item-inner">
           <div class="inner-hd">
-            <span class="name">{{ item.title }}</span>
+            <p class="name" v-html="item.title"></p>
+            <div class="weight">
+              <i class="iconfont icon-dianpuxiangqingyedejiage" :class="index * 20 < item.weight ? 'hot': ''" v-for="(fire, index) of new Array(5)"></i>
+            </div>
           </div>
           <div class="inner-bd">
-            {{ item.description }}
+            <p v-html="item.description"></p>
             <router-link :to='getLink(item.id)'>
               <div class="item-btn">
                 <div class="btn-container">
@@ -162,12 +165,26 @@ export default {
     padding-right: .15rem;
   }
   .inner-hd {
-    padding-top: .1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 9px;
     padding-bottom: 9px;
     letter-spacing: 2px;
     font-size: 12px;
     color: #5D5D5D;
     font-weight: bold;
+    .weight {
+      width: 97px;
+      height: 20px;
+      i {
+        padding-left: 2px;
+        color: #e6e6e6;
+        &.hot {
+          color: #ec3333;
+        }
+      }
+    }
     .tag {
       padding-left: 5px;
       padding-right: 5px;
@@ -175,8 +192,12 @@ export default {
       color: #9a9a9a;
     }
     .name {
+      flex: 1;
       font-size: 14px;
       color: #795548;
+    }
+    .reg-search {
+      color: #ff4848;
     }
   }
   .inner-bd {
@@ -189,6 +210,9 @@ export default {
     .border(top);
     .border(bottom);
     color: #999;
+    .reg-search {
+      color: #ff4848;
+    }
   }
   .inner-ft {
     display: flex;

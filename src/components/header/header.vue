@@ -59,11 +59,13 @@
           <router-link to='/articleList/tools'>tools</router-link>
           <router-link to='/articleList/others'>others</router-link>
         </div>
-        <div class="menu-logo"></div>
+        <router-link to='/'>
+          <div class="menu-logo"></div>
+        </router-link>
       </div>
       <div class="search">
-        <input class="search-form" type="text" v-model='searchVal'>
-        <button @click='linkSearch'><span><i class="iconfont icon-fangdajing"></i></span></button>
+        <input class="search-form" @keyup.enter='linkSearch(searchVal)' type="text" v-model='searchVal'>
+        <button @click='linkSearch(searchVal)'><span><i class="iconfont icon-fangdajing"></i></span></button>
       </div>
     </div>
     <more-box v-if="!$Constent.isPc" :isShow='isMoreBoxShow' @showLoginBox='showLoginBox' @hiddenMoreBox='hiddenMoreBox' @linkSearch="linkSearch" @handlerToAdmin="handlerToAdmin" :isLogin="isLogin"></more-box>
@@ -92,8 +94,8 @@ export default {
   created () {
     this.$Events.loginData.$on(this, (isLogin, data) => {
       this.$data.isLogin = isLogin
-      this.userData = data
-    })
+      this.$data.userData = data
+    }, 'header')
     this.checkLogin()
   },
   methods: {
@@ -108,7 +110,6 @@ export default {
       }).then(res => {
         res = res.body
         if (res.statue) {
-          window.articleColor = res.userDetail.articleColor
           this.$Events.loginData.$emit(true, res.userDetail)
         } else {
           this.$Events.loginData.$emit(false, {})
@@ -117,7 +118,7 @@ export default {
     },
     // 链接至所搜索页面 传val的为手机端moreBox内传递的
     linkSearch (val) {
-      let searchVal = val || encodeURI(this.$data.searchVal)
+      let searchVal = encodeURIComponent(val)
       this.$router.push('/articleList/search?q=' + searchVal)
     },
     // 显示登录盒子
@@ -136,12 +137,6 @@ export default {
     // 隐藏更多盒子
     hiddenMoreBox () {
       this.$data.isMoreBoxShow = false
-    },
-    // 登录成功
-    loginSuccess (data) {
-      this.$data.isLogin = true
-      this.$data.userData = data
-      this.$Events.loginData.$emit(true, data)
     },
     // 退出登录
     handlerLogout () {
@@ -189,7 +184,7 @@ export default {
   @topBarHeight: .45rem;
   width: 100%;
   height: @topBarHeight;
-  min-height: 34px;
+  min-height: 36px;
   background-color: #111113;
   background-image: -webkit-repeating-linear-gradient(-45deg,#111113 0,#111113 10px,#1e1e20 10px,#1e1e20 12px);
   background-image: repeating-linear-gradient(-45deg,#111113 0,#111113 10px,#1e1e20 10px,#1e1e20 12px);
@@ -345,13 +340,16 @@ export default {
     height: 100%;
     line-height: @topBarHeight;
     color: #eee;
+    i {
+      font-size: 21px;
+    }
   }
 }
 .header-menu {
   position: relative;
   width: 100%;
   height: .6rem;
-  min-height: 34px;
+  min-height: 36px;
   background-color: #fff;
   .menu-container {
     position: relative;
@@ -459,7 +457,7 @@ export default {
       line-height: 18px;
     }
     .icon-gengduo {
-      line-height: 34px;
+      line-height: 36px;
     }
   }
   .header-menu .menu-logo {
@@ -473,8 +471,8 @@ export default {
     text-align: center;
   }
   .header-menu a {
-    font-size: 10px;
-    line-height: 34px;
+    font-size: 11px;
+    line-height: 36px;
   }
   .search {
     display: none;

@@ -1,13 +1,15 @@
 <template>
-  <section id='articleListPage'>
-    <cow-header-filler></cow-header-filler>
-    <div class="container articleList-container">
-      <div class="articleList-main">
-        <article-menu @categoryList="handlerGetCategoryList" @recommendList="handlerRecommendList"></article-menu>
-        <side-menu :subList='subList' :recommendList="recommendList"></side-menu>
+  <transition name="bounce">
+    <section id='articleListPage'>
+      <cow-header-filler></cow-header-filler>
+      <div class="container articleList-container">
+        <div class="articleList-main">
+          <article-menu @categoryList="handlerGetCategoryList" @recommendList="handlerRecommendList"></article-menu>
+          <side-menu :subList='subList' :recommendList="recommendList"></side-menu>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </transition>
 </template>
 
 <script>
@@ -15,6 +17,7 @@ import ArticleMenu from './articleMenu/articleMenu'
 import SideMenu from './sideMenu/sideMenu'
 
 export default {
+  name: 'articleList',
   data () {
     return {
       subList: {

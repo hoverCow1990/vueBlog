@@ -53,7 +53,7 @@
                 <img :src="featureSrc" :class="featureSrc?'active':''">
                 <input type="file" :accept="acceptsType" @change="handlerPhotoView">
               </div>
-              <p class="exp">1:1像素,大小<span>{{this.$data.maxSize / 1000}}kb</span>以下</p>
+              <p class="exp">请上传<span>jpg</span>类型的图</p>
             </div>
           </div>
           <div class="cow-btn-group submit-group">
@@ -62,41 +62,27 @@
           </div>
         </div>
       </div>
+      <div class="crop-btns" v-if="isShowCropper">
+        <cow-btn type="primary" @click='changeCropType' :isLoading="isRequestLoading">{{ cropChangeBtnText }}</cow-btn>
+        <cow-btn type="primary" @click='cropOk' :isLoading="isRequestLoading">确定</cow-btn>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+
 export default {
   name: 'LoginBox',
-  props: {
-    value: String,
-    // 是否显示
-    isShow: {
-      type: Boolean,
-      required: true
-    },
-    // 初始化的类型
-    initloginType: {
-      type: String
-    }
-  },
-  computed: {
-    loginType: {
-      get () {
-        return this.value
-      },
-      set (val) {
-        this.$emit('input', val)
-      }
-    }
-  },
   data () {
     return {
+      cropType: 1, // 0 放大缩小 1截图
+      cropData: '',
+      isShowCropper: false,
       isBoxActive: false,
       isWrapperActive: false,
-      acceptsType: ['image/jpeg,image/jpg,image/png,image/gif'],
-      maxSize: 100000,
+      acceptsType: ['image/jpeg', 'image/jpg'],
+      maxSize: 2000000,
       featureSrc: '',
       featureFlag: [String, Number],
       fileData: '',
@@ -128,6 +114,37 @@ export default {
       isRember: false
     }
   },
+  props: {
+    value: String,
+    // 是否显示
+    isShow: {
+      type: Boolean,
+      required: true
+    },
+    // 初始化的类型
+    initloginType: {
+      type: String
+    }
+  },
+  computed: {
+    cropChangeBtnText () {
+      let cropType = this.$data.cropType
+      let isPc = this.$Constent.isPc
+      if (cropType) {
+        return isPc ? '图片挪动' : '图片缩放'
+      } else {
+        return '开始截图'
+      }
+    },
+    loginType: {
+      get () {
+        return this.value
+      },
+      set (val) {
+        this.$emit('input', val)
+      }
+    }
+  },
   watch: {
     isShow (val) {
       if (!this.$Constent.isPc) { // 解决ios的输入框往光标下掉的问题
@@ -141,6 +158,34 @@ export default {
     }
   },
   methods: {
+    // 切换crop操作类型
+    changeCropType () {
+      let { cropType } = this.$data
+      if (cropType) {
+        this.$Constent.cropper.stopCrop()
+        this.$data.cropType = 0
+      } else {
+        this.$Constent.cropper.startCrop()
+        this.$data.cropType = 1
+      }
+    },
+    // 完成截图
+    cropOk () {
+      if (this.$Constent.cropper.$data.cropW < 100) {
+        this.$message({
+          type: 'err',
+          message: '图像至少100px以上'
+        })
+        return
+      }
+      this.$Constent.cropper.getCropData((data) => {
+        this.$data.featureSrc = data
+        this.$data.cropData = data
+        this.$Constent.cropper.$parent.$data.cropper.img = ''
+        this.$Constent.cropper.$parent.$data.cropper.isShow = false
+        this.$data.isShowCropper = false
+      })
+    },
     // 初始化状态
     initialData () {
       let cookies = this.$Cookies.get()
@@ -172,24 +217,37 @@ export default {
     handlerPhotoView (ev) {
       let file = event.target.files[0]
       if (!file) return
-      if (file.size > this.$data.maxSize) {
-        this.$message({
-          type: 'err',
-          message: `图片不能超过${this.$data.maxSize / 1000}kb`
-        })
-        return
-      }
+      // if (file.size > this.$data.maxSize) {
+      //   this.$message({
+      //     type: 'err',
+      //     message: `图片不能超过${this.$data.maxSize / 1000}kb`
+      //   })
+      //   return
+      // }
       const reader = new FileReader()
       reader.readAsDataURL(file)
       reader.onload = (e) => {
-        this.$data.featureSrc = e.target.result
-        this.$data.fileData = file
+        // this.$data.featureSrc = e.target.result
+        this.$Constent.cropper.$parent.$data.cropper.img = e.target.result
+        this.$Constent.cropper.$parent.$data.cropper.isShow = true
+        this.$Constent.cropper.startCrop()
+        this.$data.isShowCropper = true
+        // this.$data.fileData = file
       }
     },
     // 跳转类型
     changeType (type) {
       if (type === this.$data.loginType || this.$data.isRequestLoading) return
       this.loginType = type
+    },
+    convertBase64UrlToBlob (urlData) {
+      let bytes = window.atob(urlData.split(',')[1])  // 去掉url的头，并转换为byte
+      var ab = new ArrayBuffer(bytes.length)  // 处理异常,将ascii码小于0的转换为大于0
+      var ia = new Uint8Array(ab)
+      for (let i = 0; i < bytes.length; i++) {
+        ia[i] = bytes.charCodeAt(i)
+      }
+      return new Blob([ab], {type: 'image/jpeg'})
     },
     // 处理注册
     handlerRegist () {
@@ -200,7 +258,8 @@ export default {
       if (isCanSubmit.res) {
         this.$data.isRequestLoading = true
         const formData = new FormData()
-        formData.append('file', this.$data.fileData)
+        // formData.append('file', this.$data.fileData)
+        formData.append('file', this.convertBase64UrlToBlob(this.$data.cropData))
         formData.append('name', id.val)
         formData.append('password', password.val)
         this.$Http({
@@ -215,7 +274,8 @@ export default {
               message: '恭喜你注册为老牛会员'
             })
             this.hiddenLogin()
-            this.$emit('loginSuccess', res.userDetail)
+            this.$data.cropData = ''
+            this.$Events.loginData.$emit(true, res.userDetail)
             this.clearValue('regist')
             this.$data.isRequestLoading = false
             this.$router.push('/admin')
@@ -242,26 +302,29 @@ export default {
       let {loginData, isRember} = this.$data
       let {id, password} = loginData
       let isCanSubmit = this.verifyLoginForm(id, password)
+      let route = this.$route
+      let postData = {name: id.val, password: password.val}
+      if (route.path.startsWith('/article')) {
+        postData = {
+          ...postData,
+          articleId: route.params.id
+        }
+      }
       if (isCanSubmit.res) {
         this.$data.isRequestLoading = true
         this.$Http({
           url: this.$Constent.api.user.login,
           method: 'POST',
-          data: {
-            name: id.val,
-            password: password.val
-          }
+          data: postData
         }).then(res => {
           res = res.body
           if (res.statue) {
             this.$message({
               type: 'success',
-              message: '登录成功'
+              message: res.msg
             })
             this.hiddenLogin()
-            window.onLoginUser && window.onLoginUser(res.userDetail.articleColor)
-            window.articleColor = res.userDetail.articleColor
-            this.$emit('loginSuccess', res.userDetail)
+            this.$Events.loginData.$emit(true, res.userDetail)
             this.$data.isRequestLoading = false
             this.clearValue('login')
             if (isRember) {
@@ -386,9 +449,26 @@ export default {
 </script>
 
 <style lang='less'>
+.crop-btns {
+  display: flex;
+  position: absolute;
+  align-items: center;
+  width: 5rem;
+  bottom: .3rem;
+  left: 82px;
+  box-sizing: border-box;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  direction: ltr;
+  -ms-touch-action: none;
+  touch-action: none;
+  z-index: 999999;
+}
 .login-box {
   input {
-    font-family: 'Arial';
+    font-family: 'Arial', 'Microsoft Yahei';
   }
   .login-type {
     display: flex;

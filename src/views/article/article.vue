@@ -15,13 +15,14 @@ import ArticleMain from './articleMain/articleMain'
 import ArticleSideNav from './articleSideNav/articleSideNav'
 
 export default {
+  name: 'article',
   data () {
     return {
       sideNavAttr: [],
       articleData: {
         title: '',
         perviewerContext: '',
-        articleColor: window.articleColor || 1,
+        articleColor: 1,
         context: '<div class="article-loading"><i class="iconfont icon-icon-loading"></i></div>',
         time: '',
         watch: '',
@@ -35,9 +36,12 @@ export default {
   },
   created () {
     this.requestArticle()
-    window.onLoginUser = (colorType) => {
-      this.$data.articleData.articleColor = colorType
-    }
+    this.$Events.loginData.$on(this, (isLogin, data) => {
+      this.$data.isLogin = isLogin
+      this.$data.articleData.articleColor = data.articleColor
+      this.$data.articleData.isCanCollect = data.isCanCollect ? data.isCanCollect : 0
+      this.$data.articleData.isCanlove = data.isCanlove ? data.isCanlove : 0
+    }, 'article')
   },
   components: {
     ArticleMain,
@@ -45,6 +49,7 @@ export default {
   },
   watch: {
     '$route.query' () {
+      console.log(111)
       this.requestArticle()
       this.$data.articleData.context = '<div class="article-loading"><i class="iconfont icon-icon-loading"></i></div>'
     }
@@ -119,6 +124,7 @@ export default {
   }
 }
 .article-wrapper {
+  background-attachment: fixed;
   padding-bottom: .6rem;
   &.day {
     background-image: repeating-linear-gradient(-45deg, #f4f4f4 0, #f4f4f4 10px, #f1efef 10px, #f1efef 12px);

@@ -1,6 +1,16 @@
 <template>
   <div class="header-moreBox" :class='isShow?"active":""'>
     <div class="moreBox-container">
+      <div class="moreBox-search">
+        <input type="text" autocapitalize="off" class="more-search" name="" v-model='searchVal' placeholder="输入搜索内容" @enter="linkSearch">
+        <div class="search-btn" @click="linkSearch">
+          <i class="iconfont icon-fangdajing"></i>Search
+        </div>
+      </div>
+      <div class="search-line"></div>
+      <div class="user-logo" :style="logoStyle">
+        <p v-if="!isLogin" @click='showLoginBox'>未登录</p>
+      </div>
       <ul class='moreBox-menu'>
         <li v-if="isLogin"><router-link to="/admin"><i class="iconfont icon-huiyuan2"></i>会员中心</router-link></li>
         <li v-else @click='showLoginBox'><i class="iconfont icon-dianpuxiangqingyedejiage"></i>注册 / 登录</li>
@@ -9,13 +19,6 @@
         <li><router-link to="/game"><i class="iconfont icon-huiyuan"></i>游戏大厅</router-link></li>
         <li><a href="mqqwpa://im/chat?chat_type=wpa&uin=547007933&version=1&src_type=web&web_src=oicqzone.com"><i class="iconfont icon-qq3"></i>联系QQ</a></li>
       </ul>
-      <div class="moreBox-search">
-        <input type="text" autocapitalize="off" class="more-search" name="" v-model='searchVal' placeholder="输入搜索内容">
-        <div class="search-line"></div>
-        <div class="search-btn" @click="linkSearch">
-          <i class="iconfont icon-fangdajing"></i>Search
-        </div>
-      </div>
     </div>
   </div>
 </template>
@@ -24,7 +27,11 @@
 export default {
   data () {
     return {
-      searchVal: '作品'
+      searchVal: '实战',
+      userData: {},
+      logoStyle: {
+        background: '#1d1d1d'
+      }
     }
   },
   props: {
@@ -34,7 +41,21 @@ export default {
     },
     isLogin: {
       type: Boolean,
-      required: true
+      required: true,
+      default: false
+    }
+  },
+  created () {
+    this.$Events.loginData.$on(this, (isLogin, data) => {
+      this.$data.userData = data
+    }, 'moreBox')
+  },
+  watch: {
+    isLogin () {
+      let { $Constent, userData } = this
+      this.$data.logoStyle = {
+        'background-image': `url(${$Constent.serverHost}/uploads/user/${userData.id}/logo.${userData.logoType})`
+      }
     }
   },
   methods: {
@@ -48,7 +69,7 @@ export default {
   },
   mounted () {
     window.addEventListener('touchend', e => {
-      if (!/more-search|icon-gengduo|moreBox-menu|moreBox-container/.test(e.target.className)) {
+      if (!/more-search|icon-gengduo|moreBox-menu|moreBox-container|user-logo/.test(e.target.className)) {
         this.$emit('hiddenMoreBox')
       }
     })
@@ -59,11 +80,11 @@ export default {
 <style lang='less'>
 .header-moreBox {
   input {
-    font-family: 'Arial' !important;
+    font-family: 'Arial', 'Microsoft Yahei' !important;
   }
   position: fixed;
   width: 100%;
-  top: 68px;
+  top: 72px;
   left: 0;
   background-color: rgba(0, 0, 0, .8);
   transform: translate3d(100%, 0, 0);
@@ -72,18 +93,22 @@ export default {
     transform: translate3d(0, 0, 0);
   }
   .moreBox-menu {
-    padding-top: 20px;
+    padding-bottom: 10px;
   }
   li {
     display: block;
-    width: 100%;
+    width: 80%;
     height: 40px;
-    border-bottom: 1px solid #464646;
+    margin-left: 10%;
+    margin-right: 10%;
     text-align: center;
     line-height: 40px;
     font-size: 14px;
     letter-spacing: 2px;
     color: #DADADA;
+    &:not(:last-child) {
+      border-bottom: 1px solid #464646;
+    }
     i {
       padding-right: 7px;
     }
@@ -95,11 +120,10 @@ export default {
     }
   }
   .moreBox-search {
-    width: 70%;
-    height: 61px;
-    margin-left: 15%;
-    margin-top: .7rem;
-    padding-bottom: 40px;
+    position: relative;
+    width: 80%;
+    margin-left: 10%;
+    margin-top: .4rem;
   }
   input {
     display: block;
@@ -115,17 +139,36 @@ export default {
     letter-spacing: 1px;
     text-align: center;
   }
+  .user-logo {
+    position: absolute;
+    width: 62px;
+    height: 62px;
+    border-radius: 50%;
+    border: 2px solid #484848;
+    top: 21px;
+    left: 7%;
+    font-size: 12px;
+    text-align: center;
+    line-height: 62px;
+    color: #5d5d5d;
+    background-size: 100% 100%;
+  }
   .search-line {
-    border-top: 1px solid #A2A2A2;
-    height: .3rem;
+    width: 80%;
+    height: 0;
+    margin-left: 10%;
+    margin-right: 10%;
+    border-top: 1px solid #505050;
   }
   .search-btn {
+    position: absolute;
     display: block;
-    width: 100%;
-    height: 30px;
+    height: 40px;
+    right: 0;
+    top: 0;
+    text-align: right;
     font-size: 17px;
-    line-height: 30px;
-    text-align: center;
+    line-height: 40px;
     color: #eee;
     i {
       font-size: 22px;

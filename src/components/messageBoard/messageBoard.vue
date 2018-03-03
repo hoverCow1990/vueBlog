@@ -119,7 +119,7 @@ export default {
     this.$Events.loginData.$on(this, (isLogin, data) => {
       this.$data.isLogin = isLogin
       this.userData = data
-    })
+    }, 'messageBoard')
   },
   methods: {
     // 请求用户信息
@@ -214,6 +214,7 @@ export default {
           type: 'err',
           message: '请先登录'
         })
+        this.$data.isLoginBoxShow = true
         return
       }
       this.$data.isRequestLoading = true
@@ -325,7 +326,7 @@ export default {
 <style lang='less'>
 .msgBoard {
   textarea {
-    font-family: 'Arial' !important;
+    font-family: 'Arial', 'Microsoft Yahei' !important;
   }
   margin-top: .5rem;
   padding-bottom: .2rem;

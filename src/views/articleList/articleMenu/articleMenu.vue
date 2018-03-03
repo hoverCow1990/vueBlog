@@ -1,7 +1,14 @@
 <template>
   <div class='articleList-articleMenu'>
-    <cow-article-plane :list='articleList'></cow-article-plane>
-    <cow-page-tab :allListLength='allListLength' :singleListLength='singleListLength' @change='index => requestArticle(index - 1)'></cow-page-tab>
+    <template v-if="$Constent.isPc">
+      <cow-article-plane :list='articleList'></cow-article-plane>
+      <cow-page-tab ref="pageTab" :allListLength='allListLength' :singleListLength='singleListLength' @change='index => requestArticle(index - 1)'></cow-page-tab>
+    </template>
+    <template v-else>
+      <cow-infinite-scroller v-on:infinite='loadMoreData' ref='articleList'>
+        <cow-article-plane :list='articleList' slot="list"></cow-article-plane>
+      </cow-infinite-scroller>
+    </template>
   </div>
 </template>
 
@@ -12,14 +19,28 @@ export default {
       allListLength: 0,
       singleListLength: 5,
       typeId: '',
-      articleList: []
+      articleList: [],
+      lastRoute: '',
+      requestCount: 0
     }
   },
   created () {
+    this.$data.lastRoute = this.$route.params.type
     this.getArticleList()
   },
   watch: {
-    $route () {
+    $route (route) {
+      if (!route.fullPath.startsWith('/articleList')) return
+      let type = route.params.type
+      if (type === this.$data.lastRoute && type !== 'search') return
+      this.$data.lastRoute = type
+      if (this.$Constent.isPc) {
+        this.$refs.pageTab.nowIndex = 0
+      } else {
+        this.$data.requestCount = 0
+        this.$data.articleList = []
+        this.$refs.articleList.reLiveData()
+      }
       this.getArticleList()
     }
   },
@@ -124,14 +145,24 @@ export default {
         }
       }).then(res => {
         res = res.body
-        this.$data.articleList = res.articleList
         this.$data.allListLength = res.allLength
+        if (this.$Constent.isPc) {
+          this.$data.articleList = res.articleList
+        } else {
+          this.$data.articleList = [...this.$data.articleList, ...res.articleList]
+          if (st === 0 && res.articleList.length === 0) this.$refs.articleList.setNoData()
+          if (res.hasNextPage) {
+            this.$refs.articleList.finishLoad()
+          } else {
+            this.$refs.articleList.loadedDone()
+          }
+        }
       })
     },
     // 请求搜索文章
     requestSearch (st = 0) {
       st = st * this.$data.singleListLength
-      let keyWords = decodeURI(this.$route.query.q)
+      let keyWords = encodeURIComponent(this.$route.query.q)
       let end = st + this.$data.singleListLength
       this.$Http({
         url: this.$Constent.api.article.searchArtcleList,
@@ -143,6 +174,10 @@ export default {
       }).then(res => {
         res = res.body
         if (!res.statue) return
+        res.articleList.forEach(item => {
+          item.description = this.transDom(item.description, keyWords)
+          item.title = this.transDom(item.title, keyWords)
+        })
         this.$data.articleList = res.articleList
         this.$data.allListLength = res.allLength
         this.$emit('categoryList', {
@@ -150,6 +185,16 @@ export default {
           list: ['页面', '实战', '实用', '特效', '对象', '数组', '游戏']
         })
       })
+    },
+    // 用于手机端请求更多
+    loadMoreData () {
+      this.$data.requestCount++
+      this.requestArticle(this.$data.requestCount)
+    },
+    transDom (text, keyWords) {
+      return text
+        .replace(/(<span class="reg-search">|<\/span>)/g, '')
+        .replace(new RegExp(keyWords, 'gi'), `<span class="reg-search">${keyWords}</span>`)
     }
   }
 }

@@ -2,13 +2,12 @@
   <section class='homePage-project'>
     <div class="project-container container">
       <div class="project-logo"></div>
-      <cow-titlebar title='Cow Project' info='老牛的实战项目' theme='dark'></cow-titlebar>
+      <cow-titlebar title='Cow Project' info='老牛的推荐项目' theme='dark'></cow-titlebar>
       <div class="project-wrapper">
         <ul class="project-list">
           <li class="project-item" v-for='item of projectList' @click="handlerGoLink(item.link)" :class="$Constent.isPc?'pop':''">
             <div class="item-perviewer">
               <img :src="item.perviewer">
-              <div class="perviewer-masker"></div>
             </div>
             <p class="item-title" :class='item.isOnline?"online":""'>&nbsp; [ {{ item.title }} ]</p>
             <p class='item-info'>运用技能 : {{ item.info }}</p>
@@ -98,8 +97,14 @@ export default {
 </script>
 
 <style lang='less'>
+.homePage-project {
+  padding-bottom: .25rem;
+  /* background-image: url(./images/bg3.png);
+  background-repeat: repeat; */
+  /* background-size: 100% 100%; */
+}
 .project-container {
-  padding-top: 1rem;
+  padding-top: .8rem;
   .project-logo {
     width: 1rem;
     height: 1rem;
@@ -111,10 +116,6 @@ export default {
     background: url(./images/logo5.png) no-repeat;
     background-size: 100%;
     transition: .6s;
-    &:hover {
-      background: url(./images/logo2.png) no-repeat;
-      background-size: 100%;
-    }
   }
   .project-title {
     position: relative;
@@ -164,9 +165,10 @@ export default {
     background-color: #fff;
     cursor: pointer;
     border-radius: 3px;
-    .border(top);
+    /* .border(top);
     .border(left);
-    .border(right);
+    .border(right); */
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, .1);
     transition: all .2s ease-in-out;
     overflow: hidden;
     &.pop:hover {
@@ -174,15 +176,23 @@ export default {
       transform: translate3d(0, -6px, 0);
     }
     .ftBtn {
-      width: 100%;
+      width: 45%;
       margin: 0 auto;
+      padding-top: .12rem;
+      padding-bottom: .12rem;
+      margin-bottom: .2rem;
+      border-radius: 4px;
       color: #eee;
-      background: @navy;
-      padding-top: .10rem;
-      padding-bottom: .10rem;
+      background: #074969;
+      border-bottom: 3px solid #03364e;
       font-size: .14rem;
       text-align: center;
       letter-spacing: 1px;
+      transition: .3s;
+      &:hover {
+        background: darken(#074969, 8%);
+        border-bottom: 3px solid darken(#074969, 8%);
+      }
     }
   }
   .item-perviewer {
@@ -191,18 +201,10 @@ export default {
     width: 100%;
     height: 2.20rem;
     padding: .08rem;
+    border-radius: 3px 3px 0 0;
     overflow: hidden;
-    .perviewer-masker {
-      position: absolute;
-      box-sizing: border-box;
-      width: 2.81rem;
-      height: 2.08rem;
-      top: .06rem;
-      left: .06rem;
-      padding: .06rem;
-      background-color: #111;
-      opacity: 0;
-      transition: all .4s ease-in-out;
+    img {
+      width: 100%;
     }
   }
   .item-title {
@@ -211,7 +213,7 @@ export default {
     padding-bottom: 10px;
     margin-left: .08rem;
     margin-right: .08rem;
-    font-size: 13px;
+    font-size: 14px;
     letter-spacing: 1px;
     color: #666;
     .textOverFlow;
@@ -224,7 +226,7 @@ export default {
       width: 58px;
       height: 20px;
       right: 2px;
-      top: 0;
+      top: 1px;
       content: 'online';
       font-family: 'Comic Sans MS', 'Microsoft YaHei';
       border-radius: 3px;
@@ -263,7 +265,8 @@ export default {
       border: 0;
       text-align: center;
       font-size: 13px;
-      &:nth-child(1),
+      box-shadow: none;
+      /* &:nth-child(1),
       &:nth-child(2),
       &:nth-child(3),
       &:nth-child(4),
@@ -273,14 +276,25 @@ export default {
       }
       &:nth-child(odd) {
         border-right: 1px dashed #efefef;
-      }
+      } */
       &:nth-child(even){
         border-left: 0;
       }
+      &:nth-child(odd) {
+        .ftBtn {
+          border-right: 1px dashed #96abb5;
+        }
+      }
       .ftBtn {
         display: none;
-        /* padding-top: 8px;
-        padding-bottom: 8px; */
+        /* width: 100%;
+        box-sizing: border-box;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        border-radius: 0;
+        font-size: 12px;
+        font-weight: bold;
+        border-bottom: 0; */
       }
     }
     .item-perviewer {
@@ -289,12 +303,12 @@ export default {
       background-color: #fff;
     }
     .item-title {
-      padding-top: 4px;
-      padding-bottom: 10px;
+      padding-top: 8px;
+      padding-bottom: 15px;
       margin-left: 0;
-      font-size: 11px;
-      /*text-indent: 4px;*/
-      color: #777;
+      font-size: 12px;
+      text-align: left;
+      font-weight: 600;
       span {
         font-size: 10px;
         font-weight: 100;

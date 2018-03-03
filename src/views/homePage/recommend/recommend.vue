@@ -92,7 +92,9 @@ export default {
       }, {
         title: '我の留言板',
         icon: 'icon-bi',
-        event: () => {}
+        event: () => {
+          this.$router.push('/message')
+        }
       }, {
         title: 'Github',
         icon: 'icon-github',
@@ -153,7 +155,7 @@ export default {
 
 <style lang='less'>
 .homePage-recommend {
-  padding-top: .5rem;
+  padding-top: .25rem;
 }
 .recommend-container {
   .hoverFont {

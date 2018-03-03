@@ -4,6 +4,7 @@ body.fixed {
   position: fixed;
   width: 100%;
 }
+
 i{
   font-family:"iconfont" !important;
   font-size:16px;
@@ -20,6 +21,8 @@ html{
 body {
   max-width: 100%;
   background-color: #f4f4f4;
+  background-image: url(../images/bg.png);
+  background-repeat: repeat;
   &::-webkit-scrollbar {
     display: none;
   }
@@ -27,6 +30,9 @@ body {
 
 input {
   font-family: 'microsoft YaHei';
+  // -webkit-appearance: none;
+  // background-color: #fff;
+  // border: 1px solid #e6e6e6;
 }
 @inputBorderColor: #bfcbd9;
 .container {
@@ -412,6 +418,49 @@ span.cow-exp {
   display: inline-block;
   vertical-align: bottom;
 }
+.bounce-enter {
+  transform: scale(0.5);
+  opacity: 0;
+  transition: .6s ease-in-out;
+}
+.bounce-enter-active {
+  opacity: 0;
+  transform: scale(0.5);
+  transition: .6s ease-in-out;
+}
+.bounce-enter-to {
+  opacity: 1;
+  transform: scale(1);
+}
+// .bounce-leave {
+//   transform: scale(1);
+// }
+// .bounce-leave-active {
+//   transform: scale(1);
+// }
+// .bounce-leave-to {
+//   transform: scale(0);
+//   opacity: 0;
+// }
+// .bounce-enter-active {
+//   animation: bounce-in .5s;
+//   opacity: 1;
+// }
+// .bounce-leave-active {
+//   opacity: 0;
+//   animation: bounce-in .5s reverse;
+// }
+// @keyframes bounce-in {
+//   0% {
+//     transform: scale(0);
+//   }
+//   50% {
+//     transform: scale(1.2);
+//   }
+//   100% {
+//     transform: scale(1);
+//   }
+// }
 
 @media screen and (max-width: 1370px){
   html {
@@ -440,7 +489,7 @@ span.cow-exp {
   }
   .cow-screen-form {
     width: 12rem;
-    top: 10%;
+    top: 120px;
     margin-left: -6rem;
     .form-wrapper {
       height: 280px;

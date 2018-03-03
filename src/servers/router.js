@@ -12,10 +12,18 @@ export default new Router({
       component: Views.HomePageView
     }, {
       path: '/articleList/:type',
-      component: Views.ArticleListView
+      name: 'articleList',
+      component: Views.ArticleListView,
+      meta: {
+        keepAlive: true
+      }
     }, {
       path: '/article(/.+)?/:id',
-      component: Views.Article
+      name: 'article',
+      component: Views.Article,
+      meta: {
+        keepAlive: false
+      }
     }, {
       path: '/game',
       component: Views.Game

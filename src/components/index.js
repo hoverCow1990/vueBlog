@@ -12,6 +12,8 @@ import PageTab from './pageTab/pageTab'
 import MessageBoard from './messageBoard/messageBoard'
 import Rate from './rate/rate'
 import PropCircle from './propCircle/propCircle'
+import InfiniteScroller from './infiniteScroller/infiniteScroller'
+import Cropper from './cropper/vue-cropper'
 
 export default {
   Header,
@@ -27,5 +29,7 @@ export default {
   PageTab,
   MessageBoard,
   Rate,
-  PropCircle
+  PropCircle,
+  InfiniteScroller,
+  Cropper
 }
