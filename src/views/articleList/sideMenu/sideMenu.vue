@@ -1,30 +1,49 @@
 <template>
   <div class="articleList-sideMenu">
-    <cow-side-nav title='相关子类' className="sub" :navList='navSubList'></cow-side-nav>
+    <cow-side-nav title='相关子类' className="sub" :navList='navSubList' :activeClass="navActiveClass"></cow-side-nav>
     <cow-side-nav title='老牛推荐' className="mes"  :navList='navRecommendList'></cow-side-nav>
   </div>
 </template>
 <script>
 
 export default {
+  data () {
+    return {
+      navActiveClass: '',
+      navSubList: []
+    }
+  },
   props: {
     subList: Object,
     recommendList: Object
   },
-  computed: {
-    navSubList () {
+  watch: {
+    // 因为同时要更新navActiveClass 所以写在watch中
+    subList () {
       let { list, parTitle } = this.$props.subList
+      let params = this.$route.params
+      let navSubList = []
+      let activeClass = ''
+
       if (parTitle === 'search') {
-        return list.map(item => ({
+        activeClass = this.$route.fullPath.match(/\?q=(.+)$/)[1]
+        navSubList = list.map(item => ({
           tag: item,
           href: `/articleList/search?q=${item}`
         }))
+      } else {
+        activeClass = params.type.split('_')[1]
+        navSubList = list.map(item => ({
+          tag: item.title,
+          href: `/articleList/${parTitle}_${item.title}`
+        }))
       }
-      return list.map(item => ({
-        tag: item.title,
-        href: `/articleList/${parTitle}_${item.title}`
-      }))
-    },
+
+      this.$data.navSubList = navSubList
+      this.$data.navActiveClass = decodeURIComponent(activeClass)
+    }
+  },
+  computed: {
     navRecommendList () {
       let { list, mainType } = this.$props.recommendList
       return list.map(item => ({

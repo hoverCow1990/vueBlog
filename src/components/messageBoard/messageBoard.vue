@@ -71,7 +71,6 @@
       </div>
       <cow-page-tab :allListLength='allListLength' :singleListLength='singleListLength' @change='(index) => changePage(index - 1)' ref='cowPageTab'></cow-page-tab>
     </div>
-    <cow-login-box :isShow='isLoginBoxShow' v-model='loginType' @hiddenLoginBox='hiddenLoginBox' @loginSuccess='(data) => loginSuccess(data)'></cow-login-box>
   </div>
 </template>
 
@@ -108,10 +107,8 @@ export default {
       message: '',
       rateScore: 2,
       isLogin: false,
-      isLoginBoxShow: false,
       isExpressionBoxShow: false,
-      isRequestLoading: false,
-      loginType: 'login'
+      isRequestLoading: false
     }
   },
   created () {
@@ -140,10 +137,6 @@ export default {
         }
       })
     },
-    // 登录成功
-    loginSuccess (data) {
-      this.$Events.loginData.$emit(true, data)
-    },
     // 处理msg value值
     handleMsgVal (ev) {
       // alert(2)
@@ -164,11 +157,10 @@ export default {
     },
     // 展开loginBox
     showLoginBox () {
-      this.$data.isLoginBoxShow = true
-    },
-    // 隐藏登录
-    hiddenLoginBox () {
-      this.$data.isLoginBoxShow = false
+      this.$Events.loginBox.$emit({
+        isLoginBoxShow: true,
+        type: 'login'
+      })
     },
     // 获取textarea焦点
     fuocusTextarea () {
@@ -201,22 +193,25 @@ export default {
         return `<span class="cow-exp e-${_index}"></span>`
       })
     },
-    // 获取更多评论
-    handlerRequestMsg (index) {
-      console.log(index)
+    // 去登陆
+    goLogin (type) {
+      let message = type ? '请先登录' : '登录超时'
+      this.$message({
+        type: 'err',
+        message
+      })
+      this.$Events.loginBox.$emit({
+        isLoginBoxShow: true,
+        type: 'login',
+        fn: this.submitFrom.bind(this)
+      })
+      this.$Events.loginData.$emit(false, {})
     },
     // 提交表单
     submitFrom () {
       let {message, isLoading, isRequestLoading, rateScore, isLogin} = this.$data
       if (isLoading || isRequestLoading) return
-      if (!isLogin) {
-        this.$message({
-          type: 'err',
-          message: '请先登录'
-        })
-        this.$data.isLoginBoxShow = true
-        return
-      }
+      if (!isLogin) return this.goLogin(1)
       this.$data.isRequestLoading = true
       let isCanSubmit = this.validateMessage(message)
       // 不允许提交的时候
@@ -250,6 +245,7 @@ export default {
           end: 10
         }
       }).then(res => {
+        if (res.body.statue === -1) return this.goLogin(0)
         this.handlerPostOk(res, 20)
       }).catch(() => {
         this.$data.isRequestLoading = false
@@ -267,6 +263,7 @@ export default {
           end: 10
         }
       }).then(res => {
+        if (res.body.statue === -1) return this.goLogin(0)
         this.handlerPostOk(res, 15)
       }).catch(() => {
         this.$data.isRequestLoading = false

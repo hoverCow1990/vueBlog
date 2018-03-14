@@ -3,6 +3,7 @@
     <cow-header-filler></cow-header-filler>
     <div class="container game-container">
       <p>暂未开放...敬请期待！</p>
+      <cow-btn type="primary" @click="handlerToGame">静态游戏</cow-btn>
       <cow-btn type="primary" @click="handlerBack">返回</cow-btn>
     </div>
   </section>
@@ -17,6 +18,9 @@ export default {
   methods: {
     handlerBack () {
       this.$router.back()
+    },
+    handlerToGame () {
+      this.$router.push('/articleList/others_游戏')
     }
   }
 }

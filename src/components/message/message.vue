@@ -1,6 +1,6 @@
 <template>
   <transition name="slide-down">
-    <div class="message-box" v-show="isShow">
+    <div class="message-box" v-show="isShow" :class="`message-${existCount}`">
       <i class="iconfont" :class="msgType"></i>
       <span>{{ message }}</span>
     </div>
@@ -78,7 +78,6 @@
   position: fixed;
   display: flex;
   height: 28px;
-  top: 20px;
   left: 50%;
   padding-left: 12px;
   padding-right: 12px;
@@ -91,6 +90,24 @@
   transform: translate3d(-50%, 0, 0);
   box-shadow: 0 0 13px rgba(0, 0, 0, .3);
   z-index: 999;
+  &.message-0 {
+    top: 20px;
+  }
+  &.message-1 {
+    top: 55px;
+  }
+  &.message-2 {
+    top: 90px;
+  }
+  &.message-3 {
+    top: 125px;
+  }
+  &.message-4 {
+    top: 160px;
+  }
+  &.message-5 {
+    top: 195px;
+  }
   &.slide-down-enter-active,
   &.slide-down-leave {
     transform: translate3d(-50%, 0, 0);

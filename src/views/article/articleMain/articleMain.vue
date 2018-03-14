@@ -150,7 +150,10 @@ export default {
             type: 'err',
             message: '该功能需先登录'
           })
-          this.$refs.messageBoard.isLoginBoxShow = true
+          this.$Events.loginBox.$emit({
+            isLoginBoxShow: true,
+            type: 'login'
+          })
         } else {
           this.$message({
             type: 'err',
@@ -261,7 +264,11 @@ export default {
       this.$data.isRequestLoveCollect = true
       if (isCanStatue === 0) { // 未登录状态
         this.$message({type: 'err', message: '请先登录'})
-        this.$refs.messageBoard.$data.isLoginBoxShow = true
+        this.$Events.loginBox.$emit({
+          isLoginBoxShow: true,
+          type: 'login',
+          fn: this.handlerLoveAndCollect.bind(this, type)
+        })
         this.$data.isRequestLoveCollect = false
       } else if (isCanStatue === 1) { // 发送收藏或者点赞操作
         this.requestLoveAndCollect(type, articleId, isCanType)
@@ -314,7 +321,11 @@ export default {
         } else if (res.statue === -1) {
           this.$message({type: 'err', message: res.msg})
           this.$Events.loginData.$emit(false, {})
-          this.$refs.messageBoard.$data.isLoginBoxShow = true
+          this.$Events.loginBox.$emit({
+            isLoginBoxShow: true,
+            type: 'login',
+            fn: this.requestLoveAndCollect.bind(this, type, articleId, isCanType)
+          })
           this.$data.isRequestLoveCollect = false
         }
       }).catch(() => {
@@ -340,7 +351,11 @@ export default {
         } else if (res.statue === -1) {
           this.$message({type: 'err', message: res.msg})
           this.$Events.loginData.$emit(false, {})
-          this.$refs.messageBoard.$data.isLoginBoxShow = true
+          this.$Events.loginBox.$emit({
+            isLoginBoxShow: true,
+            type: 'login',
+            fn: this.requestStopLoveAndCollect.bind(this, type, articleId, isCanType)
+          })
           this.$data.isRequestLoveCollect = false
         }
       }).catch(() => {
@@ -450,15 +465,11 @@ export default {
     padding-left: 12px;
     word-break:keep-all;
     white-space:nowrap;
-    color: #fff;
-  }
-  /*注释灰色*/
-  .grey {
-    color: #565656;
+    color: #e0e0e0;
   }
   /*普通白色*/
   .white {
-    color: #e6e6e6;
+    color: #e0e0e0;
   }
   /*关键词蓝色*/
   .blue {
@@ -480,6 +491,28 @@ export default {
   /*紫色*/
   .violet {
     color: #ae81ff
+  }
+  /*注释灰色*/
+  .grey {
+    color: #565656;
+    .white {
+      color: #565656;
+    }
+    .blue {
+      color: #565656;
+    }
+    .red {
+      color: #565656;
+    }
+    .green {
+      color: #565656;
+    }
+    .yellow {
+      color: #565656;
+    }
+    .violet {
+      color: #565656;
+    }
   }
 }
 .article-loading {

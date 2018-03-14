@@ -223,7 +223,7 @@
                   </div>
                 </li>
               </ul>
-              <cow-page-tab :allListLength='othersListLength' :singleListLength='singleListLength' :isShowAllLength="false"  @change='handlerRequestOthers'></cow-page-tab>
+              <cow-page-tab ref="pageTab" :allListLength='othersListLength' :singleListLength='singleListLength' :isShowAllLength="false" @change='handlerRequestOthers'></cow-page-tab>
             </div>
           </div>
         </div>
@@ -280,6 +280,7 @@ export default {
   watch: {
     '$route.query' () {
       this.initialComponent()
+      this.$refs.pageTab.$data.nowIndex = 0
     }
   },
   computed: {

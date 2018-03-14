@@ -9,23 +9,18 @@
           <div class="topBar-entrence">
             <div class="toAdmin" @click="handlerToAdmin">
               <i class="iconfont icon-huiyuan2"></i>
-              <div class="popBox">会员中心</div>
             </div>
             <router-link to="/message">
               <i class="iconfont icon-maobi"></i>
-              <div class="popBox">留言中心</div>
             </router-link>
             <a href="https://github.com/hoverCow1990" target='_blanket'>
               <i class="iconfont icon-github"></i>
-              <div class="popBox">github</div>
             </a>
             <router-link to='/game'>
               <i class="iconfont icon-huiyuan"></i>
-              <div class="popBox">游戏中心</div>
             </router-link>
             <a href="tencent://message/?uin=547007933&Site=http://vps.shuidazhe.com&Menu=yes">
               <i class="iconfont icon-message"></i>
-              <div class="popBox">联系QQ</div>
             </a>
           </div>
           <div class="topBar-login">
@@ -64,12 +59,11 @@
         </router-link>
       </div>
       <div class="search">
-        <input class="search-form" @keyup.enter='linkSearch(searchVal)' type="text" v-model='searchVal'>
+        <input class="search-form" @keyup.enter='linkSearch(searchVal)' type="text" v-model='searchVal' placeholder="实战">
         <button @click='linkSearch(searchVal)'><span><i class="iconfont icon-fangdajing"></i></span></button>
       </div>
     </div>
-    <more-box v-if="!$Constent.isPc" :isShow='isMoreBoxShow' @showLoginBox='showLoginBox' @hiddenMoreBox='hiddenMoreBox' @linkSearch="linkSearch" @handlerToAdmin="handlerToAdmin" :isLogin="isLogin"></more-box>
-    <cow-login-box v-model='loginType' :isShow='isLoginBoxShow' @hiddenLoginBox='hiddenLoginBox' @loginSuccess='(data) => loginSuccess(data)'></cow-login-box>
+    <more-box v-if="!$Constent.isPc" :isShow='isMoreBoxShow' @hiddenMoreBox='hiddenMoreBox' @linkSearch="linkSearch" @handlerToAdmin="handlerToAdmin" :isLogin="isLogin"></more-box>
   </div>
 </template>
 
@@ -80,12 +74,10 @@ export default {
   name: 'Header',
   data () {
     return {
-      loginType: '',
-      isLoginBoxShow: false,
       isMoreBoxShow: false,
       isLogin: false,
       userData: {},
-      searchVal: '实战'
+      searchVal: ''
     }
   },
   components: {
@@ -116,19 +108,18 @@ export default {
         }
       })
     },
-    // 链接至所搜索页面 传val的为手机端moreBox内传递的
-    linkSearch (val) {
-      let searchVal = encodeURIComponent(val)
-      this.$router.push('/articleList/search?q=' + searchVal)
-    },
     // 显示登录盒子
     showLoginBox (type = 'login') {
-      this.$data.loginType = type
-      this.$data.isLoginBoxShow = true
+      this.$Events.loginBox.$emit({
+        isLoginBoxShow: true,
+        type
+      })
     },
-    // 隐藏登录
-    hiddenLoginBox () {
-      this.$data.isLoginBoxShow = false
+    // 链接至所搜索页面 传val的为手机端moreBox内传递的
+    linkSearch (val) {
+      val = val || '实战'
+      let searchVal = encodeURIComponent(val)
+      this.$router.push('/articleList/search?q=' + searchVal)
     },
     // 显示更多的盒子
     showMoreBox () {
@@ -179,6 +170,7 @@ export default {
   width: 100%;
   top: 0;
   z-index: 999;
+  transform: translate3d(0, 0, 0);
 }
 .header-topBar {
   @topBarHeight: .45rem;
@@ -276,34 +268,8 @@ export default {
     &>div,
     &>a {
       position: relative;
-
     }
     &>div:hover,
-    &>a:hover {
-      .popBox {
-        transform: translate3d(0, 0, 0);
-        opacity: 1;
-        z-index: 20;
-      }
-    }
-    .popBox {
-      position: absolute;
-      width: 70px;
-      height: 30px;
-      left: -45%;
-      top: 0.45rem;
-      background-image: repeating-linear-gradient(-45deg, #111113 0, #111113 10px, #1e1e20 10px, #1e1e20 12px);
-      border-radius: 0 0 4px 4px;
-      color: #d2d2d2;
-      letter-spacing: 1px;
-      line-height: 30px;
-      text-align: center;
-      font-size: 12px;
-      z-index: 9;
-      opacity: 0;
-      transform: translate3d(0, -30px, 0);
-      transition: .3s;
-    }
     a {
       position: relative;
       color: #eee;

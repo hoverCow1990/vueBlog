@@ -34,7 +34,7 @@
                 <i class="iconfont icon-yanjing"></i>{{ item.watch }}
               </div>
               <div class="hot-message">
-                <i class="iconfont icon-message"></i>{{ item.message }}
+                <i class="iconfont icon-message"></i>{{ item.message || 0 }}
               </div>
             </div>
           </div>
@@ -74,8 +74,10 @@ export default {
   height: 2rem;
   line-height: 2rem;
   font-size: .15rem;
+  letter-spacing: 1px;
   text-align: center;
   color: #666;
+  background: rgba(255, 255, 255, .3);
   .border();
 }
 .articlePlane-item {

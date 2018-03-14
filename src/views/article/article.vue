@@ -49,7 +49,6 @@ export default {
   },
   watch: {
     '$route.query' () {
-      console.log(111)
       this.requestArticle()
       this.$data.articleData.context = '<div class="article-loading"><i class="iconfont icon-icon-loading"></i></div>'
     }
@@ -127,7 +126,7 @@ export default {
   background-attachment: fixed;
   padding-bottom: .6rem;
   &.day {
-    background-image: repeating-linear-gradient(-45deg, #f4f4f4 0, #f4f4f4 10px, #f1efef 10px, #f1efef 12px);
+    /* background-image: repeating-linear-gradient(-45deg, #f4f4f4 0, #f4f4f4 10px, #f1efef 10px, #f1efef 12px); */
   }
   &.night {
     background-image: repeating-linear-gradient(-45deg, #111113 0, #111113 10px, #1e1e20 10px, #1e1e20 12px);

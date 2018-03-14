@@ -2,7 +2,7 @@
   <div class="header-moreBox" :class='isShow?"active":""'>
     <div class="moreBox-container">
       <div class="moreBox-search">
-        <input type="text" autocapitalize="off" class="more-search" name="" v-model='searchVal' placeholder="输入搜索内容" @enter="linkSearch">
+        <input type="text" autocapitalize="off" class="more-search" name="" v-model='searchVal' placeholder="实战" @enter="linkSearch">
         <div class="search-btn" @click="linkSearch">
           <i class="iconfont icon-fangdajing"></i>Search
         </div>
@@ -18,6 +18,7 @@
         <li><a href="https://github.com/hoverCow1990" target='_blanket'><i class="iconfont icon-github"></i>github</a></li>
         <li><router-link to="/game"><i class="iconfont icon-huiyuan"></i>游戏大厅</router-link></li>
         <li><a href="mqqwpa://im/chat?chat_type=wpa&uin=547007933&version=1&src_type=web&web_src=oicqzone.com"><i class="iconfont icon-qq3"></i>联系QQ</a></li>
+        <li v-if="isLogin" class="loginout" @click="loginOut"><i class="iconfont icon-tuichudenglu"></i>退出登录</li>
       </ul>
     </div>
   </div>
@@ -27,7 +28,7 @@
 export default {
   data () {
     return {
-      searchVal: '实战',
+      searchVal: '',
       userData: {},
       logoStyle: {
         background: '#1d1d1d'
@@ -61,10 +62,31 @@ export default {
   methods: {
     // 显示登录盒子
     showLoginBox () {
-      this.$emit('showLoginBox')
+      this.$Events.loginBox.$emit({
+        isLoginBoxShow: true,
+        type: 'login'
+      })
     },
+    // 搜索
     linkSearch () {
       this.$emit('linkSearch', this.$data.searchVal)
+    },
+    // 退出登录
+    loginOut () {
+      this.$Http({
+        url: this.$Constent.api.user.logout,
+        method: 'GET'
+      }).then(res => {
+        res = res.body
+        if (res.statue) {
+          this.$message({
+            type: 'success',
+            message: '成功退出'
+          })
+          this.$Events.loginData.$emit(false, {})
+          this.$route.path === '/admin' && this.$router.push('/')
+        }
+      })
     }
   },
   mounted () {
@@ -111,6 +133,9 @@ export default {
     }
     i {
       padding-right: 7px;
+    }
+    &.loginout i {
+      font-size: 17px;
     }
     a {
       display: block;

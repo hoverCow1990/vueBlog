@@ -217,36 +217,79 @@ export default {
 }
 @media screen and (max-width: 435px){
   .homePage-banner {
-    margin-top: .2rem;
+    padding-top: 1.1rem;
+    background: #d1a416;
       img {
         &.fish {
-          top: 3.6rem;
+          width: 3.62rem;
+          height: 3.34rem;
+          left: 2.7rem;
+          top: 2.6rem;
         }
         &.mouse {
-          top: 5.1rem;
+          width: 4.54rem;
+          height: 3.86rem;
+          top: 4.8rem;
+          left: 5.5rem;
         }
         &.bomboletta {
-          top: 6.6rem;
+          width: 1.07rem;
+          height: 1.35rem;
+          top: 5.6rem;
+          left: 5.9rem;
         }
         &.cerchio2 {
-          top: 6.4rem;
+          left: 5.7rem;
+          top: 6rem;
         }
         &.mela {
-          top: 3.8rem;
+          width: 1.2rem;
+          height: 1.12rem;
+          top: 3.5rem;
+          left: 5.4rem;
         }
         &.occhiali {
-          top: 2.5rem;
+          width: 2.16rem;
+          height: 1.24rem;
+          top: 2rem;
+          left: 6.3rem;
+        }
+        &.uccello {
+          width: 1.65rem;
+          height: 1.76rem;
+          left: .5rem;
+          top: 1.9rem;
         }
         &.ciambella {
-          top: 5.2rem;
-          left: 1.6rem;
+          width: 3.15rem;
+          height: 3.21rem;
+          top: 4.9rem;
+          left: 1rem;
         }
         &.penna {
-          top: 6.9rem;
+          width: 3.7rem;
+          height: 2.01rem;
+          top: 6.4rem;
+          left: .32rem;
         }
-        .cerchio {
-          top: 6.5rem;
-          left: 2.2rem;
+        &.cerchio {
+          width: .85rem;
+          height: .85rem;
+          left: 1.8rem;
+          top: 4.8rem;
+        }
+        &.bolla {
+          width: 1.88rem;
+          height: 1.92rem;
+          top: 4.1rem;
+          left: .16rem;
+          z-index: 2;
+        }
+        &.colori {
+          width: 5.68rem;
+          height: 1.11rem;
+          top: 2.5rem;
+          left: 1.7rem;
         }
       }
   }

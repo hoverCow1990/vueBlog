@@ -5,8 +5,8 @@
         <i class="iconfont icon-gengduo"></i>
         <span>{{ title }}</span>
       </div>
-      <ul class='sideNav-list' :class="className">
-        <li v-for='(item, index) of navList'>
+      <ul class='sideNav-list' :class="`${className} ${$Constent.isPc ? 'pc' : 'mb'}`">
+        <li v-for='(item, index) of navList' :class="activeClass === item.tag ? 'active': ''">
           <router-link :to='item.href'>
             <p v-if="className==='mes'"><span class='flag' :class='index < 3 ? "hot hot-" + index: ""'>{{ index + 1}}</span><span class='text'>{{ item.tag }}</span></p>
             <template  v-else>{{ item.tag[0].toUpperCase() + item.tag.substr(1)}}</template >
@@ -23,7 +23,8 @@ export default {
   props: {
     navList: Array,
     title: String,
-    className: String
+    className: String,
+    activeClass: String
   }
 }
 </script>
@@ -73,6 +74,10 @@ export default {
   }
   .sideNav-list {
     padding-top: 10px;
+    &.pc.sub li:not(.active):hover {
+      background-color: #dededd;
+      box-shadow: 0 0 2px #969696;
+    }
     &.mes {
       li {
         padding-top: 6px;
@@ -138,16 +143,18 @@ export default {
         font-size: 12px;
         text-align: center;
         transition: .1s;
+        &.active {
+          background-color: #c33838;
+          box-shadow: 0 0 2px #af3232;
+          a {
+            color: #fff;
+          }
+        }
         a {
           display: block;
           width: 100%;
           color: #313131;
           font-weight: 600;
-
-        }
-        &:hover {
-            background-color: #ffa92b;
-            box-shadow: 0 0 2px #da9b3e;
         }
       }
     }

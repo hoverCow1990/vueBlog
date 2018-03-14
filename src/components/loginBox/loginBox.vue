@@ -16,7 +16,7 @@
           <div class="cow-input-content password">
             <label>密码</label>
             <div class="input-box">
-              <input type="text" autocapitalize="off" key='login-password' v-model='loginData.password.val' placeholder="请输入您的密码" :class='loginData.password.verified?"":"error"'>
+              <input type="text" autocapitalize="off" key='login-password' @keyup.enter='handlerLogin' v-model='loginData.password.val' placeholder="请输入您的密码" :class='loginData.password.verified?"":"error"'>
             </div>
           </div>
           <div class="cow-rember">
@@ -87,6 +87,7 @@ export default {
       featureFlag: [String, Number],
       fileData: '',
       isRequestLoading: false,
+      clickSpaceTime: new Date(),
       loginData: {
         id: {
           val: '',
@@ -189,7 +190,7 @@ export default {
     // 初始化状态
     initialData () {
       let cookies = this.$Cookies.get()
-      if (cookies && cookies.isRember && cookies.user) {
+      if (cookies && cookies.user) {
         this.$data.loginData.id.val = cookies.user
         this.$data.isRember = true
       }
@@ -217,22 +218,13 @@ export default {
     handlerPhotoView (ev) {
       let file = event.target.files[0]
       if (!file) return
-      // if (file.size > this.$data.maxSize) {
-      //   this.$message({
-      //     type: 'err',
-      //     message: `图片不能超过${this.$data.maxSize / 1000}kb`
-      //   })
-      //   return
-      // }
       const reader = new FileReader()
       reader.readAsDataURL(file)
       reader.onload = (e) => {
-        // this.$data.featureSrc = e.target.result
         this.$Constent.cropper.$parent.$data.cropper.img = e.target.result
         this.$Constent.cropper.$parent.$data.cropper.isShow = true
         this.$Constent.cropper.startCrop()
         this.$data.isShowCropper = true
-        // this.$data.fileData = file
       }
     },
     // 跳转类型
@@ -258,7 +250,6 @@ export default {
       if (isCanSubmit.res) {
         this.$data.isRequestLoading = true
         const formData = new FormData()
-        // formData.append('file', this.$data.fileData)
         formData.append('file', this.convertBase64UrlToBlob(this.$data.cropData))
         formData.append('name', id.val)
         formData.append('password', password.val)
@@ -298,7 +289,8 @@ export default {
     },
     // 立即登录
     handlerLogin () {
-      if (this.$data.isRequestLoading) return
+      let nowTime = new Date()
+      if (this.$data.isRequestLoading || (nowTime - this.$data.clickSpaceTime < 800)) return
       let {loginData, isRember} = this.$data
       let {id, password} = loginData
       let isCanSubmit = this.verifyLoginForm(id, password)
@@ -312,6 +304,7 @@ export default {
       }
       if (isCanSubmit.res) {
         this.$data.isRequestLoading = true
+        this.$data.clickSpaceTime = nowTime // 不能狂发请求
         this.$Http({
           url: this.$Constent.api.user.login,
           method: 'POST',
@@ -335,6 +328,7 @@ export default {
             } else {
               this.$Cookies.remove()
             }
+            this.$emit('loginSuccess')
             if (this.$route.path === '/') this.$router.push('/admin')
           } else {
             this.$message({

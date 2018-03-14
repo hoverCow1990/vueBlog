@@ -7,7 +7,7 @@
         <li class="menu-category recommend">
           <div class="category-container">
             <div class="title">
-              <p><i class="iconfont icon-gengduo"></i>老牛推荐</p>
+              <p><i class="iconfont icon-gengduo"></i>推荐文章</p>
               <span>recommend</span>
             </div>
             <div class="category-wrapper">
@@ -329,8 +329,10 @@ export default {
   .homePage-recommend {
     padding-top: 20px;
   }
-  .recommend-container {
+  .container.recommend-container {
     width: 100%;
+  }
+  .recommend-container {  
     .recommend-menu {
       display: block;
     }

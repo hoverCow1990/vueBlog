@@ -37,9 +37,9 @@ export default {
         link: '/articleList/backstages_koa',
         bgColor: 'red'
       }, {
-        label: 'Mongoose',
+        label: 'MongoDb',
         logo: require('./images/mongoose.png'),
-        link: '/articleList/backstages_mongoose',
+        link: '/articleList/backstages_mongoDb',
         bgColor: 'black'
       }],
       toolList: [{

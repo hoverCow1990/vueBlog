@@ -3,6 +3,21 @@
 const events = {
   install (Vue) {
     const eventsObj = {
+      loginBox: {
+        currentObj: null,
+        callbackList: [],
+        '$on' (self, callback) {
+          this.currentObj = self
+          this.callbackList.push(callback)
+          self.$off('loginBox.status')
+          self.$on('loginBox.status', data => {
+            this.callbackList.forEach(fn => fn(data))
+          })
+        },
+        '$emit' (data) {
+          this.currentObj && this.currentObj.$emit('loginBox.status', data)
+        }
+      },
       loginData: {
         currentObj: [],
         callbackList: [],
