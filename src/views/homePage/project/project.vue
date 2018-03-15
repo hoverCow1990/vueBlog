@@ -47,14 +47,14 @@ export default {
         title: 'Github管理系统',
         info: 'ES6, React, Redux, React-Router, ReactEchart, Antd, Less',
         isOnline: false,
-        link: '/article/100'
+        link: '/article/1100'
       }, {
         perviewer: require('./images/outFood.jpg'),
         tag: 'backbone',
         title: '老牛外卖APP',
         info: 'Backbone, Jquery, Juicer, Jquery-weui, Less, Swiper, Gulp, Webpack, 百度地图',
         isOnline: false,
-        link: '/article/100'
+        link: '/article/94'
       }, {
         perviewer: require('./images/audio.jpg'),
         tag: 'jquery',
@@ -75,7 +75,7 @@ export default {
         title: '萝卜特甜仿页',
         info: 'Bootstrip, Jquery, Less, 面向对象',
         isOnline: false,
-        link: '/article/100'
+        link: '/article/95'
       }, {
         perviewer: require('./images/fishMan.jpg'),
         tag: 'jquery',
