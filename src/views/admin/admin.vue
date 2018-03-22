@@ -377,7 +377,7 @@ export default {
         method: 'GET',
         params: {
           s: stCount,
-          e: stCount + this.$data.singleListLength
+          e: this.$data.singleListLength
         }
       }).then(res => {
         res = res.body

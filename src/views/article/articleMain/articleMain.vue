@@ -437,7 +437,7 @@ export default {
     max-width: 100%;
     padding-top: 8px;
     padding-bottom: 8px;
-    background-color: #1f1f1f;
+    background-color: #24251f;
     border-radius: 5px;
     font-family: "Consolas", "Bitstream Vera Sans Mono", "Courier New", Courier, monospace;
     letter-spacing: 1px;
@@ -902,9 +902,26 @@ export default {
 }
 @media screen and (max-width: 435px){
   .cow-code {
+    width: 105%;
+    transform-origin: 0 0;
+    transform: scale(0.95);
     ul {
       overflow-x: scroll;
       overflow-y: hidden;
+      background: #1e1f18;
+    }
+    .count {
+      display: none;
+    }
+    /* li:nth-child(2n) {
+      background: #252525;
+    } */
+    .content {
+      padding-left: 10px;
+      color: #d8d8d8;
+    }
+    code {
+      font-family: 'PingFangSC-Regular', Arial, "Source Code Pro", Consolas, "Liberation Mono", Menlo, Courier, monospace, sans-serif;
     }
   }
   .article-main {
