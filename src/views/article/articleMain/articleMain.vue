@@ -437,7 +437,7 @@ export default {
     max-width: 100%;
     padding-top: 8px;
     padding-bottom: 8px;
-    background-color: #24251f;
+    background-color: #20211c;
     border-radius: 5px;
     font-family: "Consolas", "Bitstream Vera Sans Mono", "Courier New", Courier, monospace;
     letter-spacing: 1px;
@@ -473,11 +473,12 @@ export default {
   }
   /*关键词蓝色*/
   .blue {
-    color: #66d9ef;
-    font-weight: bold;
+    color: #76e7fd;
+    /* font-weight: bold; */
   }
   /*符号等红色*/
-  .red {
+  .red,
+  .redPonit {
     color: #f92672;
   }
   /*绿色*/
@@ -487,6 +488,13 @@ export default {
   /*字符串*/
   .yellow {
     color: #e6db74;
+    .red,
+    .redPonit,
+    .green,
+    .blue,
+    .violet {
+      color: #e6db74;
+    }
   }
   /*紫色*/
   .violet {
@@ -495,21 +503,12 @@ export default {
   /*注释灰色*/
   .grey {
     color: #565656;
-    .white {
-      color: #565656;
-    }
-    .blue {
-      color: #565656;
-    }
-    .red {
-      color: #565656;
-    }
-    .green {
-      color: #565656;
-    }
-    .yellow {
-      color: #565656;
-    }
+    .redPonit,
+    .white,
+    .blue,
+    .red,
+    .green,
+    .yellow,
     .violet {
       color: #565656;
     }
@@ -696,18 +695,6 @@ export default {
       left: 0;
       top: 0;
     }
-    /* &.red:before {
-      background-color: #e34c26;
-    }
-    &.yellow:before {
-      background-color: #f1e05a;
-    }
-    &.violet:before {
-      background-color: #966dd6;
-    }
-    &.orange:before {
-      background-color: #ec8b49;
-    } */
     .tag {
       display: none;
       position: absolute;
@@ -901,6 +888,9 @@ export default {
   }
 }
 @media screen and (max-width: 435px){
+  .article-context .box-bd {
+    color: #5f5e5e;
+  }
   .cow-code {
     width: 105%;
     transform-origin: 0 0;
@@ -908,20 +898,75 @@ export default {
     ul {
       overflow-x: scroll;
       overflow-y: hidden;
-      background: #1e1f18;
+      /* background: #1e1f18; */
+      background: #f6f8fa;
+      border: 1px solid #efefef;
+      border-radius: 2px;
+      letter-spacing: 0;
     }
     .count {
       display: none;
     }
+    /*普通白色*/
+    .white {
+      color: #e0e0e0;
+    }
+    /*关键词蓝色*/
+    .blue {
+      color: #005cc5;
+    }
+    /*符号等红色*/
+    .red,
+    .redPonit {
+      color: #d73a49;
+    }
+    /*绿色*/
+    .green {
+      color: #209e3d;
+    }
+    /*字符串*/
+    .yellow {
+      color: #032f62;
+      .red,
+      .redPonit,
+      .green,
+      .blue,
+      .violet {
+        color: #032f62;
+      }
+    }
+    /*紫色*/
+    .violet {
+      color: #6f42c1;
+    }
+    /*注释灰色*/
+    .grey {
+      color: #6a737d;
+      .redPonit,
+      .white,
+      .blue,
+      .red,
+      .green,
+      .yellow,
+      .violet {
+        color: #6a737d;
+      }
+    }
     /* li:nth-child(2n) {
-      background: #252525;
+      background: #f9f9f9;
     } */
     .content {
       padding-left: 10px;
-      color: #d8d8d8;
+      /* color: #d8d8d8; */
+      color: #2a3035;
     }
-    code {
-      font-family: 'PingFangSC-Regular', Arial, "Source Code Pro", Consolas, "Liberation Mono", Menlo, Courier, monospace, sans-serif;
+    /* .redPonit {
+      font-weight: 700;
+    } */
+    code,
+    pre {
+      font-family: Consolas,"Liberation Mono",Courier,monospace;
+      /* font-family: 'PingFangSC-Regular', Arial, "Source Code Pro", Consolas, "Liberation Mono", Menlo, Courier, monospace, sans-serif; */
     }
   }
   .article-main {

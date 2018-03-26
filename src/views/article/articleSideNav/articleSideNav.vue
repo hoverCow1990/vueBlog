@@ -211,4 +211,19 @@ export default {
     display: none;
   }
 }
+@media (max-height: 780px) {
+  .sideNav-box {
+    font-size: 14px;
+    .box-title {
+      padding-top: 5px;
+      padding-bottom: 5px;
+    }
+  }
+  .sideNav-box {
+    li {
+      height: 21px;
+      line-height: 21px;
+    }
+  }
+}
 </style>

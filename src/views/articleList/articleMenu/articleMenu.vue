@@ -17,7 +17,7 @@ export default {
   data () {
     return {
       allListLength: 0,
-      singleListLength: 5,
+      singleListLength: 8,
       typeId: '',
       articleList: [],
       lastRoute: '',

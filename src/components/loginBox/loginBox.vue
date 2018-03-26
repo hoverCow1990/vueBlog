@@ -251,7 +251,7 @@ export default {
         this.$data.isRequestLoading = true
         const formData = new FormData()
         formData.append('file', this.convertBase64UrlToBlob(this.$data.cropData))
-        formData.append('name', id.val)
+        formData.append('name', id.val.trim())
         formData.append('password', password.val)
         this.$Http({
           url: this.$Constent.api.user.regist,
@@ -295,7 +295,7 @@ export default {
       let {id, password} = loginData
       let isCanSubmit = this.verifyLoginForm(id, password)
       let route = this.$route
-      let postData = {name: id.val, password: password.val}
+      let postData = {name: id.val.trim(), password: password.val}
       if (route.path.startsWith('/article')) {
         postData = {
           ...postData,
